@@ -22,4 +22,5 @@ pageextension 50112 CustListExtn extends "Customer List"
     var
         UserSetupMgt: Codeunit "User Setup Management";
         RespCenter: Code[20];
+        a: Integer;
 }
