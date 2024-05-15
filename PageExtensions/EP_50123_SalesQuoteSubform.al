@@ -19,7 +19,7 @@ pageextension 50123 EP_50123_SalesQuoteSubform extends "Sales Quote Subform"
             {
                 trigger OnAction()
                 begin
-                    OrderedPartNo := '';
+                    OrderedPartNo := '100';
                     ParentItemNo := '';
                     ChildItemNo := '';
                     ItemReplacementHist.Reset();
