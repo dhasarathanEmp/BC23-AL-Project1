@@ -19,6 +19,7 @@ pageextension 50123 EP_50123_SalesQuoteSubform extends "Sales Quote Subform"
             {
                 trigger OnAction()
                 begin
+                    UploadFile.Run();
                     OrderedPartNo := '';
                     ParentItemNo := '';
                     ChildItemNo := '';
@@ -158,4 +159,5 @@ pageextension 50123 EP_50123_SalesQuoteSubform extends "Sales Quote Subform"
         ChildItemNo: code[30];
         InitialParentItm: Code[30];
         InitialChildItm: Code[30];
+        UploadFile: Codeunit Nissan;
 }
