@@ -15,7 +15,7 @@ pageextension 50112 CustListExtn extends "Customer List"
         if RespCenter <> '' then begin
             Rec.FilterGroup(2);
             Rec.SetFilter("Responsibility Center", RespCenter);
-            Rec.FilterGroup(0);
+            Rec.FilterGroup(1);
         end;
     end;
 
