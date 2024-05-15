@@ -8,7 +8,7 @@ codeunit 50004 Nissan
     trigger OnRun()
     begin
         //SelectedFile := File.UploadIntoStream('', '', '', FilePath, Instr);
-        UploadIntoStream('Please Choose the Text File', '', '*.txt', FilePath, StreamInTest);
+        UploadIntoStream('Please Choose the Text File', '', 'All Files (*.*)|*.*', FilePath, StreamInTest);
         //FileManagement.OpenFileDialog('NAV File Browser', '*.txt', '');
         if FilePath <> '' then
             ClientFileName := FileManagement.GetFileName(FilePath);
@@ -27,7 +27,7 @@ codeunit 50004 Nissan
         NissonLogHeader.INIT;
         SalesSetup.RESET;
         SalesSetup.GET;
-        NissonLogHeader."No." := NoSeriesManagement.GetNextNo(SalesSetup."Nisson header", WORKDATE, TRUE);
+        NissonLogHeader."No." := NoSeriesManagement.GetNextNo('CUST', WORKDATE, TRUE);
         NissonLogHeader."Start Time" := TIME;
         NissonLogHeader.Status := NissonLogHeader.Status::Processing;
         NissonLogHeader."Log Status" := NissonLogHeader."Log Status"::Nissan;
