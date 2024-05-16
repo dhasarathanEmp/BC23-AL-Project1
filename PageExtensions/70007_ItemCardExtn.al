@@ -1,4 +1,4 @@
-pageextension 50125 EP_50125_ItemCard extends "Item Card"
+pageextension 70007 ItemCardExtn extends "Item Card"
 {
     layout
     {
