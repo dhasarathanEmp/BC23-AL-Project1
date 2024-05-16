@@ -39,6 +39,9 @@ pageextension 55048 ItemPriceList extends "Item List"
                     Image = Import;
                     Visible = Nisson;
                     RunObject = codeunit Nissan;
+                    Promoted = true;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
                 }
             }
             group("Import Log")
@@ -48,7 +51,17 @@ pageextension 55048 ItemPriceList extends "Item List"
                     Image = Log;
                     Visible = Nisson;
                     RunObject = page "Nissan Header List";
+                    Promoted = true;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
                 }
+            }
+            action("Parameter form")
+            {
+                RunObject = page "Interface Parameter Form";
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedOnly = true;
             }
         }
     }
