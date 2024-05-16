@@ -1,4 +1,4 @@
-tableextension 50111 NoSeriesExtn extends "No. Series"
+tableextension 70004 NoSeriesExtn extends "No. Series"
 {
     fields
     {

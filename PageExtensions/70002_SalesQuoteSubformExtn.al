@@ -1,4 +1,4 @@
-pageextension 50123 EP_50123_SalesQuoteSubform extends "Sales Quote Subform"
+pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
 {
     layout
     {
@@ -39,7 +39,7 @@ pageextension 50123 EP_50123_SalesQuoteSubform extends "Sales Quote Subform"
                             Commit();
                             ItemReplacementHist.Reset();
                             ItemReplacementHist.SetRange(LocationCode, Rec."Location Code");
-                            if Page.RunModal(Page::CP_50122_ItemReplacmentHis, ItemReplacementHist) = Action::LookupOK then begin
+                            if Page.RunModal(Page::ReplacementItem, ItemReplacementHist) = Action::LookupOK then begin
                                 Rec."No." := ItemReplacementHist.ItemNo;
                                 Rec.Validate("No.");
                                 Rec.Ordered_Part_No := OrderedPartNo;
@@ -150,8 +150,8 @@ pageextension 50123 EP_50123_SalesQuoteSubform extends "Sales Quote Subform"
 
     var
         myInt: Integer;
-        ItemReplacementHist: Record CT_50121_ItemReplacementHis;
-        ItemReplacementHisInsert: Record CT_50121_ItemReplacementHis;
+        ItemReplacementHist: Record ReplacementItem;
+        ItemReplacementHisInsert: Record ReplacementItem;
         Item: Record Item;
         ItemInventory: Record Item;
         OrderedPartNo: Code[30];

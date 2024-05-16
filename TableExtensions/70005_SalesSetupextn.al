@@ -1,9 +1,13 @@
-tableextension 50113 CompanyExtn extends "Company Information"
+tableextension 70005 SalesSetupExtn extends "Sales & Receivables Setup"
 {
     fields
     {
         // Add changes to table fields here
-        field(50000; AFZ; Boolean)
+        field(50020; "Nisson header"; Code[20])//CUS029
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50021; "Nisson Line"; Code[20])//CUS029
         {
             DataClassification = ToBeClassified;
         }
@@ -20,5 +24,5 @@ tableextension 50113 CompanyExtn extends "Company Information"
     }
 
     var
-
+        myInt: Integer;
 }

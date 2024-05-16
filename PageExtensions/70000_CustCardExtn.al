@@ -1,4 +1,4 @@
-pageextension 50110 CustPageExtn extends "Customer Card"
+pageextension 70000 CustPageExtn extends "Customer Card"
 {
     layout
     {

@@ -1,4 +1,4 @@
-codeunit 50110 OnBeforeInsertCust
+codeunit 70000 OnBeforeInsertCust
 {
     [EventSubscriber(ObjectType::Table, Database::Customer, 'OnBeforeInsert', '', true, true)]
     local procedure OnBeforeInsert(var Customer: Record Customer; var IsHandled: Boolean)

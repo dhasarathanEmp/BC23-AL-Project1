@@ -1,4 +1,4 @@
-tableextension 50126 ET_50126_SalesLine extends "Sales Line"
+tableextension 70002 SalesLineExtn extends "Sales Line"
 {
     fields
     {

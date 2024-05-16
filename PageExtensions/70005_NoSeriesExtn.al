@@ -1,4 +1,4 @@
-pageextension 50111 NoSeriesExtn extends "No. Series"
+pageextension 70005 NoSeriesExtn extends "No. Series"
 {
     layout
     {

@@ -1,9 +1,9 @@
-page 50122 CP_50122_ItemReplacmentHis
+page 55024 ReplacementItem
 {
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
-    SourceTable = CT_50121_ItemReplacementHis;
+    SourceTable = ReplacementItem;
 
     layout
     {

@@ -1,4 +1,4 @@
-page 50037 "Interface Parameter Form"
+page 55037 "Interface Parameter Form"
 {
     PageType = Card;
     SourceTable = "Integration Parameters";

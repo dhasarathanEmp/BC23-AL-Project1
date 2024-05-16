@@ -1,4 +1,4 @@
-table 50121 CT_50121_ItemReplacementHis
+table 60023 ReplacementItem
 {
     DataClassification = ToBeClassified;
 

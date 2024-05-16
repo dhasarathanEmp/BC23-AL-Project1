@@ -1,4 +1,4 @@
-pageextension 50112 CustListExtn extends "Customer List"
+pageextension 70001 CustListExtn extends "Customer List"
 {
     layout
     {

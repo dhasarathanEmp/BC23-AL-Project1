@@ -1,4 +1,4 @@
-tableextension 50112 ItemExtn extends Item
+tableextension 70003 ItemExtn extends Item
 {
     // CS08 3-2-18 New field created- Item Type [50004] for Item Restriction Customization
     // CS19 - 03/13/2018 Added fields and functions in OnInsert(),Unit Amount - OnValidate() & Unit Price  - OnValidate()
