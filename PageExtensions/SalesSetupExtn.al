@@ -8,10 +8,12 @@ pageextension 50114 SalesSetupExtnPage extends "Sales & Receivables Setup"
             field("Nisson header"; Rec."Nisson header")
             {
                 ApplicationArea = All;
+                TableRelation = "No. Series";
             }
             field("Nisson Line"; Rec."Nisson Line")
             {
                 ApplicationArea = All;
+                TableRelation = "No. Series";
             }
         }
     }
