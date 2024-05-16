@@ -30,7 +30,7 @@ pageextension 55048 ItemPriceList extends "Item List"
     actions
     {
         // Add changes to page actions here
-        addafter(Purchases)
+        addafter(PricesandDiscounts)
         {
             group("Import Interface")
             {
