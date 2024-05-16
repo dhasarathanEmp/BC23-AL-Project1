@@ -8,7 +8,7 @@ codeunit 70001 GetSpecialBinsforExclReserv
     begin
         IF WhseActivLine.FindFirst() then;
         bin.Reset();
-        bin.SetRange("Location Code", WhseActivLine."Location Code");
+        bin.SetRange("Location Code", 'SILVER');
         bin.SetRange(Blocks, true);
         IF bin.FindSet() then
             repeat
@@ -18,7 +18,8 @@ codeunit 70001 GetSpecialBinsforExclReserv
                 bincontent.SetRange("Item No.", Item."No.");
                 if bincontent.FindSet() then
                     repeat
-                        AllocQty += bincontent."Quantity (Base)";
+                        bincontent.CalcFields("Quantity (Base)");
+                        //AllocQty += bincontent."Quantity (Base)";
                         AvailQty -= bincontent."Quantity (Base)";
                     until bincontent.Next() = 0;
             until bin.Next() = 0;
