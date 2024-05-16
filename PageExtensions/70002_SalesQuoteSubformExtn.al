@@ -19,7 +19,6 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             {
                 trigger OnAction()
                 begin
-                    UploadFile.Run();
                     OrderedPartNo := '';
                     ParentItemNo := '';
                     ChildItemNo := '';
