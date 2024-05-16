@@ -7,9 +7,7 @@ codeunit 50004 Nissan
     // EP9615 Ending Existing Purchase Price
     trigger OnRun()
     begin
-        //SelectedFile := File.UploadIntoStream('', '', '', FilePath, Instr);
         UploadIntoStream('Please Choose the Text File', '', 'All Files (*.*)|*.*', FilePath, StreamInTest);
-        //FileManagement.OpenFileDialog('NAV File Browser', '*.txt', '');
         if FilePath <> '' then
             ClientFileName := FileManagement.GetFileName(FilePath);
         SerialNum := 0;
@@ -33,8 +31,6 @@ codeunit 50004 Nissan
         NissonLogHeader."Log Status" := NissonLogHeader."Log Status"::Nissan;
         NissonLogHeader.INSERT;
         ProgressWindow.OPEN('Processing Item No. #1#######');
-        //SFile.Open(FilePath);
-        //SFile.CreateInStream(StreamInTest);
         WHILE NOT StreamInTest.EOS DO BEGIN
             StreamInTest.READTEXT(Buffer);
             SerialNum += 1;
