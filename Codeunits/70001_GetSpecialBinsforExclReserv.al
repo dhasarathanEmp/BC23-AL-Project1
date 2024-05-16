@@ -6,6 +6,7 @@ codeunit 70001 GetSpecialBinsforExclReserv
         QtyOnOutboundBins: Decimal; QtyOnInvtMovement: Decimal; QtyOnSpecialBins: Decimal;
         var AvailQty: Decimal; var AllocQty: Decimal; var IsHandled: Boolean)
     begin
+        IF WhseActivLine.FindFirst() then;
         bin.Reset();
         bin.SetRange("Location Code", WhseActivLine."Location Code");
         bin.SetRange(Blocks, true);
@@ -16,7 +17,10 @@ codeunit 70001 GetSpecialBinsforExclReserv
                 bincontent.SetRange("Location Code", bin."Location Code");
                 bincontent.SetRange("Item No.", Item."No.");
                 if bincontent.FindSet() then
-                    QtyOnSpecialBins += bincontent."Quantity (Base)";
+                    repeat
+                        AllocQty += bincontent."Quantity (Base)";
+                        AvailQty -= bincontent."Quantity (Base)";
+                    until bincontent.Next() = 0;
             until bin.Next() = 0;
     end;
 
