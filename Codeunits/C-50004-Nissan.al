@@ -8,6 +8,7 @@ codeunit 50004 Nissan
     trigger OnRun()
     begin
         UploadIntoStream('Please Choose the Text File', '', 'All Files (*.*)|*.*', FilePath, StreamInTest);
+        Clear(FileManagement);
         if FilePath <> '' then
             ClientFileName := FileManagement.GetFileName(FilePath);
         SerialNum := 0;
