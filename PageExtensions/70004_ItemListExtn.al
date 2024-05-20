@@ -2,7 +2,7 @@ pageextension 70004 ItemPriceList extends "Item List"
 {
     layout
     {
-        // Add changes to page layout here
+
         addafter("Vendor No.")
         {
             field(Agency; Rec."Global Dimension 1 Code")
