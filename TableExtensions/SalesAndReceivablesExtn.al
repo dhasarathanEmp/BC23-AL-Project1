@@ -1,4 +1,4 @@
-tableextension 70005 SalesSetupExtn extends "Sales & Receivables Setup"
+tableextension 70005 SalesAndReceivables extends "Sales & Receivables Setup"
 {
     fields
     {
@@ -10,6 +10,10 @@ tableextension 70005 SalesSetupExtn extends "Sales & Receivables Setup"
         field(50021; "Nisson Line"; Code[20])//CUS029
         {
             DataClassification = ToBeClassified;
+        }
+        field(50022; Inc_CoreCharge; Boolean)
+        {
+
         }
     }
 

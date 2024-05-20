@@ -9,6 +9,14 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
 
             }
         }
+        addafter("Unit Price")
+        {
+            field(CoreCharge; Rec.CoreCharge)
+            {
+
+            }
+        }
+
     }
 
     actions
@@ -51,6 +59,42 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             }
         }
     }
+    trigger OnAfterGetCurrRecord()
+    var
+        CoreCharge: Decimal;
+        LineAmount: Decimal;
+        CompanyInformation: Record "Company Information";
+        SalesLine: Record "Sales Line";
+        Item: Record Item;
+        SalesAndReceivable: Record "Sales & Receivables Setup";
+    begin
+        CompanyInformation.Reset();
+        CompanyInformation.SetRange(AFZ, true);
+        if CompanyInformation.FindFirst() then begin
+            SalesLine.Reset();
+            SalesLine.SetRange("Document No.", Rec."Document No.");
+            SalesLine.SetRange("Allow Invoice Disc.", true);
+            if SalesLine.FindSet() then begin
+                CoreCharge := SalesLine.Quantity * SalesLine.CoreCharge;
+                LineAmount += SalesLine.Quantity * SalesLine."Line Amount";
+            end;
+        end
+        else begin
+            SalesLine.Reset();
+            SalesLine.SetRange("Document No.", Rec."Document No.");
+            SalesLine.SetRange("Allow Invoice Disc.", true);
+            if SalesLine.FindSet() then begin
+                CoreCharge := (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
+                LineAmount := SalesLine.Quantity * SalesLine."Unit Price";
+            end;
+        end;
+        SalesAndReceivable.Reset();
+        SalesAndReceivable.SetRange(Inc_CoreCharge, true);
+        if SalesAndReceivable.FindFirst() then
+            LineAmount := LineAmount - CoreCharge;
+        SalesLine."Inv. Discount Amount" := LineAmount * SalesLine.
+    end;
+
     procedure Initial_Parent_ChildRelation(ParentItm: Code[30]; ChildItm: Code[30])
     begin
         if ParentItm <> '' then begin

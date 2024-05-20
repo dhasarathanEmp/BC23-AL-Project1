@@ -6,6 +6,10 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
         {
 
         }
+        field(50123; CoreCharge; Decimal)
+        {
+
+        }
     }
 
     keys

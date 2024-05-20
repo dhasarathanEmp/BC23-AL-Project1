@@ -1,4 +1,4 @@
-pageextension 70006 SalesSetupExtnPage extends "Sales & Receivables Setup"
+pageextension 70006 SalesAndReceivablesExtnPage extends "Sales & Receivables Setup"
 {
     layout
     {
@@ -14,6 +14,13 @@ pageextension 70006 SalesSetupExtnPage extends "Sales & Receivables Setup"
             {
                 ApplicationArea = All;
                 TableRelation = "No. Series";
+            }
+        }
+        addafter("Document Default Line Type")
+        {
+            field(Inc_CoreCharge; Rec.Inc_CoreCharge)
+            {
+
             }
         }
     }
