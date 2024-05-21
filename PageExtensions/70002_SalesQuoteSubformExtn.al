@@ -18,13 +18,10 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 end;
             end;
         }
-
-        modify("Invoice Disc. Pct.")
+        modify(Quantity)
         {
             trigger OnBeforeValidate()
             begin
-                Rec.InvoiceDisPercent := InvoiceDiscountPct;
-                DisPercent := Rec.InvoiceDisPercent;
                 DiscountAmountUpdate();
             end;
         }
@@ -103,10 +100,11 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         Item: Record Item;
         SalesAndReceivable: Record "Sales & Receivables Setup";
         SalesHeader: Record "Sales Header";
+        SalesCalcDiscByType: Codeunit "Sales - Calc Discount By Type";
+        DocumentTotals: Codeunit "Document Totals";
     begin
-        if (DisPercent <> 0) OR (Rec.InvoiceDisPercent <> 0) then begin
-            if (Rec.InvoiceDisPercent = 0) AND (DisPercent <> 0) then
-                Rec.InvoiceDisPercent := DisPercent;
+
+        if InvoiceDiscountPct <> 0 then begin
             CompanyInformation.Reset();
             CompanyInformation.SetRange(AFZ, true);
             if CompanyInformation.FindFirst() then begin
@@ -134,17 +132,12 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             if SalesAndReceivable.FindFirst() then begin
                 LineAmount := LineAmount - CoreCharge;
             end;
-            SalesLine."Inv. Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00001);
-            SalesLine.Modify();
-            SalesHeader.Reset();
-            SalesHeader.SetRange("No.", Rec."Document No.");
-            SalesHeader.SetRange("Document Type", SalesLine."Document Type"::Quote);
-            if SalesHeader.FindFirst() then begin
-                SalesHeader."Invoice Discount Value" := Rec.InvoiceDisPercent;
-                SalesHeader."Invoice Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00001);
-                SalesHeader.Modify();
-            end;
+            InvoiceDiscountAmount := Round(LineAmount * InvoiceDiscountPct / 100, 0.00001);
         end;
+        SalesHeader.Get(Rec."Document Type", Rec."Document No.");
+        SalesCalcDiscByType.ApplyInvDiscBasedOnAmt(InvoiceDiscountAmount, SalesHeader);
+        DocumentTotals.SalesDocTotalsNotUpToDate();
+        CurrPage.Update(false);
     end;
 
     procedure Initial_Parent_ChildRelation(ParentItm: Code[30]; ChildItm: Code[30])

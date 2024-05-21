@@ -1,8 +1,14 @@
-pageextension 70011 SecurityGroupMemberExtn extends "Security Group Members"
+pageextension 70011 SecurityGroupMemberExtn extends "Security Groups"
 {
     layout
     {
+        addafter(Name)
+        {
+            field("Sales Post"; Rec."Sales Post")
+            {
 
+            }
+        }
     }
 
     actions

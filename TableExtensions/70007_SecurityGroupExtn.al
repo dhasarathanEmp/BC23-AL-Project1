@@ -2,7 +2,7 @@ tableextension 70007 SecurityGroupExtn extends "Security Group Buffer"
 {
     fields
     {
-        field(50001; "Sales Post"; Boolean)//CUS006
+        field(50001; "Sales Post"; Code[20])//CUS006
         {
             DataClassification = ToBeClassified;
         }
