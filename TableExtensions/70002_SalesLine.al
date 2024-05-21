@@ -10,6 +10,10 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
         {
 
         }
+        field(50124; InvoiceDisPercent; Decimal)
+        {
+
+        }
     }
 
     keys

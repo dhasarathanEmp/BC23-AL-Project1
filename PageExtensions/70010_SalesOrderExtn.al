@@ -8,6 +8,19 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
     actions
     {
         // Add changes to page actions here
+        addafter(History)
+        {
+            action("Auto Reserve")
+            {
+                ApplicationArea = All;
+                Image = AutoReserve;
+                trigger OnAction()
+                begin
+
+                end;
+            }
+
+        }
     }
 
     var

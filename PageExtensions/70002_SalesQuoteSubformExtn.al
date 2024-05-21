@@ -2,6 +2,29 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
 {
     layout
     {
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                Item.Reset();
+                Item.SetRange("No.", Rec."No.");
+                Item.SetRange("Hose Main item", true);
+                if Item.FindFirst() then begin
+                    SalesLine.Reset();
+                    SalesLine.SetRange("No.", Rec."No.");
+                    SalesLine.SetRange(Type, SalesLine.Type::Item);
+                    if SalesLine.FindFirst() then
+                        Message('The chosen item is a Hose Main Item');
+                end;
+            end;
+        }
+        modify("Invoice Disc. Pct.")
+        {
+            trigger OnAfterValidate()
+            begin
+                Rec.InvoiceDisPercent := InvoiceDiscountPct;
+            end;
+        }
         addafter("No.")
         {
             field("Ordered Part No"; Rec.Ordered_Part_No)
@@ -16,7 +39,6 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
 
             }
         }
-
     }
 
     actions
@@ -85,14 +107,14 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             SalesLine.SetRange("Allow Invoice Disc.", true);
             if SalesLine.FindSet() then begin
                 CoreCharge := (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
-                LineAmount := SalesLine.Quantity * SalesLine."Unit Price";
+                LineAmount += SalesLine.Quantity * SalesLine."Unit Price";
             end;
         end;
         SalesAndReceivable.Reset();
         SalesAndReceivable.SetRange(Inc_CoreCharge, true);
         if SalesAndReceivable.FindFirst() then
             LineAmount := LineAmount - CoreCharge;
-        SalesLine."Inv. Discount Amount" := LineAmount * SalesLine.
+        SalesLine."Inv. Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00);
     end;
 
     procedure Initial_Parent_ChildRelation(ParentItm: Code[30]; ChildItm: Code[30])
@@ -203,4 +225,5 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         InitialParentItm: Code[30];
         InitialChildItm: Code[30];
         UploadFile: Codeunit Nissan;
+        SalesLine: Record "Sales Line";
 }
