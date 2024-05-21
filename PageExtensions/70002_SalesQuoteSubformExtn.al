@@ -137,7 +137,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         SalesHeader.Get(Rec."Document Type", Rec."Document No.");
         SalesCalcDiscByType.ApplyInvDiscBasedOnAmt(InvoiceDiscountAmount, SalesHeader);
         DocumentTotals.SalesDocTotalsNotUpToDate();
-        CurrPage.Update(false);
+        CurrPage.Update(true);
     end;
 
     procedure Initial_Parent_ChildRelation(ParentItm: Code[30]; ChildItm: Code[30])
