@@ -4,7 +4,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
     {
         modify("No.")
         {
-            trigger OnAfterValidate()
+            trigger OnBeforeValidate()
             begin
                 Item.Reset();
                 Item.SetRange("No.", Rec."No.");
@@ -23,6 +23,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             trigger OnBeforeValidate()
             begin
                 Rec.InvoiceDisPercent := InvoiceDiscountPct;
+                DisPercent := Rec.InvoiceDisPercent;
                 DiscountAmountUpdate();
             end;
         }
@@ -101,31 +102,36 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         Item: Record Item;
         SalesAndReceivable: Record "Sales & Receivables Setup";
     begin
-        CompanyInformation.Reset();
-        CompanyInformation.SetRange(AFZ, true);
-        if CompanyInformation.FindFirst() then begin
-            SalesLine.Reset();
-            SalesLine.SetRange("Document No.", Rec."Document No.");
-            SalesLine.SetRange("Allow Invoice Disc.", true);
-            if SalesLine.FindSet() then begin
-                CoreCharge := SalesLine.Quantity * SalesLine.CoreCharge;
-                LineAmount += SalesLine.Quantity * SalesLine."Line Amount";
+        if DisPercent <> 0 then begin
+            CompanyInformation.Reset();
+            CompanyInformation.SetRange(AFZ, true);
+            if CompanyInformation.FindFirst() then begin
+                SalesLine.Reset();
+                SalesLine.SetRange("Document No.", Rec."Document No.");
+                SalesLine.SetRange("Allow Invoice Disc.", true);
+                if SalesLine.FindSet() then
+                    repeat
+                        CoreCharge := SalesLine.Quantity * SalesLine.CoreCharge;
+                        LineAmount += SalesLine.Quantity * SalesLine."Line Amount";
+                    until SalesLine.Next = 0;
+            end
+            else begin
+                SalesLine.Reset();
+                SalesLine.SetRange("Document No.", Rec."Document No.");
+                SalesLine.SetRange("Allow Invoice Disc.", true);
+                if SalesLine.FindSet() then
+                    repeat
+                        CoreCharge := (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
+                        LineAmount += SalesLine.Quantity * SalesLine."Unit Price";
+                    until SalesLine.Next = 0;
             end;
-        end
-        else begin
-            SalesLine.Reset();
-            SalesLine.SetRange("Document No.", Rec."Document No.");
-            SalesLine.SetRange("Allow Invoice Disc.", true);
-            if SalesLine.FindSet() then begin
-                CoreCharge := (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
-                LineAmount += SalesLine.Quantity * SalesLine."Unit Price";
+            SalesAndReceivable.Reset();
+            SalesAndReceivable.SetRange(Inc_CoreCharge, true);
+            if SalesAndReceivable.FindFirst() then begin
+                LineAmount := LineAmount - CoreCharge;
             end;
+            SalesLine."Inv. Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00);
         end;
-        SalesAndReceivable.Reset();
-        SalesAndReceivable.SetRange(Inc_CoreCharge, true);
-        if SalesAndReceivable.FindFirst() then
-            LineAmount := LineAmount - CoreCharge;
-        SalesLine."Inv. Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00);
     end;
 
     procedure Initial_Parent_ChildRelation(ParentItm: Code[30]; ChildItm: Code[30])
@@ -237,4 +243,5 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         InitialChildItm: Code[30];
         UploadFile: Codeunit Nissan;
         SalesLine: Record "Sales Line";
+        DisPercent: Decimal;
 }

@@ -22,6 +22,12 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                     SalesLine.SetRange(Type, SalesLine.Type::Item);
                     if SalesLine.FindSet() then
                         repeat
+                            SalesLine.CalcFields("Reserved Quantity", "Reserved Qty. (Base)");
+                            if SalesLine."Outstanding Quantity" > SalesLine."Reserved Quantity" then begin
+                                RemQtytoRes := SalesLine."Outstanding Quantity" - SalesLine."Reserved Quantity";
+                                RemQtytoResBase := SalesLine."Outstanding Qty. (Base)" - SalesLine."Reserved Qty. (Base)";
+                                ResMgt.AutoReserveOneLine(1, RemQtytoRes, RemQtytoResBase, '', SalesLine."Shipment Date");
+                            end;
                         until SalesLine.Next() = 0;
                 end;
             }
@@ -34,4 +40,6 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
         SalesRes: Codeunit "Sales Line-Reserve";
         ResMgt: Codeunit "Reservation Management";
         SalesLine: Record "Sales Line";
+        RemQtytoRes: Decimal;
+        RemQtytoResBase: Decimal;
 }
