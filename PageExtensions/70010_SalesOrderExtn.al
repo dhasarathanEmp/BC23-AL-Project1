@@ -16,7 +16,13 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                 Image = AutoReserve;
                 trigger OnAction()
                 begin
-
+                    SalesLine.Reset();
+                    SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+                    SalesLine.SetRange("Document No.", Rec."No.");
+                    SalesLine.SetRange(Type, SalesLine.Type::Item);
+                    if SalesLine.FindSet() then
+                        repeat
+                        until SalesLine.Next() = 0;
                 end;
             }
 
@@ -25,4 +31,7 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
 
     var
         myInt: Integer;
+        SalesRes: Codeunit "Sales Line-Reserve";
+        ResMgt: Codeunit "Reservation Management";
+        SalesLine: Record "Sales Line";
 }

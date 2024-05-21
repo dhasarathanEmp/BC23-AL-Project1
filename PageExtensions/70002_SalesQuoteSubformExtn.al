@@ -20,9 +20,10 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         }
         modify("Invoice Disc. Pct.")
         {
-            trigger OnAfterValidate()
+            trigger OnBeforeValidate()
             begin
                 Rec.InvoiceDisPercent := InvoiceDiscountPct;
+                DiscountAmountUpdate();
             end;
         }
         addafter("No.")
@@ -82,6 +83,16 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         }
     }
     trigger OnAfterGetCurrRecord()
+    begin
+        DiscountAmountUpdate();
+    end;
+
+    trigger OnDeleteRecord(): Boolean
+    begin
+        DiscountAmountUpdate();
+    end;
+
+    procedure DiscountAmountUpdate()
     var
         CoreCharge: Decimal;
         LineAmount: Decimal;
