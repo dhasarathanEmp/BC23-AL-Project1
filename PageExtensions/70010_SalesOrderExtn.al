@@ -24,8 +24,10 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                         repeat
                             SalesLine.CalcFields("Reserved Quantity", "Reserved Qty. (Base)");
                             if SalesLine."Outstanding Quantity" > SalesLine."Reserved Quantity" then begin
+                                Clear(ResMgt);
                                 RemQtytoRes := SalesLine."Outstanding Quantity" - SalesLine."Reserved Quantity";
                                 RemQtytoResBase := SalesLine."Outstanding Qty. (Base)" - SalesLine."Reserved Qty. (Base)";
+                                ResMgt.SetReservSource(SalesLine);
                                 ResMgt.AutoReserveOneLine(1, RemQtytoRes, RemQtytoResBase, '', SalesLine."Shipment Date");
                             end;
                         until SalesLine.Next() = 0;

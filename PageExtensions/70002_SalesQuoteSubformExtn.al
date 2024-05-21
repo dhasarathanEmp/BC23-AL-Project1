@@ -18,7 +18,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 end;
             end;
         }
-        
+
         modify("Invoice Disc. Pct.")
         {
             trigger OnBeforeValidate()
@@ -103,7 +103,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         Item: Record Item;
         SalesAndReceivable: Record "Sales & Receivables Setup";
     begin
-        if DisPercent <> 0 then begin
+        if (DisPercent <> 0) OR (Rec.InvoiceDisPercent <> 0) then begin
             CompanyInformation.Reset();
             CompanyInformation.SetRange(AFZ, true);
             if CompanyInformation.FindFirst() then begin
@@ -131,7 +131,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             if SalesAndReceivable.FindFirst() then begin
                 LineAmount := LineAmount - CoreCharge;
             end;
-            SalesLine."Inv. Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00);
+            SalesLine."Inv. Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00001);
         end;
     end;
 

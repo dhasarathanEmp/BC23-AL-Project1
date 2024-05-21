@@ -12,6 +12,15 @@ tableextension 70004 NoSeriesExtn extends "No. Series"
         {
             DataClassification = ToBeClassified;
         }
+        field(50002; "Global Customer"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50003; "No Series Type"; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = None,Invoice,CreditMemo;
+        }
     }
 
     keys

@@ -23,6 +23,10 @@ tableextension 70006 BinExtn extends Bin
         {
             DataClassification = ToBeClassified;
         }
+        field(50005; "Counting Completed"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

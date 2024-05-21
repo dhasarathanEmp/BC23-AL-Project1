@@ -2,11 +2,11 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
 {
     fields
     {
-        field(50122; Ordered_Part_No; Code[30])
+        field(50015; Ordered_Part_No; Code[30])
         {
 
         }
-        field(50123; CoreCharge; Decimal)
+        field(50026; CoreCharge; Decimal)
         {
 
         }
