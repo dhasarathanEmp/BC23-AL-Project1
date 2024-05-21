@@ -102,8 +102,11 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         SalesLine: Record "Sales Line";
         Item: Record Item;
         SalesAndReceivable: Record "Sales & Receivables Setup";
+        SalesHeader: Record "Sales Header";
     begin
         if (DisPercent <> 0) OR (Rec.InvoiceDisPercent <> 0) then begin
+            if (Rec.InvoiceDisPercent = 0) AND (DisPercent <> 0) then
+                Rec.InvoiceDisPercent := DisPercent;
             CompanyInformation.Reset();
             CompanyInformation.SetRange(AFZ, true);
             if CompanyInformation.FindFirst() then begin
@@ -132,6 +135,15 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 LineAmount := LineAmount - CoreCharge;
             end;
             SalesLine."Inv. Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00001);
+            SalesLine.Modify();
+            SalesHeader.Reset();
+            SalesHeader.SetRange("No.", Rec."Document No.");
+            SalesHeader.SetRange("Document Type", SalesLine."Document Type"::Quote);
+            if SalesHeader.FindFirst() then begin
+                SalesHeader."Invoice Discount Value" := Rec.InvoiceDisPercent;
+                SalesHeader."Invoice Discount Amount" := Round(LineAmount * Rec.InvoiceDisPercent / 100, 0.00001);
+                SalesHeader.Modify();
+            end;
         end;
     end;
 

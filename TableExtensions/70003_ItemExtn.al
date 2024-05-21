@@ -54,7 +54,7 @@ tableextension 70003 ItemExtn extends Item
                 SetYERUnitPriceCU;
             end;
         }
-        field(50001; "Currency Factor"; Decimal)
+        field(50001; "Currency Factor"; Decimal)//YER
         {
             Caption = 'Currency Factor';
             DataClassification = ToBeClassified;
@@ -63,25 +63,25 @@ tableextension 70003 ItemExtn extends Item
             Editable = false;
             MinValue = 0;
         }
-        field(50002; "YER Unit Cost"; Decimal)
+        field(50002; "YER Unit Cost"; Decimal)//YER
         {
             DataClassification = ToBeClassified;
             Description = 'YER';
         }
-        field(50003; "YER Unit Price"; Decimal)
+        field(50003; "YER Unit Price"; Decimal)//YER
         {
             AutoFormatType = 2;
             DataClassification = ToBeClassified;
             Description = 'YER';
         }
-        field(50004; "Item Type"; Option)
+        field(50004; "Item Type"; Option)//CS08
         {
             DataClassification = ToBeClassified;
             Description = 'CS08';
             OptionCaption = ' ,E-PS Parts,Auto Parts,Prime Product';
             OptionMembers = " ","E-PS Parts","Auto Parts","Prime Product";
         }
-        field(50005; "Model Year"; Code[10])
+        field(50005; "Model Year"; Code[10])//CS09
         {
             DataClassification = ToBeClassified;
             Description = 'CS09';
@@ -163,17 +163,17 @@ tableextension 70003 ItemExtn extends Item
         {
             DataClassification = ToBeClassified;
         }
-        field(50015; "DN - Damaged Core Refund"; Decimal)
+        field(50015; "DN - Damaged Core Refund"; Decimal)//Dealer Net - Damaged Core Refund
         {
             DataClassification = ToBeClassified;
             Description = 'Dealer Net - Damaged Core Refund';
         }
-        field(50016; "Sugstd Consumer Price – C. D."; Decimal)
+        field(50016; "Sugstd Consumer Price – C. D."; Decimal)//Suggested Consumer Price - Core Deposit
         {
             DataClassification = ToBeClassified;
             Description = 'Suggested Consumer Price – Core Deposit';
         }
-        field(50017; "Sugstd Consumer Price – D.C.R."; Decimal)
+        field(50017; "Sugstd Consumer Price – D.C.R."; Decimal)//Suggested Consumer Price - Damaged Core Refund
         {
             DataClassification = ToBeClassified;
             Description = 'Suggested Consumer Price – Damaged Core Refund';
@@ -182,7 +182,7 @@ tableextension 70003 ItemExtn extends Item
         {
             DataClassification = ToBeClassified;
         }
-        field(50019; "Suggested Consumer Price(ces)"; Decimal)
+        field(50019; "Suggested Consumer Price(ces)"; Decimal)////Suggested Consumer Price (CES Export in USD)
         {
             DataClassification = ToBeClassified;
             Description = 'Suggested Consumer Price (CES Export in USD)             K';
@@ -418,12 +418,12 @@ tableextension 70003 ItemExtn extends Item
         {
             DataClassification = ToBeClassified;
         }
-        field(50076; "Service Rep. per.Coupling Part"; Code[10])
+        field(50076; "Service Rep. per.Coupling Part"; Code[10])//Service Replacement Permanent Coupling Part
         {
             DataClassification = ToBeClassified;
             Description = 'Service Replacement Permanent Coupling Part';
         }
-        field(50077; "Hose Length for ser. rep. perm"; Decimal)
+        field(50077; "Hose Length for ser. rep. perm"; Decimal)//Hose Length for Service Replacement Permanent Coupling Part (K)
         {
             DataClassification = ToBeClassified;
             Description = 'Hose Length for Service Replacement Permanent Coupling Part (K)';
@@ -589,22 +589,22 @@ tableextension 70003 ItemExtn extends Item
         {
             DataClassification = ToBeClassified;
         }
-        field(50141; "Hose Main item"; Boolean)
+        field(50141; "Hose Main item"; Boolean)//Cu011
         {
             DataClassification = ToBeClassified;
             Description = 'Cu011';
         }
-        field(50142; "Hose Price Update Date"; Date)
+        field(50142; "Hose Price Update Date"; Date)//Cu011
         {
             DataClassification = ToBeClassified;
             Description = 'Cu011';
         }
-        field(50143; "Hose Cost Update Date"; Date)
+        field(50143; "Hose Cost Update Date"; Date)//Cu011
         {
             DataClassification = ToBeClassified;
             Description = 'Cu011';
         }
-        field(50144; "Actual Inventory"; Decimal)
+        field(50144; "Actual Inventory"; Decimal)//EP9605
         {
             DataClassification = ToBeClassified;
             Description = 'EP9605';

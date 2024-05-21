@@ -3,15 +3,15 @@ tableextension 70006 BinExtn extends Bin
     fields
     {
         // Add changes to table fields here
-        field(50000; Blocks; Boolean)
+        field(50000; Blocks; Boolean)//CS18
         {
             DataClassification = ToBeClassified;
         }
-        field(50001; "Counter sale"; Boolean)
+        field(50001; "Counter sale"; Boolean)//CS02
         {
             DataClassification = ToBeClassified;
         }
-        field(50002; DeadStocks; Boolean)
+        field(50002; DeadStocks; Boolean)//CS18
         {
             DataClassification = ToBeClassified;
         }
@@ -23,7 +23,7 @@ tableextension 70006 BinExtn extends Bin
         {
             DataClassification = ToBeClassified;
         }
-        field(50005; "Counting Completed"; Boolean)
+        field(50005; "Counting Completed"; Boolean)//Cu109
         {
             DataClassification = ToBeClassified;
         }
