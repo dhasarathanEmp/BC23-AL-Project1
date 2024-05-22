@@ -1,4 +1,4 @@
-pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
+/*pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
 {
     layout
     {
@@ -250,4 +250,4 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         UploadFile: Codeunit Nissan;
         SalesLine: Record "Sales Line";
         DisPercent: Decimal;
-}
+}*/
