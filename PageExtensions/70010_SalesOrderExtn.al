@@ -8,6 +8,15 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
     actions
     {
         // Add changes to page actions here
+        modify(Release)
+        {
+            trigger OnAfterAction()
+            var
+                onetoone: Codeunit "One to One TO Against SO";
+            begin
+                onetoone."Create TO Against SO"(Rec."No.");
+            end;
+        }
         addafter(History)
         {
             action("Auto Reserve")
