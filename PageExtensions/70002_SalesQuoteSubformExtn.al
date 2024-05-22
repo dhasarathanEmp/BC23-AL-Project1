@@ -1,4 +1,4 @@
-/*pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
+pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
 {
     layout
     {
@@ -16,13 +16,6 @@
                     if SalesLine.FindFirst() then
                         Message('The chosen item is a Hose Main Item');
                 end;
-            end;
-        }
-        modify(Quantity)
-        {
-            trigger OnBeforeValidate()
-            begin
-                DiscountAmountUpdate();
             end;
         }
         addafter("No.")
@@ -81,15 +74,6 @@
             }
         }
     }
-    trigger OnAfterGetCurrRecord()
-    begin
-        DiscountAmountUpdate();
-    end;
-
-    trigger OnDeleteRecord(): Boolean
-    begin
-        DiscountAmountUpdate();
-    end;
 
     procedure DiscountAmountUpdate()
     var
@@ -250,4 +234,4 @@
         UploadFile: Codeunit Nissan;
         SalesLine: Record "Sales Line";
         DisPercent: Decimal;
-}*/
+}
