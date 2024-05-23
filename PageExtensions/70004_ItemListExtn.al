@@ -59,6 +59,13 @@ pageextension 70004 ItemPriceList extends "Item List"
                 PromotedIsBig = true;
                 PromotedOnly = true;
             }
+            action("Default Price Factor")
+            {
+                RunObject = page "Default Price Factor List";
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+            }
         }
     }
     trigger OnOpenPage()
