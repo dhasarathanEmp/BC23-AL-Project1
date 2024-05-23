@@ -46,7 +46,7 @@ codeunit 50032 "One to One TO Against SO"
     begin
         TransferOrderNumber := '';
         CLEAR(NoSeriesMgt);
-        TransferOrderNumber := NoSeriesMgt.GetNextNo('T-TO', 0D, TRUE);
+        TransferOrderNumber := NoSeriesMgt.GetNextNo('T-ORD', 0D, TRUE);
         HeaderControll := 1;
         SalesLine.RESET;
         SalesLine.SETRANGE("Document No.", DocumentNo);
@@ -190,16 +190,24 @@ codeunit 50032 "One to One TO Against SO"
     var
         TransferLineReserv: Record "Transfer Line";
         TransferLineReserveMan: Codeunit "Transfer Line-Reserve";
+        SalesLineforRes: Record "Sales Line";
+        CalcResEntry: Record "Reservation Entry";
+        CreateResEntry: Codeunit "Create Reserv. Entry";
+        TrackingSpecification: Record "Tracking Specification";
     begin
         // Sales line Reservation
         TransferLineReserv.RESET;
         TransferLineReserv.SETRANGE("Document No.", TransferOrderNumber);
         TransferLineReserv.SETRANGE("Transfer-from Code", TransferHeader."Transfer-from Code");
-        TransferLineReserv.SETFILTER("Sales Order Number", 'SO*');
+        //TransferLineReserv.SETFILTER("Sales Order Number", 'SO*');
         IF TransferLineReserv.FINDSET THEN
             REPEAT
-            //TransferLineReserveMan.CreateReservationSetFrom2(37,1,TransferLineReserv."Sales Order Number",TransferLineReserv."Sales Line No",TransferLineReserv."Item No.",TransferLineReserv."Transfer-to Code",TransferLineReserv."Qty. per Unit of Measure");
-            //TransferLineReserveMan.CreateReservation(TransferLineReserv,TransferLineReserv.Description,TransferLineReserv."Receipt Date",TransferLineReserv.Quantity,TransferLineReserv."Quantity (Base)",'','',1);
+                SalesLineforRes.GET(SalesLineforRes."Document Type"::Order, TransferLineReserv."Sales Order Number", TransferLineReserv."Sales Line No");
+                Clear(TrackingSpecification);
+                TrackingSpecification.InitFromSalesLine(SalesLineforRes);
+                TransferLineReserveMan.CreateReservationSetFrom(TrackingSpecification);
+                //TransferLineReserveMan.CreateReservationSetFrom2(37,1,TransferLineReserv."Sales Order Number",TransferLineReserv."Sales Line No",TransferLineReserv."Item No.",TransferLineReserv."Transfer-to Code",TransferLineReserv."Qty. per Unit of Measure");
+                TransferLineReserveMan.CreateReservation(TransferLineReserv, TransferLineReserv.Description, TransferLineReserv."Receipt Date", TransferLineReserv.Quantity, TransferLineReserv."Quantity (Base)", CalcResEntry, 1);
             UNTIL TransferLineReserv.NEXT = 0;
 
         // Assembly Line Reservation

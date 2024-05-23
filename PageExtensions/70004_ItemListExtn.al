@@ -42,7 +42,15 @@ pageextension 70004 ItemPriceList extends "Item List"
                 PromotedIsBig = true;
                 PromotedOnly = true;
             }
-
+            action("FG-Wilson Import")
+            {
+                Image = Import;
+                Visible = FGWilson;
+                RunObject = codeunit "FG Wilson";
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+            }
             action("Nissan Log")
             {
                 Image = Log;

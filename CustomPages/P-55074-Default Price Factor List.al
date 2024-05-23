@@ -1,7 +1,7 @@
 page 55074 "Default Price Factor List"
 {
     DeleteAllowed = false;
-    InsertAllowed = false;
+    InsertAllowed = true;
     PageType = List;
     SourceTable = "Default Price Factor";
 
@@ -13,7 +13,7 @@ page 55074 "Default Price Factor List"
             {
                 field("Agency Code"; Rec."Agency Code")
                 {
-                    Editable = false;
+                    Editable = true;
                 }
                 field("Default Price Factor"; Rec."Default Price Factor")
                 {
