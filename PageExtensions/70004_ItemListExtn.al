@@ -60,6 +60,15 @@ pageextension 70004 ItemPriceList extends "Item List"
                 PromotedIsBig = true;
                 PromotedOnly = true;
             }
+            action("FG-Wilson Log")
+            {
+                Image = Log;
+                Visible = FGWilson;
+                RunObject = page "FG wilson List Page";
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+            }
             action("Parameter form")
             {
                 RunObject = page "Interface Parameter Form";

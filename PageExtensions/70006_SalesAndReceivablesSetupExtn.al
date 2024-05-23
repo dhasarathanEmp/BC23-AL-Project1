@@ -15,6 +15,16 @@ pageextension 70006 SalesAndReceivablesExtnPage extends "Sales & Receivables Set
                 ApplicationArea = All;
                 TableRelation = "No. Series";
             }
+            field("Fg Wilson Header"; Rec."Fg Wilson Header")
+            {
+                ApplicationArea = All;
+                TableRelation = "No. Series";
+            }
+            field("Fg Wilson Line"; Rec."Fg Wilson Line")
+            {
+                ApplicationArea = All;
+                TableRelation = "No. Series";
+            }
         }
         addafter("Document Default Line Type")
         {

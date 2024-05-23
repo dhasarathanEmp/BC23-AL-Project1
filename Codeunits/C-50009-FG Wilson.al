@@ -5,11 +5,13 @@ codeunit 50009 "FG Wilson"
     // IF01 Adding agency code as Postfix with Part No
     // EP9615 Updating Existing purchase price with end date
 
-
+    //All files (*.*)|*.*"
     trigger OnRun()
     begin
         //ServerFileName := FileManagement.UploadFile(Text001, FileName);
-        UploadIntoStream(Text001, '', 'All Files(*.*)', FilePath, StreamInTest);
+        //UploadIntoStream(Text001, '', 'All Files (*.*)|*.*', FilePath, StreamInTest);
+        FileManagement.BLOBImportWithFilter(TempBlob, Text001, '', FileManagement.GetToFilterText('', '.xlsx'), 'xlsx');
+        TempBlob.CreateInStream(StreamInTest);
         Sheetname := ExcelBuffer.SelectSheetsNameStream(StreamInTest);
         ClientFileName := FileManagement.GetFileName(FilePath);
         SerialNum := 0;
@@ -18,8 +20,6 @@ codeunit 50009 "FG Wilson"
         Modified := 0;
         ErrorItems := 0;
         CLEAR(skip);
-        IF ServerFileName = '' THEN
-            MESSAGE('No Data and Incorrect File');
         User.SETRANGE("User Name", USERID);
         IF User.FINDFIRST THEN
             UserName := User."Full Name";
@@ -41,9 +41,9 @@ codeunit 50009 "FG Wilson"
         IF TotalColumns = 10 THEN
             TotalRows := TotalRows
         ELSE BEGIN
-            ErrorMessage := 'InCorrect File Formate';
+            ErrorMessage := 'InCorrect File Format';
             insertAndModifyRec(UserName, ClientFileName, '', SerialNum, ErrorMessage, FgwilsonLogHeader."No.");
-            ERROR('Invalid File Formate');
+            ERROR('Invalid File Format');
         END;
         FOR I := 2 TO TotalRows DO
             Insertdata(I);
@@ -155,6 +155,7 @@ codeunit 50009 "FG Wilson"
         PurchasePriceEnding: Record "Purchase Price";
         FilePath: Text;
         StreamInTest: InStream;
+        TempBlob: Codeunit "Temp Blob";
 
     procedure Insertdata(RowNo: Integer)
     begin

@@ -43,12 +43,12 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
                         SpecialPriceFactorSalesPrice := 0;
                         SpecialPriceFactorSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * Rec.Special_Price_Factor)
                             + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesLine."Qty. per Unit of Measure";
-                        if Rec."Currency Code" <> '' then begin // If sales header have Currency Code for Amount Convertion and Rounding Precision calculation below code will work 
+                        if Rec."Currency Code" <> '' then begin // If sales header have Currency Code, the Amount Convertion and Rounding Precision calculation below code will work 
                             Currency.Reset();
                             Currency.get(Rec."Currency Code");
                             SpecialPriceFactorSalesPrice := ConvertPricetoDocumentCurrency(SpecialPriceFactorSalesPrice);
                             SpecialPriceFactorSalesPrice := Round(SpecialPriceFactorSalesPrice, Currency."Unit-Amount Rounding Precision", '=');
-                        end else begin
+                        end else begin // if sales header doesn't have curreny code below so the price will in local currency and rounding precision will be as per gen ledger setup
                             GeneralLedgerSetup.FindFirst();
                             SpecialPriceFactorSalesPrice := Round(SpecialPriceFactorSalesPrice, GeneralLedgerSetup."Unit-Amount Rounding Precision", '=');
                         end;
@@ -71,7 +71,7 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
                             Currency.get(Rec."Currency Code");
                             SpecialPriceFactorSalesPrice := ConvertPricetoDocumentCurrency(SpecialPriceFactorSalesPrice);
                             SpecialPriceFactorSalesPrice := Round(SpecialPriceFactorSalesPrice, Currency."Unit-Amount Rounding Precision", '=');
-                        end else begin
+                        end else begin // if sales header doesn't have curreny code below so the price will in local currency and rounding precision will be as per gen ledger setup
                             GeneralLedgerSetup.FindFirst();
                             SpecialPriceFactorSalesPrice := Round(SpecialPriceFactorSalesPrice, GeneralLedgerSetup."Unit-Amount Rounding Precision", '=');
                         end;
