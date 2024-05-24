@@ -7,16 +7,27 @@ codeunit 70002 SalesLine
         Item: Record Item;
         DefaultSalesPrice: Decimal;
     begin
-        DefaultPriceFactor.Reset();
-        DefaultPriceFactor.SetRange("Agency Code", SalesLine."Gen. Prod. Posting Group");
-        if DefaultPriceFactor.FindFirst() then begin
+        if SalesHeader.Special_Price_Factor <> 0 then begin
             Item.Reset();
             Item.SetRange("No.", SalesLine."No.");
             if Item.FindFirst() then begin
-                DefaultSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * DefaultPriceFactor."Default Price Factor")
-                            + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor"));
+                DefaultSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesHeader.Special_Price_Factor)
+                                                + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor"));
                 SalesLine."Unit Price" := DefaultSalesPrice;
             end;
+        end else begin
+            DefaultPriceFactor.Reset();
+            DefaultPriceFactor.SetRange("Agency Code", SalesLine."Gen. Prod. Posting Group");
+            if DefaultPriceFactor.FindFirst() then begin
+                Item.Reset();
+                Item.SetRange("No.", SalesLine."No.");
+                if Item.FindFirst() then begin
+                    DefaultSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * DefaultPriceFactor."Default Price Factor")
+                                + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor"));
+                    SalesLine."Unit Price" := DefaultSalesPrice;
+                end;
+            end;
         end;
+
     end;
 }
