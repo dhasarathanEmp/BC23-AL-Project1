@@ -20,6 +20,7 @@ pageextension 70014 ReqWorksheetExtn extends "Req. Worksheet"
             {
                 ApplicationArea = All;
                 Caption = 'Get Order';
+
                 trigger OnAction()
                 var
                     GetSalesTransOrd: Report "GetSales. Trans-Orders";
@@ -54,7 +55,12 @@ pageextension 70014 ReqWorksheetExtn extends "Req. Worksheet"
                     END;
                     CurrPage.UPDATE;
                 end;
-
+            }
+        }
+        addafter(CalculatePlan_Promoted)
+        {
+            actionref(GetOrder_Promoted; GetOrder)
+            {
             }
         }
         // Add changes to page actions here

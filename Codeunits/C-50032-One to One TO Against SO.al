@@ -207,7 +207,7 @@ codeunit 50032 "One to One TO Against SO"
                 TrackingSpecification.InitFromSalesLine(SalesLineforRes);
                 TransferLineReserveMan.CreateReservationSetFrom(TrackingSpecification);
                 //TransferLineReserveMan.CreateReservationSetFrom2(37,1,TransferLineReserv."Sales Order Number",TransferLineReserv."Sales Line No",TransferLineReserv."Item No.",TransferLineReserv."Transfer-to Code",TransferLineReserv."Qty. per Unit of Measure");
-                TransferLineReserveMan.CreateReservation(TransferLineReserv, TransferLineReserv.Description, TransferLineReserv."Receipt Date", TransferLineReserv.Quantity, TransferLineReserv."Quantity (Base)", CalcResEntry, 1);
+                TransferLineReserveMan.CreateReservation(TransferLineReserv, TransferLineReserv.Description, TransferLineReserv."Receipt Date", TransferLineReserv.Quantity, TransferLineReserv."Quantity (Base)", CalcResEntry, Enum::"Transfer Direction"::Inbound);
             UNTIL TransferLineReserv.NEXT = 0;
 
         // Assembly Line Reservation
