@@ -31,13 +31,16 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                     SalesLine.SetRange(Type, SalesLine.Type::Item);
                     if SalesLine.FindSet() then
                         repeat
-                            SalesLine.CalcFields("Reserved Quantity", "Reserved Qty. (Base)");
-                            if SalesLine."Outstanding Quantity" > SalesLine."Reserved Quantity" then begin
-                                Clear(ResMgt);
-                                RemQtytoRes := SalesLine."Outstanding Quantity" - SalesLine."Reserved Quantity";
-                                RemQtytoResBase := SalesLine."Outstanding Qty. (Base)" - SalesLine."Reserved Qty. (Base)";
-                                ResMgt.SetReservSource(SalesLine);
-                                ResMgt.AutoReserveOneLine(1, RemQtytoRes, RemQtytoResBase, '', SalesLine."Shipment Date");
+                            Item.get(SalesLine."No.");
+                            if Item.Type = Item.Type::Inventory then begin
+                                SalesLine.CalcFields("Reserved Quantity", "Reserved Qty. (Base)");
+                                if SalesLine."Outstanding Quantity" > SalesLine."Reserved Quantity" then begin
+                                    Clear(ResMgt);
+                                    RemQtytoRes := SalesLine."Outstanding Quantity" - SalesLine."Reserved Quantity";
+                                    RemQtytoResBase := SalesLine."Outstanding Qty. (Base)" - SalesLine."Reserved Qty. (Base)";
+                                    ResMgt.SetReservSource(SalesLine);
+                                    ResMgt.AutoReserveOneLine(1, RemQtytoRes, RemQtytoResBase, '', SalesLine."Shipment Date");
+                                end;
                             end;
                         until SalesLine.Next() = 0;
                 end;
@@ -53,4 +56,5 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
         SalesLine: Record "Sales Line";
         RemQtytoRes: Decimal;
         RemQtytoResBase: Decimal;
+        Item: Record Item;
 }

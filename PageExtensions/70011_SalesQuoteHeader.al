@@ -20,6 +20,7 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
 
     actions
     {
+
         // Add changes to page actions here
     }
     procedure UpdateSpecialPriceFactortoLines()
@@ -42,8 +43,12 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
                 IF SalesLine.FINDSET THEN
                     REPEAT
                         SpecialPriceFactorSalesPrice := 0;
-                        SpecialPriceFactorSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * Rec.Special_Price_Factor)
-                            + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesLine."Qty. per Unit of Measure";
+                        Item.Reset();
+                        Item.SetRange("No.", SalesLine."No.");
+                        if Item.FindFirst() then begin
+                            SpecialPriceFactorSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * Rec.Special_Price_Factor)
+                                                        + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesLine."Qty. per Unit of Measure";
+                        end;
                         if (Rec."Currency Code" <> '') AND (Rec."Currency Code" <> GeneralLedgerSetup."LCY Code") then begin // If sales header have Currency Code, the Amount Convertion and Rounding Precision calculation below code will work 
                             Currency.Reset();
                             Currency.get(Rec."Currency Code");
@@ -67,9 +72,13 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
                         DefaultPriceFactor.Reset();
                         DefaultPriceFactor.SetRange("Agency Code", SalesLine."Gen. Prod. Posting Group");
                         if DefaultPriceFactor.FindFirst() then begin
-                            DefaultFactorSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * DefaultPriceFactor."Default Price Factor")
-                                                       + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesLine."Qty. per Unit of Measure";
+                            Item.Reset();
+                            Item.SetRange("No.", SalesLine."No.");
+                            if Item.FindFirst() then begin
+                                DefaultFactorSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * DefaultPriceFactor."Default Price Factor")
+                                                                                   + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesLine."Qty. per Unit of Measure";
 
+                            end;
                         end;
                         if (Rec."Currency Code" <> '') AND (Rec."Currency Code" <> GeneralLedgerSetup."LCY Code") then begin // If sales header have Currency Code
                             Currency.Reset();
