@@ -1,6 +1,6 @@
 page 55030 "FG wilson Line"
 {
-    PageType = List;
+    PageType = Listpart;
     SourceTable = "Daily Parts log Line";
     SourceTableView = SORTING(No)
                       WHERE("Log Status" = FILTER("Fg wilson"));

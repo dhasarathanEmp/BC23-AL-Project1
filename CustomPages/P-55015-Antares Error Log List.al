@@ -1,6 +1,6 @@
 page 55015 "Antares Error Log List"
 {
-    PageType = List;
+    PageType = ListPart;
     SourceTable = "Antares Error Log";
 
     layout
