@@ -125,4 +125,9 @@ tableextension 70009 TransferLineExtn extends "Transfer Line"
         Item1: Record Item;
         DefaultPriceFactor: Record "Default Price Factor";
         ItemReplaceCheck: Boolean;
+
+    procedure ItemReplacementCheck(ReplacementCheck: Boolean)
+    begin
+        ItemReplaceCheck := ReplacementCheck;
+    end;
 }

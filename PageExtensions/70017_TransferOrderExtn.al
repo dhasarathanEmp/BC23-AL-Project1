@@ -26,7 +26,5 @@ pageextension 70017 TransferOrderExtn extends "Transfer Order"
     {
         // Add changes to page actions here
     }
-
-    var
-        myInt: Integer;
+    
 }

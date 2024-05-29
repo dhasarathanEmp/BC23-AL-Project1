@@ -2,11 +2,27 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
 {
     fields
     {
+        field(50014; "Customer Serial No"; Code[20])//CUS022
+        {
+
+        }
         field(50015; Ordered_Part_No; Code[30])
         {
 
         }
         field(50026; CoreCharge; Decimal)
+        {
+
+        }
+        field(50032; "BOM Item No"; Code[20])//Cu009
+        {
+
+        }
+        field(50033; "BOM Quantity Per"; Decimal)//Cu009
+        {
+
+        }
+        field(50034; "BOM Main Line No."; Integer)//Cu009
         {
 
         }
