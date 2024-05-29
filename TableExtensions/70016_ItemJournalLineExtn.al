@@ -288,36 +288,165 @@ tableextension 70016 ItemJournalLineExtn extends "Item Journal Line"
     {
         // Add changes to field groups here
     }
-    Procedure UpdateCurrencyFactor()
+    procedure GetCurrencyFactorCU()
     begin
-
+        //  >>  CS16
+        CurrExchRate.RESET;
+        CurrExchRate.SETRANGE("Currency Code", 'YER');
+        IF NOT CurrExchRate.ISEMPTY THEN BEGIN
+            "Currency Code" := 'YER';
+            IF "Currency Code" <> '' THEN BEGIN
+                "Currency Factor" := CurrExchRate.ExchangeRate(WORKDATE, "Currency Code");
+            END;
+        END ELSE
+            "Currency Factor" := 0;
+        //  << CS16
     end;
 
-    Procedure MapCurrencyCode()
+    procedure SetYERUnitCostCU()
     begin
-
+        //  >>  CS16
+        IF ("Currency Code" <> '') AND ("Currency Factor" <> 0) THEN
+            "YER Unit Cost" := CurrExchRate.ExchangeAmtLCYToFCYOnlyFactor("Unit Cost", "Currency Factor");
+        //  <<  CS16
     end;
 
-    Procedure CalCurrLinePrice()
+    procedure SetYERUnitPriceCU()
     begin
+        //  >>  CS16
+        IF (("Currency Code" <> '') OR ("Currency Code" <> 'USD')) THEN BEGIN
+            "Currency Factor" := CurrExchRate.ExchangeRate("Posting Date", "Currency Code");
+            "Unit Price" := CurrExchRate.ExchangeAmtLCYToFCYOnlyFactor(Rec.PriceCheck, "Currency Factor");
+        END
+        ELSE
+            IF ("Currency Code" <> xRec."Currency Code") AND (("Currency Code" <> '') OR ("Currency Code" <> 'USD')) THEN BEGIN
+                "Currency Factor" := CurrExchRate.ExchangeRate("Posting Date", "Currency Code");
+                "Unit Price" := CurrExchRate.ExchangeAmtLCYToFCYOnlyFactor(Rec.PriceCheck, "Currency Factor");
+            END
+            ELSE
+                IF ("Currency Code" = '') OR ("Currency Code" = 'USD') THEN BEGIN
+                    "Currency Factor" := 1;
+                    "Unit Price" := CurrExchRate.ExchangeAmtLCYToFCYOnlyFactor(Rec.PriceCheck, "Currency Factor");
+                END;
 
+        IF "Unit Price" <> 0 THEN
+            "Line AmountUP" := Quantity * "Unit Price"
+        ELSE
+            "Line AmountUP" := Quantity * "Unit Price";
+
+        CurrLineAmt := Rec."Line AmountUP";
+        //  <<  CS16
     end;
 
-    Procedure SetYERUnitPriceCU()
+    local procedure UpdateCurrencyFactor()
     begin
-
+        IF "Currency Code" <> '' THEN BEGIN
+            IF "Posting Date" <> 0D THEN BEGIN
+                CurrencyDate := "Posting Date";
+                "Currency Factor" := CurrExchRate.ExchangeRate(CurrencyDate, "Currency Code")
+            END
+            ELSE BEGIN
+                CurrencyDate := WORKDATE;
+                "Currency Factor" := CurrExchRate.ExchangeRate(CurrencyDate, "Currency Code");
+            END;
+        END ELSE
+            "Currency Factor" := 1;
     end;
 
-    Procedure SetYERUnitCostCU()
+    procedure ShowReservation()
+    var
+        Reservation: Page Reservation;
     begin
-
+        //CS15
+        /*CLEAR(Reservation);
+        Reservation.SetItemJnlLine(Rec);
+        Reservation.RUNMODAL;
+        //CS15*/
     end;
 
-    Procedure CalculateDiscount()
+    local procedure MapCurrencyCode()
+    var
+        ItemJnlLineCU: Record "Item Journal Line";
+        ItmJnLn: Record "Item Journal Line";
     begin
+        ItemJnlLineCU.RESET;
+        ItemJnlLineCU.SETRANGE("Source Code", 'RECLASSJNL');
+        ItemJnlLineCU.SETRANGE("Journal Batch Name", "Journal Batch Name");
+        ItemJnlLineCU.SETRANGE("Document No.", Rec."Document No.");
+        ItemJnlLineCU.SETFILTER("Line No.", '<>%1', Rec."Line No.");
+        IF ItemJnlLineCU.FINDSET THEN
+            REPEAT
+                IF ((Rec."Currency Code" <> '') OR (Rec."Currency Code" <> 'USD')) THEN BEGIN
+                    ItemJnlLineCU."Currency Code" := Rec."Currency Code";
+                    VarUP := ItemJnlLineCU."Unit Price";
+                    ItemJnlLineCU."Unit Price" := UnitPriceCalc(ItemJnlLineCU.PriceCheck);
+                    ItemJnlLineCU."Line AmountUP" := ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price";
+                    ItemJnlLineCU."Discount Amount" := ROUND(ROUND(ItemJnlLineCU."Line AmountUP", Currency."Amount Rounding Precision") *
+                                             ItemJnlLineCU."Discount%" / 100, Currency."Amount Rounding Precision");
+                    ItemJnlLineCU."Line AmountUP" := ItemJnlLineCU."Line AmountUP" - ItemJnlLineCU."Discount Amount";
+                    ItemJnlLineCU.MODIFY;
+                END
+                ELSE BEGIN
+                    ItemJnlLineCU."Currency Code" := 'USD';
+                    ItemJnlLineCU."Unit Price" := UnitPriceCalc(ItemJnlLineCU.PriceCheck);
+                    ItemJnlLineCU."Line AmountUP" := ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price";
+                    ItemJnlLineCU."Discount Amount" := ROUND(ROUND(ItemJnlLineCU."Line AmountUP", Currency."Amount Rounding Precision") *
+                                             ItemJnlLineCU."Discount%" / 100, Currency."Amount Rounding Precision");
+                    ItemJnlLineCU."Line AmountUP" := ItemJnlLineCU."Line AmountUP" - ItemJnlLineCU."Discount Amount";
+                    ItemJnlLineCU.MODIFY;
+                END;
+            UNTIL ItemJnlLineCU.NEXT = 0;
+    end;
 
+    procedure UnitPriceCalc(UnitPrice: Decimal) UP: Decimal
+    begin
+        //  >>  CS16
+        IF (("Currency Code" <> 'USD') OR ("Currency Code" <> '')) THEN BEGIN
+            "Currency Factor" := CurrExchRate.ExchangeRate("Posting Date", "Currency Code");
+            ;
+            UP := CurrExchRate.ExchangeAmtLCYToFCYOnlyFactor(UnitPrice, "Currency Factor");
+        END
+        ELSE
+            IF ("Currency Code" <> xRec."Currency Code") AND (("Currency Code" <> 'USD') OR ("Currency Code" <> '')) THEN BEGIN
+                "Currency Factor" := CurrExchRate.ExchangeRate("Posting Date", "Currency Code");
+                UP := CurrExchRate.ExchangeAmtLCYToFCYOnlyFactor(UnitPrice, "Currency Factor");
+            END
+            ELSE
+                IF "Currency Code" = 'USD' THEN BEGIN
+                    "Currency Factor" := 1;
+                    UP := CurrExchRate.ExchangeAmtLCYToFCYOnlyFactor(UnitPrice, "Currency Factor");
+                END;
+    end;
+
+    local procedure CalculateDiscount()
+    begin
+        IJL2.RESET;
+        IJL2.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
+        IJL2.SETRANGE("Journal Template Name", Rec."Journal Template Name");
+        IJL2.SETRANGE("Document No.", Rec."Document No.");
+        IF IJL2.FINDFIRST THEN BEGIN
+            IJL2."Currency Code" := Rec."Currency Code";
+            IF Rec."Discount Amount" <> 0 THEN BEGIN
+                Rec."Discount Amount" := ROUND(ROUND(CurrLineAmt, Currency."Amount Rounding Precision") *
+                                         Rec."Discount%" / 100, Currency."Amount Rounding Precision");
+                Rec."Line AmountUP" := CurrLineAmt - Rec."Discount Amount";
+                // IJL2.MODIFY
+            END
+            ELSE BEGIN
+                IJL2."Discount Amount" := ROUND(ROUND(CurrLineAmt, Currency."Amount Rounding Precision") *
+                                        Rec."Discount%" / 100, Currency."Amount Rounding Precision");
+                Rec."Line AmountUP" := CurrLineAmt - Rec."Discount Amount";
+                // IJL2.MODIFY;
+            END
+        END;
     end;
 
     var
         myInt: Integer;
+        IJL2: Record "Item Journal Line";
+        Currency: Record Currency;
+        CurrExchRate: Record "Currency Exchange Rate";
+        VarUP: Decimal;
+        CurrencyDate: Date;
+        CurrLineAmt: Decimal;
 }

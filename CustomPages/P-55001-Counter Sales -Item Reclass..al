@@ -24,7 +24,7 @@ page 55001 "Counter Sales -Item Reclass."
     {
         area(content)
         {
-            /*field(CurrentJnlBatchName; CurrentJnlBatchName)
+            field(CurrentJnlBatchName; CurrentJnlBatchName)
             {
                 Caption = 'Batch Name';
                 Enabled = true;
@@ -52,7 +52,7 @@ page 55001 "Counter Sales -Item Reclass."
                     ItemJnlMgt.CheckName(CurrentJnlBatchName, Rec);
                     CurrentJnlBatchNameOnAfterVali;
                 end;
-            }*/
+            }
             repeater(Lines)
             {
                 field(Cash; Rec.Cash)
@@ -87,10 +87,10 @@ page 55001 "Counter Sales -Item Reclass."
                         DefaultPriceFactor: Record "Default Price Factor";
                     begin
                         //EP9612
-                        //Restricting Mutiple Agency();
+                        "Restricting Mutiple Agency"();
                         //EP9612
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist();
                         ItemJournalLine.RESET;
                         ItemJournalLine.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
                         ItemJournalLine.SETRANGE("Document No.", Rec."Document No.");
@@ -102,19 +102,18 @@ page 55001 "Counter Sales -Item Reclass."
                         IF Rec."Document No." = '' THEN
                             ERROR('Document No. must be filled before selecting the item');
                         //  <<  CS02
-                        //ItemJnlMgt.GetItem(Rec."Item No.", ItemDescription);
-                        //ShowShortcutDimCode(ShortcutDimCode);
-                        //ShowNewShortcutDimCode(NewShortcutDimCode);
+                        ItemJnlMgt.GetItem(Rec."Item No.", ItemDescription);
+                        Rec.ShowShortcutDimCode(ShortcutDimCode);
+                        Rec.ShowNewShortcutDimCode(NewShortcutDimCode);
 
                         CurrLine := Rec."Line No.";
                         //  >>  CS02
                         ItemJournalBatch.RESET;
                         ItemJournalBatch.SETRANGE(Name, Rec."Journal Batch Name");
                         IF ItemJournalBatch.FINDFIRST THEN
-                            // Rec.VALIDATE("Location Code", ItemJournalBatch.Location);
-                            Message('Temp');
+                            Rec.VALIDATE("Location Code", ItemJournalBatch.Location);
                         IF Rec."Location Code" <> '' THEN BEGIN
-                            // MapCounterBin;
+                            MapCounterBin;
                         END;
                         //CS16
                         Item.RESET;
@@ -126,18 +125,18 @@ page 55001 "Counter Sales -Item Reclass."
                             DefaultPriceFactor.FINDFIRST;
                             Rec."Unit Price" := (Item."Unit Price" - Item."Dealer Net - Core Deposit" * Item."Inventory Factor") * DefaultPriceFactor."Default Price Factor";
                             Rec."Unit Price" := ROUND(Rec."Unit Price", 0.01, '=');
-                            //"Unit Price":=Item."Unit Price";
+                            Rec."Unit Price" := Item."Unit Price";
                             //Cu005
                             Rec."Line AmountUP" := Rec."Unit Price";
                         END;
 
-                        //MapContact;
+                        MapContact();
                         //CS16
                         //  >>  K08
-                        //MapserviceItemNo;
+                        MapserviceItemNo();
                         //  <<  K08
                         Rec.VALIDATE("Unit Price");
-                        //BinStkCheck(Rec."Item No.", Rec."Location Code", Rec."Bin Code", Rec."Unit of Measure Code");
+                        BinStkCheck(Rec."Item No.", Rec."Location Code", Rec."Bin Code", Rec."Unit of Measure Code");
                         Rec."Bin Code" := '';
                         Rec."Required Quantity" := 0;
                         //  <<  CS02
@@ -162,8 +161,8 @@ page 55001 "Counter Sales -Item Reclass."
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    // Editable = LocationNonEditable;
-                    //Enabled = LocationNonEditable;
+                    Editable = LocationNonEditable;
+                    Enabled = LocationNonEditable;
                     ToolTip = 'Specifies the code for the inventory location where the item on the journal line will be registered.';
                     Visible = true;
 
@@ -172,8 +171,8 @@ page 55001 "Counter Sales -Item Reclass."
                         WMSManagement: Codeunit "WMS Management";
                     begin
                         //  >>  CS02
-                        //MapCounterBin;
-                        // BinStkCheck(Rec."Item No.", Rec."Location Code", Rec."Bin Code", Rec."Unit of Measure Code");
+                        MapContact();
+                        BinStkCheck(Rec."Item No.", Rec."Location Code", Rec."Bin Code", Rec."Unit of Measure Code");
                         //  <<  CS02
                         Rec."New Bin Code" := '';
                     end;
@@ -187,62 +186,10 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        // GenJournalLineExist;
+                        GenJournalLineExist();
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
-                        //Cu018
-                        //  >>   CS16
-
-                        //CS16
-                        //  >>CS02
-                        //BinStkCheck(Rec."Item No.",Rec."Location Code",Rec."Bin Code",Rec."Unit of Measure Code");
-                        //  <<  CS02
-                        //
-                        /*
-                        BinQty := 0;
-                        Bincontents.RESET;
-                        Bincontents.SETRANGE("Location Code",Rec."Location Code");
-                        Bincontents.SETRANGE("Item No.",Rec."Item No.");
-                        Bincontents.SETRANGE("Bin Code",Rec."Bin Code");
-                        IF Bincontents.FINDSET THEN REPEAT
-                        Bincontents.CALCFIELDS(Quantity);
-                          BinQty +=  Bincontents.Quantity;
-                        UNTIL Bincontents.NEXT = 0;
-                        //MESSAGE('BinQty%1',BinQty);
-                        
-                        IJLQty := 0;
-                        IJL.RESET;
-                        IJL.SETRANGE("Journal Batch Name",'COUNTER');
-                        IJL.SETRANGE("Source Code",'RECLASSJNL');
-                        IJL.SETRANGE("Item No.","Item No.");
-                        IJL.SETRANGE("Bin Code","Bin Code");
-                        IJL.SETRANGE("Location Code","Location Code");
-                        IF IJL.FINDSET THEN REPEAT
-                        IJLQty := Quantity;
-                        UNTIL IJL.NEXT = 0;
-                        
-                        "Available Quantity" := ABS(BinQty - IJLQty);
-                        AQ := "Available Quantity";
-                        
-                        
-                        IJL.RESET;
-                        IJL.SETRANGE("Journal Batch Name",'COUNTER');
-                        IJL.SETRANGE("Source Code",'RECLASSJNL');
-                        IJL.SETRANGE("Item No.","Item No.");
-                        IJL.SETRANGE("Bin Code","Bin Code");
-                        IJL.SETRANGE("Location Code","Location Code");
-                        IF IJL.FINDSET THEN REPEAT
-                        "Available Quantity" := AQ;
-                          MESSAGE('IJLQty%1',"Available Quantity");
-                        UNTIL IJL.NEXT = 0;
-                        */
-                        //CurrPage.UPDATE;
-                        /*
-                        IF "Required Quantity" < Quantity THEN BEGIN
-                         MESSAGE('"Required Quantity" should be less than or equal to available quantity. Please enter required quantity again');
-                         Quantity := 0;
-                        END;
-                        */
+                        //Cu018                        
                         IF (Rec."Bin Code" <> '') AND (Rec."Location Code" <> '') THEN BEGIN
                             IF Rec.Quantity > Rec."Required Quantity" THEN
                                 ERROR('Required quantity should be less than or equal to available quantity');
@@ -258,12 +205,12 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist();
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
                         //  >>  CS02
-                        //MapCounterBin;
+                        MapCounterBin();
 
                         //BinStkCheck(Rec."Item No.", Rec."Location Code", Rec."Bin Code", Rec."Unit of Measure Code");
                         Rec.VALIDATE(Quantity);
@@ -283,18 +230,6 @@ page 55001 "Counter Sales -Item Reclass."
                             Rec."Required Quantity" := 0;
                             Rec.Quantity := 0;
                         END;
-                        /*
-                        IJLC1.RESET;
-                        IJLC1.SETRANGE("Journal Batch Name",Rec."Journal Batch Name");
-                        IJLC1.SETRANGE("Source Code",Rec."Source Code");
-                        IJLC1.SETRANGE("Item No.",Rec."Item No.");
-                        IJLC1.SETRANGE("Bin Code",Rec."Bin Code");
-                        IJLC1.SETRANGE("Location Code",Rec."Location Code");
-                        IF IJLC1.FINDFIRST THEN
-                          ERROR('Already a same bincode with same item and location exists');
-                          */
-                        //  <<  CS02
-
                     end;
                 }
                 field("New Bin Code"; Rec."New Bin Code")
@@ -1112,13 +1047,13 @@ page 55001 "Counter Sales -Item Reclass."
                             SingleCU.Setitemjournal1(Rec);
                             //
                             CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post", Rec);
-                            CurrentJnlBatchName := GETRANGEMAX(Rec."Journal Batch Name");
+                            CurrentJnlBatchName := Rec.GETRANGEMAX(Rec."Journal Batch Name");
                             CurrPage.UPDATE(FALSE);
                             ItemJnlMgt.OpenJnl(CurrentJnlBatchName, Rec);
                         END
                         ELSE BEGIN
                             CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post", Rec);
-                            CurrentJnlBatchName := GETRANGEMAX(Rec."Journal Batch Name");
+                            CurrentJnlBatchName := Rec.GETRANGEMAX(Rec."Journal Batch Name");
                             CurrPage.UPDATE(FALSE);
                         END;
                         //  <<  CS02
@@ -1138,7 +1073,7 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnAction()
                     begin
                         CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post+Print", Rec);
-                        CurrentJnlBatchName := GETRANGEMAX(Rec."Journal Batch Name");
+                        CurrentJnlBatchName := Rec.GETRANGEMAX(Rec."Journal Batch Name");
                         CurrPage.UPDATE(FALSE);
                     end;
                 }
@@ -1505,7 +1440,7 @@ page 55001 "Counter Sales -Item Reclass."
             //
         END;
         //  <<  CS02
-        //SetUpNewLine(xRec);
+        SetUpNewLine(xRec);
         CLEAR(ShortcutDimCode);
         CLEAR(NewShortcutDimCode);
         Rec."Entry Type" := Rec."Entry Type"::Transfer;
@@ -1543,7 +1478,7 @@ page 55001 "Counter Sales -Item Reclass."
         Usersetup.RESET;
         Usersetup.SETRANGE("User ID", USERID);
         IF Usersetup.FINDFIRST THEN
-            CurrentJnlBatchName := Usersetup."Item Journal Batch";
+            CurrentJnlBatchName := Usersetup.Counter_Batch;
         IF CurrentJnlBatchName = '' THEN
             CurrentJnlBatchName := CheckUserRC;
         //  <<  CS02
@@ -1676,7 +1611,7 @@ page 55001 "Counter Sales -Item Reclass."
         Location: Text;
         IJB1: Code[20];
         DefaultPriceFactor: Record "Default Price Factor";
-        GenJournalLine: Record "Item Journal Line";
+        GenJournalLine: Record "Gen. Journal Line";
         SalesReceivablesSetup: Record "Sales & Receivables Setup";
         //UserGroup: Record "9000";
         //UserGroupMember: Record "9001";
@@ -1758,7 +1693,7 @@ page 55001 "Counter Sales -Item Reclass."
 
     local procedure FindIJDocNo(Docno: Code[20]): Boolean
     var
-        IJL: Record "83";
+        IJL: Record "Item Journal Line";
     begin
         IJL.RESET;
         IJL.SETRANGE("Source Code", 'RECLASSJNL');
@@ -1782,11 +1717,11 @@ page 55001 "Counter Sales -Item Reclass."
 
     procedure CheckBatchName("Code": Code[10]): Boolean
     var
-        IJBatch: Record "233";
+        IJBatch: Record "Item Journal Batch";
     begin
         IJBatch.RESET;
         IJBatch.SETRANGE(Name, Code);
-        IJBatch.SETRANGE("Counter Sale", TRUE);
+        IJBatch.SetRange(Counter_Batch, true);
         IF NOT IJBatch.ISEMPTY THEN
             EXIT(TRUE)
         ELSE
@@ -1801,7 +1736,7 @@ page 55001 "Counter Sales -Item Reclass."
         CLEAR(UserSetupMgmt);
         IF UserSetupMgmt.GetSalesFilter <> '' THEN BEGIN
             IJBatch.RESET;
-            IJBatch.SETRANGE("Responsibility Center", UserSetupMgmt.GetSalesFilter);
+            IJBatch.SetRange(Responsibility_Center, UserSetupMgmt.GetSalesFilter);
             IF IJBatch.FINDFIRST THEN
                 EXIT(IJBatch.Name);
         END;
@@ -2025,8 +1960,8 @@ page 55001 "Counter Sales -Item Reclass."
                     IF CusRec.GET(ContBus."No.") THEN BEGIN
                         Rec."Customer Name1" := CusRec.Name;
                         //
-                        Rec."VIN No." := CusRec."Vin No.";
-                        Rec."Vehicle Model No." := CusRec."Vehicle Model  No.";
+                        Rec."VIN No." := CusRec.Vin_No;
+                        Rec."Vehicle Model No." := CusRec.Vehicle_Model_No;
                         //
                         Rec."Currency Code" := ContRec."Currency Code";
                         Rec."VAT Bus" := CusRec."VAT Bus. Posting Group";
@@ -2041,8 +1976,8 @@ page 55001 "Counter Sales -Item Reclass."
                     IF CusRec.GET(ContBus."No.") THEN BEGIN
                         Rec."Customer Name1" := CusRec.Name;
                         //
-                        Rec."VIN No." := CusRec."Vin No.";
-                        Rec."Vehicle Model No." := CusRec."Vehicle Model  No.";
+                        Rec."VIN No." := CusRec.Vin_No;
+                        Rec."Vehicle Model No." := CusRec.Vehicle_Model_No;
                         //
                         Rec."Currency Code" := ContRec."Currency Code";
                         Rec."VAT Bus" := CusRec."VAT Bus. Posting Group";
@@ -2076,7 +2011,7 @@ page 55001 "Counter Sales -Item Reclass."
                         ItemJnlLineCU."Currency Code" := Contact1."Currency Code";
                     IF ((Rec."Currency Code" <> '') OR (Rec."Currency Code" <> 'USD')) THEN BEGIN
                         VarUP := ItemJnlLineCU."Unit Price";
-                        ItemJnlLineCU."Unit Price" := UnitPriceCalc(ItemJnlLineCU.PriceCheck);
+                        ItemJnlLineCU."Unit Price" := Rec.UnitPriceCalc(ItemJnlLineCU.PriceCheck);
                         ItemJnlLineCU."Line AmountUP" := ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price";
                         ItemJnlLineCU."Discount Amount" := ROUND(ROUND(ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price", Currency."Amount Rounding Precision") *
                                                  ItemJnlLineCU."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2085,7 +2020,7 @@ page 55001 "Counter Sales -Item Reclass."
                     END
                     ELSE BEGIN
                         ItemJnlLineCU."Currency Code" := 'USD';
-                        ItemJnlLineCU."Unit Price" := UnitPriceCalc(ItemJnlLineCU.PriceCheck);
+                        ItemJnlLineCU."Unit Price" := Rec.UnitPriceCalc(ItemJnlLineCU.PriceCheck);
                         ItemJnlLineCU."Line AmountUP" := ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price";
                         ItemJnlLineCU."Discount Amount" := ROUND(ROUND(ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price", Currency."Amount Rounding Precision") *
                                                  ItemJnlLineCU."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2106,7 +2041,7 @@ page 55001 "Counter Sales -Item Reclass."
                 ELSE BEGIN
                     ItemJnlLineCU."Currency Code" := 'USD';
                     //ItemJnlLineCU."Currency Code" :=  'USD';
-                    ItemJnlLineCU."Unit Price" := UnitPriceCalc(ItemJnlLineCU.PriceCheck);
+                    ItemJnlLineCU."Unit Price" := Rec.UnitPriceCalc(ItemJnlLineCU.PriceCheck);
                     ItemJnlLineCU."Line AmountUP" := ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price";
                     ItemJnlLineCU."Discount Amount" := ROUND(ROUND(ItemJnlLineCU.Quantity * ItemJnlLineCU."Unit Price", Currency."Amount Rounding Precision") *
                                              ItemJnlLineCU."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2207,7 +2142,7 @@ page 55001 "Counter Sales -Item Reclass."
             IF ((Rec."Currency Code" <> '') OR (Rec."Currency Code" <> 'USD')) THEN BEGIN
                 ItmJnLn."Currency Code" := Rec."Currency Code";
                 VarUP := ItmJnLn."Unit Price";
-                ItmJnLn."Unit Price" := UnitPriceCalc(ItmJnLn.PriceCheck);
+                ItmJnLn."Unit Price" := Rec.UnitPriceCalc(ItmJnLn.PriceCheck);
                 ItmJnLn."Line AmountUP" := ItmJnLn.Quantity * ItmJnLn."Unit Price";
                 ItmJnLn."Discount Amount" := ROUND(ROUND(ItmJnLn.Quantity * ItmJnLn."Unit Price", Currency."Amount Rounding Precision") *
                                          ItmJnLn."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2216,7 +2151,7 @@ page 55001 "Counter Sales -Item Reclass."
             END
             ELSE BEGIN
                 ItmJnLn."Currency Code" := 'USD';
-                ItmJnLn."Unit Price" := UnitPriceCalc(ItmJnLn.PriceCheck);
+                ItmJnLn."Unit Price" := Rec.UnitPriceCalc(ItmJnLn.PriceCheck);
                 ItmJnLn."Line AmountUP" := ItmJnLn.Quantity * ItmJnLn."Unit Price";
                 ItmJnLn."Discount Amount" := ROUND(ROUND(ItmJnLn.Quantity * ItmJnLn."Unit Price", Currency."Amount Rounding Precision") *
                                          ItmJnLn."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2287,7 +2222,7 @@ page 55001 "Counter Sales -Item Reclass."
                     Rec."Currency Code" := Contact1."Currency Code";
                 IF Rec."Currency Code" = 'YER' THEN
                     ExchangeRateRestriction;
-                Rec."Unit Price" := UnitPriceCalc(Rec."Unit Price");
+                Rec."Unit Price" := Rec.UnitPriceCalc(Rec."Unit Price");
                 Rec."Line AmountUP" := Rec.Quantity * Rec."Unit Price";
                 Rec."Discount Amount" := ROUND(ROUND(Rec."Unit Price" * Rec.Quantity, Currency."Amount Rounding Precision") *
                                          Rec."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2302,7 +2237,7 @@ page 55001 "Counter Sales -Item Reclass."
             ELSE BEGIN
                 Rec."Currency Code" := 'USD';
                 // MapCurCurrencyCodePage(ItemJnlLineCU1);
-                Rec."Unit Price" := UnitPriceCalc(Rec.PriceCheck);
+                Rec."Unit Price" := Rec.UnitPriceCalc(Rec.PriceCheck);
                 Rec."Line AmountUP" := Rec.Quantity * Rec."Unit Price";
                 Rec."Discount Amount" := ROUND(ROUND(Rec."Unit Price" * Rec.Quantity, Currency."Amount Rounding Precision") *
                                          Rec."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2331,7 +2266,7 @@ page 55001 "Counter Sales -Item Reclass."
             IF ((Rec."Currency Code" <> '') OR (Rec."Currency Code" <> 'USD')) THEN BEGIN
                 ItmJnLn."Currency Code" := Rec."Currency Code";
                 VarUP := ItmJnLn."Unit Price";
-                Rec."Unit Price" := UnitPriceCalc(ItmJnLn.PriceCheck);
+                Rec."Unit Price" := Rec.UnitPriceCalc(ItmJnLn.PriceCheck);
                 Rec."Line AmountUP" := ItmJnLn.Quantity * Rec."Unit Price";
                 Rec."Discount Amount" := ROUND(ROUND(ItmJnLn."Unit Price" * ItmJnLn.Quantity, Currency."Amount Rounding Precision") *
                                          ItmJnLn."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2340,7 +2275,7 @@ page 55001 "Counter Sales -Item Reclass."
             END
             ELSE BEGIN
                 Rec."Currency Code" := 'USD';
-                Rec."Unit Price" := UnitPriceCalc(ItmJnLn.PriceCheck);
+                Rec."Unit Price" := Rec.UnitPriceCalc(ItmJnLn.PriceCheck);
                 Rec."Line AmountUP" := ItmJnLn.Quantity * Rec."Unit Price";
                 Rec."Discount Amount" := ROUND(ROUND(Rec."Unit Price" * Rec.Quantity, Currency."Amount Rounding Precision") *
                                          ItmJnLn."Discount%" / 100, Currency."Amount Rounding Precision");
@@ -2370,7 +2305,7 @@ page 55001 "Counter Sales -Item Reclass."
 
     procedure GenJournalLineExist()
     begin
-        //GenJournalLine.SETRANGE("Cs.Document No.", Rec."Document No.");
+        GenJournalLine.SetRange(Cs_Document_No, Rec."Document No.");
         IF GenJournalLine.FINDFIRST THEN
             ERROR('Cash Receipt Journal Lines Exist,Please Delete');
     end;

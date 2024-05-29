@@ -1,11 +1,12 @@
-tableextension 70018 ContactExtn extends Contact
+tableextension 70019 UserSetupExtn extends "User Setup"
 {
     fields
     {
         // Add changes to table fields here
-        field(50000; Responsibility_Center; Code[30])
+        field(50000; Counter_Batch; Code[30])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Item Journal Batch".Name WHERE(Counter_Batch = const(true));
         }
     }
 
