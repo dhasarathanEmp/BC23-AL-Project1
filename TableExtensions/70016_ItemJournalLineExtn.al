@@ -134,8 +134,6 @@ tableextension 70016 ItemJournalLineExtn extends "Item Journal Line"
             TableRelation = Currency;
 
             trigger OnValidate()
-            var
-                CurrLine: Integer;
             begin
                 IF ("Currency Code" <> xRec."Currency Code") AND (("Currency Code" = 'USD') OR ("Currency Code" = '')) THEN BEGIN
                     "Currency Factor" := 1;
@@ -441,6 +439,28 @@ tableextension 70016 ItemJournalLineExtn extends "Item Journal Line"
         END;
     end;
 
+    procedure CalCurrLinePrice()
+    begin
+        ItmJnLn.RESET;
+        ItmJnLn.SETRANGE("Source Code", 'RECLASSJNL');
+        ItmJnLn.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
+        ItmJnLn.SETRANGE("Document No.", Rec."Document No.");
+        ItmJnLn.SETFILTER("Line No.", '=%1', CurrLine);
+        IF ItmJnLn.FINDFIRST THEN BEGIN
+            IF ((Rec."Currency Code" <> '') OR (Rec."Currency Code" <> 'USD')) THEN BEGIN
+                ItmJnLn."Currency Code" := Rec."Currency Code";
+                VarUP := ItmJnLn."Unit Price";
+                Rec."Unit Price" := UnitPriceCalc(Rec.PriceCheck);
+                Rec."Line AmountUP" := ItmJnLn.Quantity * ItmJnLn."Unit Price";
+            END
+            ELSE BEGIN
+                ItmJnLn."Currency Code" := 'USD';
+                Rec."Unit Price" := UnitPriceCalc(Rec.PriceCheck);
+                Rec."Line AmountUP" := ItmJnLn.Quantity * ItmJnLn."Unit Price";
+            END;
+        END;
+    end;
+
     var
         myInt: Integer;
         IJL2: Record "Item Journal Line";
@@ -449,4 +469,6 @@ tableextension 70016 ItemJournalLineExtn extends "Item Journal Line"
         VarUP: Decimal;
         CurrencyDate: Date;
         CurrLineAmt: Decimal;
+        ItmJnLn: Record "Item Journal Line";
+        CurrLine: Integer;
 }

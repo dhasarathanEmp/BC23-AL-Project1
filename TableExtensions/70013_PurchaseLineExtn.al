@@ -267,29 +267,18 @@ tableextension 70013 PurchaseLineExtn extends "Purchase Line"
 
     //Unsupported feature: Code Modification on "OnInsert".
 
-    //trigger OnInsert()
-    //>>>> ORIGINAL CODE:
-    //begin
-    /*
-    TestStatusOpen;
-    IF Quantity <> 0 THEN BEGIN
-      OnBeforeVerifyReservedQty(Rec,xRec,0);
-    #4..6
-    PurchHeader."No." := '';
-    IF ("Deferral Code" <> '') AND (GetDeferralAmount <> 0) THEN
-      UpdateDeferralAmounts;
-    */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-    /*
-    #1..9
-    //  >> CUS002
-     "Sales Type"  :=  "Sales Type"::Purchase;
-     "Applied Doc. No."  :=  "Document No.";
-     "Service Order No."  :=  PurchHeader."Service Order No.";
-    //  << CUS002
-    */
+    trigger OnInsert()
+    begin
+        //  >> CUS002
+        "Sales Type" := "Sales Type"::Purchase;
+        "Applied Doc. No." := "Document No.";
+        //  << CUS002
+        //Cu006
+        "Planning Flexibility" := "Planning Flexibility"::None;
+        //Cu006
+    end;
+
+
     //end;
 
 

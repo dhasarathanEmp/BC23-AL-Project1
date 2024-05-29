@@ -39,9 +39,11 @@ page 55001 "Counter Sales -Item Reclass."
                     CurrPage.SAVERECORD;
                     //  >>  CS02
                     IF UserSetupMgmt.GetSalesFilter <> '' THEN
-                        ItemJnlMgt.LookupName1(CurrentJnlBatchName, Rec, UserSetupMgmt.GetSalesFilter)
+                        // ItemJnlMgt.LookupName1(CurrentJnlBatchName, Rec, UserSetupMgmt.GetSalesFilter)
+                        Message('Temp')
                     ELSE
-                        ItemJnlMgt.LookupName3(CurrentJnlBatchName, Rec);
+                        Message('Temp');
+                    // ItemJnlMgt.LookupName3(CurrentJnlBatchName, Rec);
                     CurrPage.UPDATE(FALSE);
                 end;
 
@@ -1265,16 +1267,17 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnAction()
                     var
                         "Discount Percentage": Decimal;
-                        //DiscountProcessOnly: Report "50085";
+                        DiscountProcessOnly: Report "Discount Process Only";
                         CounterLine: Record "Item Journal Line";
                     begin
                         //Cu021
                         "Discount Percentage" := 0;
-                        /*SalesReceivablesSetup.GET;
+                        /*                       
+                        SalesReceivablesSetup.GET;
                         CLEAR(DiscountProcessOnly);
                         DiscountProcessOnly.RUNMODAL;
                         "Discount Percentage" := DiscountProcessOnly."Return Discount Percentage";
-                        IF "Discount Percentage" >= SalesReceivablesSetup."Counter Sales Discount %" THEN BEGIN
+                        IF "Discount Percentage" >= SalesReceivablesSetup."Counter Sale Discount%" THEN
                             UserGroup.RESET;
                             UserGroup.SETRANGE(SalesDiscHigh, TRUE);
                             IF UserGroup.FINDFIRST THEN BEGIN
@@ -1288,16 +1291,23 @@ page 55001 "Counter Sales -Item Reclass."
                             END ELSE
                                 ERROR('Discount Percentage cannot exceed %1', SalesReceivablesSetup."Counter Sales Discount %");
                         END;*/
-                        CounterLine.RESET;
-                        CounterLine.SETRANGE("Journal Template Name", Rec."Journal Template Name");
-                        CounterLine.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
-                        CounterLine.SETRANGE("Document No.", Rec."Document No.");
-                        IF CounterLine.FINDSET THEN
-                            REPEAT
-                                CounterLine.VALIDATE("Discount%", "Discount Percentage");
-                                CounterLine.MODIFY;
-                            UNTIL CounterLine.NEXT = 0;
-                        //Cu021
+                        SalesReceivablesSetup.GET;
+                        CLEAR(DiscountProcessOnly);
+                        DiscountProcessOnly.RUNMODAL;
+                        "Discount Percentage" := DiscountProcessOnly."Return Discount Percentage";
+                        IF "Discount Percentage" >= SalesReceivablesSetup."Counter Sale Discount%" THEN
+                            ERROR('Discount Percentage cannot exceed %1', SalesReceivablesSetup."Counter Sale Discount%")
+                        else begin
+                            CounterLine.RESET;
+                            CounterLine.SETRANGE("Journal Template Name", Rec."Journal Template Name");
+                            CounterLine.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
+                            CounterLine.SETRANGE("Document No.", Rec."Document No.");
+                            IF CounterLine.FINDSET THEN
+                                REPEAT
+                                    CounterLine.VALIDATE("Discount%", "Discount Percentage");
+                                    CounterLine.MODIFY;
+                                UNTIL CounterLine.NEXT = 0;
+                        end;
                         CurrPage.UPDATE;
                     end;
                 }
@@ -1440,7 +1450,7 @@ page 55001 "Counter Sales -Item Reclass."
             //
         END;
         //  <<  CS02
-        SetUpNewLine(xRec);
+        Rec.SetUpNewLine(xRec);
         CLEAR(ShortcutDimCode);
         CLEAR(NewShortcutDimCode);
         Rec."Entry Type" := Rec."Entry Type"::Transfer;
@@ -1532,11 +1542,8 @@ page 55001 "Counter Sales -Item Reclass."
         ShortcutDimCode: array[8] of Code[20];
         NewShortcutDimCode: array[8] of Code[20];
         CounterSalesCU: Record "Cancelled CounterSales History";
-        [InDataSet]
         IsPostVisible: Boolean;
-        [InDataSet]
         IsIncrement: Boolean;
-        [InDataSet]
         IsCounter: Boolean;
         NoSeriesMgt: Codeunit NoSeriesManagement;
         ItemJnlBatch: Record "Item Journal Batch";
@@ -1552,7 +1559,7 @@ page 55001 "Counter Sales -Item Reclass."
         NoSeriesCode: Code[30];
         ItemJournalLine1: Record "Item Journal Line";
         Item: Record Item;
-        SingleCU: Codeunit "50000";
+        SingleCU: Codeunit TransferItemJournaltoService;
         CancelledCounterSalesHistory: Record "Cancelled CounterSales History";
         IsOk: Boolean;
         DocNo1: Code[10];
@@ -1568,7 +1575,6 @@ page 55001 "Counter Sales -Item Reclass."
         ContactNo: Code[20];
         ContactName: Text[50];
         DocNo: Code[20];
-        [InDataSet]
         IsCounterNew: Boolean;
         "CustomerNo.": Code[20];
         CustomerName: Code[50];
@@ -2322,6 +2328,22 @@ page 55001 "Counter Sales -Item Reclass."
             END;
         END
         //EP9612
+    end;
+
+    procedure LookupName3()
+    begin
+        /* ItemJnlBatch."Journal Template Name" := ItemJnlLine.GETRANGEMAX("Journal Template Name");
+         ItemJnlBatch.Name := ItemJnlLine.GETRANGEMAX("Journal Batch Name");
+         ItemJnlBatch.SETRANGE("Counter Sale", TRUE);
+         ItemJnlBatch.SETRANGE("Temporary Delivery", FALSE);
+         ItemJnlBatch.FILTERGROUP(2);
+         ItemJnlBatch.SETRANGE("Journal Template Name", ItemJnlBatch."Journal Template Name");
+         //ItemJnlBatch.SETRANGE("Responsibility Center",RCCode);
+         ItemJnlBatch.FILTERGROUP(0);
+         IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
+             CurrentJnlBatchName := ItemJnlBatch.Name;
+             SetName(CurrentJnlBatchName, ItemJnlLine);
+         END;*/
     end;
 
 }

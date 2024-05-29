@@ -33,6 +33,13 @@ pageextension 70006 SalesAndReceivablesExtnPage extends "Sales & Receivables Set
 
             }
         }
+        addafter("VAT Bus. Posting Gr. (Price)")
+        {
+            field("Counter Sale Discount%"; Rec."Counter Sale Discount%")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 
     actions

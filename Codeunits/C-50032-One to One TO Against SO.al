@@ -49,6 +49,7 @@ codeunit 50032 "One to One TO Against SO"
         TransferOrderNumber := NoSeriesMgt.GetNextNo('T-ORD', 0D, TRUE);
         HeaderControll := 1;
         SalesLine.RESET;
+        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
         SalesLine.SETRANGE("Document No.", DocumentNo);
         SalesLine.SETFILTER("Outstanding Quantity", '>%1', 0);
         SalesLine.SETFILTER("Location Code", '<>%1', 'HOD-HO');

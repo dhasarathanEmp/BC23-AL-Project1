@@ -114,7 +114,10 @@ tableextension 70009 TransferLineExtn extends "Transfer Line"
             "Default Price/Unit" := ROUND("Default Price/Unit", 0.01);
             "Agency Code" := Item1."Global Dimension 1 Code";
         END;
-        //EP9613 
+        //EP9613
+        //Cu006
+        "Planning Flexibility" := "Planning Flexibility"::None;
+        //Cu006 
     end;
 
     var
