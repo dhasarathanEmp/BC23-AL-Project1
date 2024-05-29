@@ -1,11 +1,11 @@
-tableextension 70000 CompanyExtn extends "Company Information"
+tableextension 70018 ContactExtn extends Contact
 {
     fields
     {
         // Add changes to table fields here
-        field(50000; AFZ; Boolean)
+        field(50000; Responsibility_Center; Code[30])
         {
-            DataClassification = ToBeClassified;
+
         }
     }
 
@@ -20,5 +20,5 @@ tableextension 70000 CompanyExtn extends "Company Information"
     }
 
     var
-
+        myInt: Integer;
 }

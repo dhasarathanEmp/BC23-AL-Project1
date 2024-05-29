@@ -1,4 +1,4 @@
-pageextension 70014 ReqWorksheetExtn extends "Req. Worksheet"
+pageextension 70016 ReqWorksheetExtn extends "Req. Worksheet"
 {
     layout
     {
@@ -28,9 +28,9 @@ pageextension 70014 ReqWorksheetExtn extends "Req. Worksheet"
                     PurchLoc: Code[20];
                     Agen: Code[20];
                     TransferHeader: Record "Transfer Header";
-                    TransferOrders: Page "Transfer Orders";
+                    ReqTransLookup: Page ReqTransLookup;
                     SalesHeaderFil: Record "Sales Header";
-                    SalesOrderList: Page "Sales Order List";
+                    ReqSalesLookup: Page ReqSalesLookup;
                 begin
                     Clear(GetSalesTransOrd);
                     GetSalesTransOrd.RUNMODAL;
@@ -42,16 +42,16 @@ pageextension 70014 ReqWorksheetExtn extends "Req. Worksheet"
                         TransferHeader.RESET;
                         TransferHeader.SETRANGE("Transfer-from Code", PurchLoc);
                         TransferHeader.SETFILTER("Agency Code", '%1|%2', Agen, '');
-                        TransferOrders.SETTABLEVIEW(TransferHeader);
-                        TransferOrders.LOOKUPMODE := TRUE;
-                        IF TransferOrders.RUNMODAL <> ACTION::Cancel THEN;
+                        ReqTransLookup.SETTABLEVIEW(TransferHeader);
+                        ReqTransLookup.LOOKUPMODE := TRUE;
+                        IF ReqTransLookup.RUNMODAL <> ACTION::Cancel THEN;
                     END ELSE BEGIN
                         SalesHeaderFil.RESET;
                         SalesHeaderFil.SETRANGE("Location Code", PurchLoc);
                         SalesHeaderFil.SETRANGE("Agency Code", Agen);
-                        SalesOrderList.SETTABLEVIEW(SalesHeaderFil);
-                        SalesOrderList.LOOKUPMODE := TRUE;
-                        IF SalesOrderList.RUNMODAL <> ACTION::Cancel THEN;
+                        ReqSalesLookup.SETTABLEVIEW(SalesHeaderFil);
+                        ReqSalesLookup.LOOKUPMODE := TRUE;
+                        IF ReqSalesLookup.RUNMODAL <> ACTION::Cancel THEN;
                     END;
                     CurrPage.UPDATE;
                 end;

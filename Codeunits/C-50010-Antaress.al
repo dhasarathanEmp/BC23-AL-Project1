@@ -130,26 +130,39 @@ codeunit 50010 Antaress
 
     local procedure FileWrit(PurchaseHeader: Record "Purchase Header")
     begin
-        AntaresForm.RESET;
+
+        /*AntaresForm.RESET;
         IF AntaresForm.FINDFIRST THEN
             //FileMyHTML.CREATE(AntaresForm."Data Stored Path"+FORMAT(PurchaseHeader."No.")+'.txt');
             //FileMyHTML.Create(AntaresForm."Data Stored Path" + '\' + FORMAT(PurchaseHeader."No.") + '.txt');
             //FileMyHTML.CREATEOUTSTREAM(OutStreamObj);
 
-            FileName := 'This is the sample text file';
+            FileName := 'Antares Form';
         TempBlob.CreateOutStream(Outstr, TextEncoding::Windows);
         Outstr.WriteText(Text001);
         Outstr.WriteText();
 
         TempBlob.CreateInStream(Instr, TextEncoding::Windows);
         DownloadFromStream(Instr, '', '', '', FileName);
-
+    */
 
         CreatePurchaseHeader1(PurchaseHeader);
         CreatePurchaseHeader(PurchaseHeader);
         CreatePurchaseLine(PurchaseHeader);
         CreatePurchaseTrilar(PurchaseHeader);
         OutStreamObj.WRITETEXT();
+
+        AntaresForm.RESET;
+        IF AntaresForm.FINDFIRST THEN
+            //FileMyHTML.CREATE(AntaresForm."Data Stored Path"+FORMAT(PurchaseHeader."No.")+'.txt');
+            //FileMyHTML.Create(AntaresForm."Data Stored Path" + '\' + FORMAT(PurchaseHeader."No.") + '.txt');
+            //FileMyHTML.CREATEOUTSTREAM(OutStreamObj);
+
+            FileName := 'Antares Form';
+        TempBlob.CreateOutStream(Outstr, TextEncoding::Windows);
+        Outstr.WriteText(Text001);
+        Outstr.WriteText();
+
     end;
 
     local procedure CreatePurchaseHeader(PurchaseHeader: Record "Purchase Header")

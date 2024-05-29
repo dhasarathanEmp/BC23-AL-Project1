@@ -5,7 +5,7 @@ pageextension 70015 PurchasesPayablesSetupExtn extends "Purchases & Payables Set
 
         //Unsupported feature: Property Modification (SourceExpr) on "Control 62".
 
-        addafter("Credit Acc. for Non-Item Lines")
+        addafter("Ignore Updated Addresses")
         {
             field("Requisition Type"; Rec."Requisition Type")
             {
@@ -14,7 +14,7 @@ pageextension 70015 PurchasesPayablesSetupExtn extends "Purchases & Payables Set
             {
             }
         }
-        addafter("Enable Cal AFZ Free Stock Actn")
+        addafter("Posted Credit Memo Nos.")
         {
             field(DiscrepancyNo; Rec.DiscrepancyNo)
             {
