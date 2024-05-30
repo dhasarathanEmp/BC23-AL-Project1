@@ -139,6 +139,92 @@ pageextension 70016 ReqWorksheetExtn extends "Req. Worksheet"
                         ERROR('Vendor not available');
                 end;
             }
+            action("Calc AFZ Free Stock")
+            {
+                Caption = 'Calc AFZ Free Stock';
+                Image = Calculate;
+
+                trigger OnAction()
+                var
+                    AFZ_RequisitionLine: Record "Requisition Line";
+                    AFZ_ItemLedger: Record "Item Ledger Entry";
+                    AFZ_ReservationEntry: Record "Reservation Entry";
+                    TempTableForAFZFreeStock: Record "Temp Table For AFZ Free Stock";
+                    ForAFZ_PurchaseLine: Record "Purchase Line";
+                    AFZ_StockkeepingUnit: Record "Stockkeeping Unit";
+                    TempTableLineNo: Integer;
+                    AFZ_AvailableStock: Integer;
+                    AFZ_ReservedStock: Integer;
+                    AFZ_UnReservedStock: Integer;
+                    AFZUnresStockfromReq: Page "AFZ Unres Stock from Req.";
+                begin
+                    //EP9621 Calculating AFZ Free Stock for the items available in current PO
+                    AFZ_RequisitionLine.RESET;
+                    AFZ_RequisitionLine.SETRANGE("Item Category Code", 'CD');
+                    AFZ_RequisitionLine.SETRANGE("Vendor No.", 'V000020');
+                    IF AFZ_RequisitionLine.FINDFIRST THEN BEGIN
+                        ERROR('For CAT Items Vendor Number should be other than V000020, Change the vendor number for the item %1 to proceed further', AFZ_RequisitionLine."No.")
+                    END ELSE BEGIN
+                        CLEAR(AFZ_ItemLedger);
+                        CLEAR(AFZ_ReservationEntry);
+                        AFZ_ItemLedger.CHANGECOMPANY('AFZ');
+                        AFZ_ReservationEntry.CHANGECOMPANY('AFZ');
+                        TempTableForAFZFreeStock.DELETEALL();
+                        TempTableLineNo := 0;
+                        AFZ_AvailableStock := 0;
+                        AFZ_ReservedStock := 0;
+                        AFZ_UnReservedStock := 0;
+                        AFZ_RequisitionLine.RESET;
+                        AFZ_RequisitionLine.SETFILTER("Line No.", '>%1', 0);
+                        IF AFZ_RequisitionLine.FINDSET THEN
+                            REPEAT
+                                AFZ_ItemLedger.RESET;
+                                AFZ_ItemLedger.SETRANGE("Item No.", AFZ_RequisitionLine."No.");
+                                AFZ_ItemLedger.SETFILTER("Remaining Quantity", '>%1', 0);
+                                AFZ_ItemLedger.CALCSUMS("Remaining Quantity");
+                                AFZ_AvailableStock := AFZ_ItemLedger."Remaining Quantity";
+
+                                AFZ_ReservationEntry.RESET;
+                                AFZ_ReservationEntry.SETRANGE("Item No.", AFZ_RequisitionLine."No.");
+                                AFZ_ReservationEntry.SETRANGE("Location Code", 'AFZ-HO');
+                                AFZ_ReservationEntry.SETRANGE("Source Type", 32);
+                                AFZ_ReservationEntry.SETRANGE("Source Subtype", 0);
+                                AFZ_ReservationEntry.SETRANGE("Reservation Status", 0);
+                                AFZ_ReservationEntry.CALCSUMS("Quantity (Base)");
+                                AFZ_ReservedStock := AFZ_ReservationEntry."Quantity (Base)";
+
+                                AFZ_UnReservedStock := AFZ_AvailableStock - AFZ_ReservedStock;
+                                IF AFZ_UnReservedStock <> 0 THEN BEGIN
+                                    TempTableForAFZFreeStock.RESET;
+                                    TempTableForAFZFreeStock.LineNo := TempTableLineNo + 1;
+                                    TempTableLineNo := TempTableForAFZFreeStock.LineNo;
+                                    TempTableForAFZFreeStock."Item Number" := AFZ_RequisitionLine."No.";
+                                    TempTableForAFZFreeStock."Item Description" := AFZ_RequisitionLine.Description;
+                                    TempTableForAFZFreeStock.Quantity := AFZ_RequisitionLine.Quantity;
+                                    TempTableForAFZFreeStock."Un Reserved Free Stock" := AFZ_UnReservedStock;
+                                    TempTableForAFZFreeStock."Expected Receipt Date" := AFZ_RequisitionLine."Due Date";
+                                    TempTableForAFZFreeStock."Dealer Net Price" := ForAFZ_PurchaseLine."Direct Unit Cost";
+                                    TempTableForAFZFreeStock."Doc Line No" := AFZ_RequisitionLine."Line No.";
+                                    TempTableForAFZFreeStock."Vednor No" := 'V000020';
+                                    AFZ_StockkeepingUnit.RESET;
+                                    AFZ_StockkeepingUnit.SETRANGE("Item No.", AFZ_RequisitionLine."No.");
+                                    AFZ_StockkeepingUnit.SETRANGE("Location Code", AFZ_RequisitionLine."Location Code");
+                                    IF AFZ_StockkeepingUnit.FINDFIRST THEN BEGIN
+                                        IF AFZ_StockkeepingUnit."Order Multiple" = 0 THEN
+                                            TempTableForAFZFreeStock."Order Multiple" := 1
+                                        ELSE
+                                            TempTableForAFZFreeStock."Order Multiple" := AFZ_StockkeepingUnit."Order Multiple";
+
+                                    END;
+                                    TempTableForAFZFreeStock.INSERT;
+                                END;
+                            UNTIL AFZ_RequisitionLine.NEXT = 0;
+                        COMMIT;
+                        CLEAR(AFZUnresStockfromReq);
+                        AFZUnresStockfromReq.RUN;
+                    END
+                end;
+            }
         }
         addafter(CalculatePlan_Promoted)
         {
@@ -146,6 +232,9 @@ pageextension 70016 ReqWorksheetExtn extends "Req. Worksheet"
             {
             }
             actionref(LinkedDemand_Promoted; "Linked Demand")
+            {
+            }
+            actionref(CalcAFZFreeStock_Promoted; "Calc AFZ Free Stock")
             {
             }
         }

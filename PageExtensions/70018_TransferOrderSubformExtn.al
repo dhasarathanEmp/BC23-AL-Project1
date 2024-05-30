@@ -171,6 +171,7 @@ pageextension 70018 TransferOrderSubformExtn extends "Transfer Order Subform"
                             CLEAR(ResEngManagement);
                             ReserveCancelforSplit := 0;
                             ReservationEntry.RESET;
+                            ReservationEntry.SetRange("Source Type", 5741);
                             ReservationEntry.SETRANGE("Source ID", Rec."Document No.");
                             ReservationEntry.SETRANGE("Source Ref. No.", Rec."Line No.");
                             ReservationEntry.SETRANGE("Reservation Status", ReservationEntry."Reservation Status"::Reservation);

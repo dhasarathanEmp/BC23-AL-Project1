@@ -145,20 +145,20 @@ codeunit 50010 Antaress
         TempBlob.CreateInStream(Instr, TextEncoding::Windows);
         DownloadFromStream(Instr, '', '', '', FileName);
     */
-
-        CreatePurchaseHeader1(PurchaseHeader);
+        AntaresForm.RESET;
+        IF AntaresForm.FINDFIRST THEN
+            CreatePurchaseHeader1(PurchaseHeader);
         CreatePurchaseHeader(PurchaseHeader);
         CreatePurchaseLine(PurchaseHeader);
         CreatePurchaseTrilar(PurchaseHeader);
-        OutStreamObj.WRITETEXT();
+        //OutStreamObj.WRITETEXT();
 
-        AntaresForm.RESET;
-        IF AntaresForm.FINDFIRST THEN
-            //FileMyHTML.CREATE(AntaresForm."Data Stored Path"+FORMAT(PurchaseHeader."No.")+'.txt');
-            //FileMyHTML.Create(AntaresForm."Data Stored Path" + '\' + FORMAT(PurchaseHeader."No.") + '.txt');
-            //FileMyHTML.CREATEOUTSTREAM(OutStreamObj);
 
-            FileName := 'Antares Form';
+        //FileMyHTML.CREATE(AntaresForm."Data Stored Path"+FORMAT(PurchaseHeader."No.")+'.txt');
+        //FileMyHTML.Create(AntaresForm."Data Stored Path" + '\' + FORMAT(PurchaseHeader."No.") + '.txt');
+        //FileMyHTML.CREATEOUTSTREAM(OutStreamObj);
+
+        FileName := 'Antares Form';
         TempBlob.CreateOutStream(Outstr, TextEncoding::Windows);
         Outstr.WriteText(Text001);
         Outstr.WriteText();

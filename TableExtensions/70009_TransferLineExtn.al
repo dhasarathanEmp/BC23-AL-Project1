@@ -30,10 +30,10 @@ tableextension 70009 TransferLineExtn extends "Transfer Line"
 
             begin
                 //Cu106
-                CALCFIELDS("Reserved Quantity Inbnd.", "Reserved Quantity Outbnd.");
+                /*CALCFIELDS("Reserved Quantity Inbnd.", "Reserved Quantity Outbnd.");
                 IF ((Quantity - "Quantity Shipped") < "Reserved Quantity Outbnd.") OR ((Quantity - "Quantity Received") < "Reserved Quantity Inbnd.") THEN
                     ERROR('Outstanding Quantity cannot be lesser than reserved Quantity');
-                //Cu106
+                //Cu106*/
             end;
         }
         //Unsupported feature: Code Insertion on ""Transfer-from Bin Code"(Field 7300)".
