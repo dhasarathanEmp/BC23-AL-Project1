@@ -161,8 +161,8 @@ codeunit 50010 Antaress
         //FileMyHTML.CREATEOUTSTREAM(OutStreamObj);
 
 
-        Outstr.WriteText(Text001);
-        Outstr.WriteText();
+        OutStreamObj.WriteText(Text001);
+        OutStreamObj.WriteText();
 
     end;
 

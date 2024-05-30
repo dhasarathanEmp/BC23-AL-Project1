@@ -34,6 +34,6 @@ codeunit 70002 SalesLine
     [EventSubscriber(ObjectType::table, Database::"Transfer Line", 'OnBeforeVerifyReserveTransferLineQuantity', '', true, true)]
     local procedure OnBeforeVerifyReserveTransferLineQuantity(var TransferLine: Record "Transfer Line"; var IsHandled: Boolean)
     begin
-        IsHandled := true;
+        IsHandled := false;
     end;
 }

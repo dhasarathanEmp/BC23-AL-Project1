@@ -40,9 +40,9 @@ page 55001 "Counter Sales -Item Reclass."
                     //  >>  CS02
                     IF UserSetupMgmt.GetSalesFilter <> '' THEN
                         // ItemJnlMgt.LookupName1(CurrentJnlBatchName, Rec, UserSetupMgmt.GetSalesFilter)
-                        Message('Temp')
+                        LookupName3()
                     ELSE
-                        Message('Temp');
+                        LookupName3();
                     // ItemJnlMgt.LookupName3(CurrentJnlBatchName, Rec);
                     CurrPage.UPDATE(FALSE);
                 end;
@@ -214,7 +214,7 @@ page 55001 "Counter Sales -Item Reclass."
                         //  >>  CS02
                         MapCounterBin();
 
-                        //BinStkCheck(Rec."Item No.", Rec."Location Code", Rec."Bin Code", Rec."Unit of Measure Code");
+                        BinStkCheck(Rec."Item No.", Rec."Location Code", Rec."Bin Code", Rec."Unit of Measure Code");
                         Rec.VALIDATE(Quantity);
                         IF Rec."Bin Code" = '' THEN BEGIN
                             Rec.Quantity := 0;
@@ -249,7 +249,7 @@ page 55001 "Counter Sales -Item Reclass."
                     begin
                         // >> to filter counter bins
                         IJB.RESET;
-                        //IJB.SETRANGE("Counter Sale", TRUE);
+                        IJB.SETRANGE(Counter_Batch, TRUE);
                         IJB.SETRANGE(Name, Rec."Journal Batch Name");
                         IJB.SETRANGE("Journal Template Name", Rec."Journal Template Name");
                         IF IJB.FINDFIRST THEN BEGIN
@@ -288,7 +288,7 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        // GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
@@ -324,7 +324,7 @@ page 55001 "Counter Sales -Item Reclass."
                           ItemJnlLineCU.MODIFY;
                         UNTIL ItemJnlLineCU.NEXT = 0;*/
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
@@ -538,7 +538,7 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
@@ -562,13 +562,12 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
                         IF Rec."Currency Code" = 'YER' THEN
-                            //ExchangeRateRestriction;
-                            Message('Temp');
+                            ExchangeRateRestriction;
                         //  >>  CS16
                         /*IF  Quantity <> 0 THEN
                         "Line AmountUP" :=  Quantity * "Unit Price" ELSE
@@ -596,7 +595,7 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
@@ -609,7 +608,7 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
@@ -632,8 +631,7 @@ page 55001 "Counter Sales -Item Reclass."
                         IF Usersetup.FINDFIRST THEN
                             USerCode := Usersetup."Sales Resp. Ctr. Filter";
                         IF USerCode <> '' THEN
-                            //ContactRec.SETRANGE("Responsibility Center", USerCode);
-                            Message('Temp');
+                            ContactRec.SETRANGE(Responsibility_Center, USerCode);
                         IF PAGE.RUNMODAL(5052, ContactRec) = ACTION::LookupOK THEN BEGIN
                             //IF CheckContact(ContactRec) THEN BEGIN
                             Rec.Contact := ContactRec."No.";
@@ -647,7 +645,7 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
@@ -660,8 +658,8 @@ page 55001 "Counter Sales -Item Reclass."
                             Rec."CustomerNo." := '';
                             Rec."Customer Name1" := '';
                             Rec."Currency Code" := '';
-                            //ReplaceCurrContact;
-                            //ReplaceContact;
+                            ReplaceCurrContact;
+                            ReplaceContact;
 
                         END
                         ELSE BEGIN
@@ -670,8 +668,8 @@ page 55001 "Counter Sales -Item Reclass."
                             IF ContactRec.FINDFIRST THEN
                                 Rec."Contact Name" := ContactRec.Name;
                             FindCustomer(ContactRec);
-                            //ReplaceCurrContact;
-                            //ReplaceContact;
+                            ReplaceCurrContact;
+                            ReplaceContact;
                         END;
                     end;
                 }
@@ -704,7 +702,7 @@ page 55001 "Counter Sales -Item Reclass."
                     trigger OnValidate()
                     begin
                         //Cu018
-                        //GenJournalLineExist;
+                        GenJournalLineExist;
                         IF Rec.Cash = TRUE THEN
                             ERROR('Record cannot be changed after payment completion');
                         //Cu018
@@ -712,7 +710,7 @@ page 55001 "Counter Sales -Item Reclass."
                 }
                 field("Service Item No."; Rec."Service Item No.")
                 {
-                    //Visible = IsVisible;
+                    Visible = IsVisible;
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -835,7 +833,7 @@ page 55001 "Counter Sales -Item Reclass."
 
                     trigger OnAction()
                     begin
-                        //ShowReclasDimensions;
+                        Rec.ShowReclasDimensions;
                         CurrPage.SAVERECORD;
                     end;
                 }
@@ -847,7 +845,7 @@ page 55001 "Counter Sales -Item Reclass."
 
                     trigger OnAction()
                     begin
-                        //OpenItemTrackingLines(TRUE);
+                        Rec.OpenItemTrackingLines(TRUE);
                     end;
                 }
                 action("Bin Contents")
@@ -2331,19 +2329,29 @@ page 55001 "Counter Sales -Item Reclass."
     end;
 
     procedure LookupName3()
+    var
+        usersetup: Record "User Setup";
+        Responsibility_Center: Code[30];
+        ItemJnlLine: Record "Item Journal Line";
     begin
-        /* ItemJnlBatch."Journal Template Name" := ItemJnlLine.GETRANGEMAX("Journal Template Name");
-         ItemJnlBatch.Name := ItemJnlLine.GETRANGEMAX("Journal Batch Name");
-         ItemJnlBatch.SETRANGE("Counter Sale", TRUE);
-         ItemJnlBatch.SETRANGE("Temporary Delivery", FALSE);
-         ItemJnlBatch.FILTERGROUP(2);
-         ItemJnlBatch.SETRANGE("Journal Template Name", ItemJnlBatch."Journal Template Name");
-         //ItemJnlBatch.SETRANGE("Responsibility Center",RCCode);
-         ItemJnlBatch.FILTERGROUP(0);
-         IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
-             CurrentJnlBatchName := ItemJnlBatch.Name;
-             SetName(CurrentJnlBatchName, ItemJnlLine);
-         END;*/
+        usersetup.Reset();
+        usersetup.SetRange("User ID", UserId);
+        usersetup.SetFilter("Sales Resp. Ctr. Filter", '<>%1', '');
+        if usersetup.FindFirst() then
+            Responsibility_Center := usersetup."Sales Resp. Ctr. Filter"
+        else
+            Error('Sales Responsibility Should be empty in User Setup');
+        ItemJnlBatch."Journal Template Name" := ItemJnlLine.GETRANGEMAX("Journal Template Name");
+        ItemJnlBatch.Name := ItemJnlLine.GETRANGEMAX("Journal Batch Name");
+        ItemJnlBatch.SETRANGE(Counter_Batch, TRUE);
+        //ItemJnlBatch.SETRANGE("Temporary Delivery", FALSE);
+        ItemJnlBatch.FILTERGROUP(2);
+        ItemJnlBatch.SETRANGE("Journal Template Name", ItemJnlBatch."Journal Template Name");
+        ItemJnlBatch.SETRANGE(Responsibility_Center, Responsibility_Center);
+        ItemJnlBatch.FILTERGROUP(0);
+        IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
+            CurrentJnlBatchName := ItemJnlBatch.Name;
+        END;
     end;
 
 }
