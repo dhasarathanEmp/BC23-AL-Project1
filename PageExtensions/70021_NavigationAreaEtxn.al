@@ -8,7 +8,7 @@ pageextension 70021 NavigationAreaExtn extends "Order Processor Role Center"
     actions
     {
         // Add changes to page actions here
-        addlast("Posted Documents")
+        addafter("Finance Charge Memos")
         {
             group("Counter Sales")
             {

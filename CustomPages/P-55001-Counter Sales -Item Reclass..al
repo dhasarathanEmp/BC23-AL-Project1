@@ -113,7 +113,7 @@ page 55001 "Counter Sales -Item Reclass."
                         ItemJournalBatch.RESET;
                         ItemJournalBatch.SETRANGE(Name, Rec."Journal Batch Name");
                         IF ItemJournalBatch.FINDFIRST THEN
-                            Rec.VALIDATE("Location Code", ItemJournalBatch.Location);
+                            Rec.VALIDATE("Location Code", 'HOD-HO');
                         IF Rec."Location Code" <> '' THEN BEGIN
                             MapCounterBin;
                         END;
@@ -2347,7 +2347,7 @@ page 55001 "Counter Sales -Item Reclass."
         ItemJnlBatch.FILTERGROUP(2);
         ItemJnlBatch.SETRANGE(Counter_Batch, TRUE);
         ItemJnlBatch.SETRANGE("Journal Template Name", 'RECLASS');
-        ItemJnlBatch.SETRANGE(Responsibility_Center, CurrentJnlBatchName);
+        ItemJnlBatch.SETRANGE(Responsibility_Center, Responsibility_Center);
         ItemJnlBatch.FILTERGROUP(0);
         IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
             CurrentJnlBatchName := ItemJnlBatch.Name;

@@ -19,6 +19,16 @@ pageextension 70018 TransferOrderSubformExtn extends "Transfer Order Subform"
         modify(Quantity)
         {
             Caption = 'Accepted Quantity';
+            trigger OnBeforeValidate()
+            var
+                myInt: Integer;
+            begin
+                //Cu106
+                Rec.CALCFIELDS(Rec."Reserved Quantity Inbnd.", Rec."Reserved Quantity Outbnd.");
+                IF ((Rec.Quantity - Rec."Quantity Shipped") < Rec."Reserved Quantity Outbnd.") OR ((Rec.Quantity - Rec."Quantity Received") < Rec."Reserved Quantity Inbnd.") THEN
+                    ERROR('Outstanding Quantity cannot be lesser than reserved Quantity');
+                //Cu106
+            end;
         }
         addafter("ShortcutDimCode[8]")
         {
