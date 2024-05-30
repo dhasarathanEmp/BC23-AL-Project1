@@ -9,6 +9,10 @@ pageextension 70020 UserSetupExtn extends "User Setup"
             {
                 ApplicationArea = all;
             }
+            field("Cash Receipt Batch"; Rec."Cash Receipt Batch")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 

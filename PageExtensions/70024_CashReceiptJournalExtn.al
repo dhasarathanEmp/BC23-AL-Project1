@@ -28,7 +28,7 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
     var
         myInt: Integer;
 
-    trigger OnOpenPage()
+    /*Utrigger OnOpenPage()
     var
         myInt: Integer;
         GenJournalBatch: Record "Gen. Journal Batch";
@@ -43,5 +43,5 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
             ContactVisible := FALSE;
             ContactVisible1 := TRUE;
         END;
-    end;
+    end;*/
 }
