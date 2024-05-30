@@ -2333,6 +2333,7 @@ page 55001 "Counter Sales -Item Reclass."
         usersetup: Record "User Setup";
         Responsibility_Center: Code[30];
         ItemJnlLine: Record "Item Journal Line";
+        ItemJnlBatch: Record "Item Journal Batch";
     begin
         usersetup.Reset();
         usersetup.SetRange("User ID", UserId);
@@ -2341,13 +2342,12 @@ page 55001 "Counter Sales -Item Reclass."
             Responsibility_Center := usersetup."Sales Resp. Ctr. Filter"
         else
             Error('Sales Responsibility Should be empty in User Setup');
-        ItemJnlBatch."Journal Template Name" := ItemJnlLine.GETRANGEMAX("Journal Template Name");
-        ItemJnlBatch.Name := ItemJnlLine.GETRANGEMAX("Journal Batch Name");
-        ItemJnlBatch.SETRANGE(Counter_Batch, TRUE);
-        //ItemJnlBatch.SETRANGE("Temporary Delivery", FALSE);
+
+        ItemJnlBatch.Reset();
         ItemJnlBatch.FILTERGROUP(2);
-        ItemJnlBatch.SETRANGE("Journal Template Name", ItemJnlBatch."Journal Template Name");
-        ItemJnlBatch.SETRANGE(Responsibility_Center, Responsibility_Center);
+        ItemJnlBatch.SETRANGE(Counter_Batch, TRUE);
+        ItemJnlBatch.SETRANGE("Journal Template Name", 'RECLASS');
+        ItemJnlBatch.SETRANGE(Responsibility_Center, CurrentJnlBatchName);
         ItemJnlBatch.FILTERGROUP(0);
         IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
             CurrentJnlBatchName := ItemJnlBatch.Name;
