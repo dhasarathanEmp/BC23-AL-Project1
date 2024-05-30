@@ -18,6 +18,28 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
                 ApplicationArea = all;
             }
         }
+        modify(CurrentJnlBatchName)
+        {
+            trigger OnLookup(var Text: Text): Boolean
+            var
+                GeneralJournalBatch: Record "Gen. Journal Batch";
+                UserSetup: Record "User Setup";
+                ResponsibilityCenter: Code[30];
+            begin
+                UserSetup.Reset();
+                UserSetup.SetRange("User ID", UserId);
+                UserSetup.SetFilter("Cash Receipt Batch", '<>%1', '');
+                if UserSetup.FindFirst() then
+                    ResponsibilityCenter := UserSetup."Cash Receipt Batch";
+                GeneralJournalBatch.FilterGroup(2);
+                GeneralJournalBatch.SetRange("Cash Receipt Batch", true);
+                GeneralJournalBatch.SetRange("Responsibility Center", ResponsibilityCenter);
+                GeneralJournalBatch.FilterGroup(0);
+                if Page.RunModal(0, GeneralJournalBatch) = Action::LookupOK then begin
+
+                end;
+            end;
+        }
     }
 
     actions
