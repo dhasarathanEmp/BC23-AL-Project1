@@ -147,7 +147,9 @@ codeunit 50010 Antaress
     */
         AntaresForm.RESET;
         IF AntaresForm.FINDFIRST THEN
-            CreatePurchaseHeader1(PurchaseHeader);
+            FileName := AntaresForm."Data Stored Path" + Format((PurchaseHeader."No.") + '.txt'); //'Antares Form';
+        TempBlob.CreateOutStream(Outstr, TextEncoding::Windows);
+        CreatePurchaseHeader1(PurchaseHeader);
         CreatePurchaseHeader(PurchaseHeader);
         CreatePurchaseLine(PurchaseHeader);
         CreatePurchaseTrilar(PurchaseHeader);
@@ -158,8 +160,7 @@ codeunit 50010 Antaress
         //FileMyHTML.Create(AntaresForm."Data Stored Path" + '\' + FORMAT(PurchaseHeader."No.") + '.txt');
         //FileMyHTML.CREATEOUTSTREAM(OutStreamObj);
 
-        FileName := 'Antares Form';
-        TempBlob.CreateOutStream(Outstr, TextEncoding::Windows);
+
         Outstr.WriteText(Text001);
         Outstr.WriteText();
 
