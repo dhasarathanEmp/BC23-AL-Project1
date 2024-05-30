@@ -19,6 +19,22 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
         {
             trigger OnBeforeValidate()
             begin
+
+                ItemR.RESET;
+                ItemR.SETRANGE("No.", Rec."No.");
+                IF ItemR.FINDFIRST THEN BEGIN
+                    IF (ItemR."Replacement Part Number" <> '') OR (ItemR.ParentReplacementItem <> '') THEN
+                        MESSAGE('This Item has replacement part number(s). Please click replacement history for details')
+                    ELSE IF ItemR."Replacement Remarks" = 'See NPR' THEN
+                        MESSAGE('Replacement Remarks: %1', ItemR."Replacement Remarks");
+                    //Fx05
+                    IF Rec.Quantity = 0 THEN
+                        Rec.CoreCharge := 0
+                    ELSE
+                        Rec.CoreCharge := ItemR."Dealer Net - Core Deposit";
+                    //Fx05
+                END;
+
                 //Message through if it's a hose item
                 Item.Reset();
                 Item.SetRange("No.", Rec."No.");
@@ -106,6 +122,8 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
         InitialParentItm: Code[30];
         InitialChildItm: Code[30];
         DisPercent: Decimal;
+        ItemR: Record Item;
+        BOM: Record "BOM Component";
 
     procedure Initial_Parent_ChildRelation(ParentItm: Code[30]; ChildItm: Code[30])
     begin

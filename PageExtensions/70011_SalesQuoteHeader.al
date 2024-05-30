@@ -15,14 +15,67 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
 
                 end;
             }
+
         }
+        addafter("Your Reference")
+        {
+            field("Price Validate"; Rec."Price Validate")
+            {
+
+            }
+            field("Delivery Terms"; Rec."Delivery Terms")
+            {
+
+            }
+        }
+        addafter(Status)
+        {
+            field("Version No."; Rec."Version No.")
+            {
+                Caption = 'Revision No.';
+            }
+            field("Latest Version Date"; Rec."Latest Version Date")
+            {
+
+            }
+        }
+
     }
 
     actions
     {
-
-        // Add changes to page actions here
+        modify(Print)
+        {
+            Enabled = Printenabled;
+        }
+        modify(Reopen)
+        {
+            trigger OnAfterAction()
+            var
+                myInt: Integer;
+            begin
+                IF Rec.Status = Rec.Status::Released THEN
+                    Printenabled := TRUE
+                ELSE
+                    Printenabled := FALSE;
+                //Cu003
+                IF Rec."Version No." = '' THEN
+                    Rec."Version No." := 'REV0000001'
+                ELSE
+                    Rec."Version No." := INCSTR(Rec."Version No.");
+                Rec."Latest Version Date" := WORKDATE;
+            end;
+        }
     }
+
+    trigger OnOpenPage()
+    begin
+        IF Rec.Status = Rec.Status::Released THEN
+            Printenabled := TRUE
+        ELSE
+            Printenabled := FALSE;
+    end;
+
     procedure UpdateSpecialPriceFactortoLines()
     var
         SalesLine: Record "Sales Line";
@@ -108,4 +161,5 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
         ConfirmManagement: Codeunit "Confirm Management";
         ConfirmationMess: Text;
         CurrencyConvertedPrice: Decimal;
+        Printenabled: Boolean;
 }
