@@ -1,8 +1,6 @@
 page 55024 ReplacementItem
 {
     PageType = List;
-    ApplicationArea = All;
-    UsageCategory = Lists;
     SourceTable = ReplacementItem;
 
     layout

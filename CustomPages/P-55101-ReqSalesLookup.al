@@ -1,8 +1,6 @@
 page 55101 ReqSalesLookup
 {
     PageType = List;
-    ApplicationArea = All;
-    UsageCategory = Lists;
     SourceTable = "Sales Header";
 
     layout

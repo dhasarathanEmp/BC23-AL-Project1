@@ -1,8 +1,6 @@
 page 55100 ReqTransLookup
 {
     PageType = List;
-    ApplicationArea = All;
-    UsageCategory = Lists;
     SourceTable = "Transfer Header";
     Editable = false;
     layout

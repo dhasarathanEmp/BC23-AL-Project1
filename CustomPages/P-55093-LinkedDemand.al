@@ -1,8 +1,6 @@
 page 55093 "Linked Demand"
 {
     PageType = List;
-    ApplicationArea = All;
-    UsageCategory = Lists;
     SourceTable = "Req Link Maintainance";
     //DeleteAllowed = false;
     InsertAllowed = false;
