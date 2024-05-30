@@ -1,17 +1,16 @@
-tableextension 70019 UserSetupExtn extends "User Setup"
+tableextension 70026 GeneralJournalBatchExtn extends "Gen. Journal Batch"
 {
     fields
     {
         // Add changes to table fields here
-        field(50000; Counter_Batch; Code[30])
+        field(50000; "Cash Receipt Batch"; Boolean)
         {
             DataClassification = ToBeClassified;
-            TableRelation = "Item Journal Batch".Name WHERE(Counter_Batch = const(true));
         }
-        field(50003; "Cash Receipt Batch"; Code[30])
+        field(50001; "Responsibility Center"; Code[30])
         {
             DataClassification = ToBeClassified;
-            TableRelation = "Gen. Journal Batch".Name where("Cash Receipt Batch" = const(true));
+            TableRelation = Location.Code;
         }
     }
 

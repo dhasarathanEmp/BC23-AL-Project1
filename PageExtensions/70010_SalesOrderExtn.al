@@ -1,5 +1,6 @@
 pageextension 70010 SalesOrderExtn extends "Sales Order"
 {
+
     layout
     {
         modify("External Document No.")
@@ -11,12 +12,11 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
 
     actions
     {
-        // Add changes to page actions here
         modify(Release)
         {
-            trigger OnAfterAction()
+            trigger OnBeforeAction()
             var
-                onetoone: Codeunit "One to One TO Against SO";
+                myInt: Integer;
             begin
                 ItemCategory.RESET;
                 ItemCategory.SETRANGE("Is mandatory Customer PO No", TRUE);
@@ -34,8 +34,12 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                                     ERROR('Please Fill the PO Serial No in all sales Line')
                             UNTIL SalesLineBuf.NEXT = 0;
                     UNTIL ItemCategory.NEXT = 0;
-                //AFZ001
+            end;
 
+            trigger OnAfterAction()
+            var
+                onetoone: Codeunit "One to One TO Against SO";
+            begin
                 onetoone."Create TO Against SO"(Rec."No.");
             end;
         }
