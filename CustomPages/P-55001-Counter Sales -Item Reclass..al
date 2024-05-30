@@ -123,7 +123,7 @@ page 55001 "Counter Sales -Item Reclass."
                         IF Item.FINDFIRST THEN BEGIN
                             //Cu005
                             DefaultPriceFactor.RESET;
-                            DefaultPriceFactor.SETRANGE("Agency Code", Item."Global Dimension 1 Code");
+                            DefaultPriceFactor.SETRANGE("Agency Code", Item."Gen. Prod. Posting Group");
                             DefaultPriceFactor.FINDFIRST;
                             Rec."Unit Price" := (Item."Unit Price" - Item."Dealer Net - Core Deposit" * Item."Inventory Factor") * DefaultPriceFactor."Default Price Factor";
                             Rec."Unit Price" := ROUND(Rec."Unit Price", 0.01, '=');

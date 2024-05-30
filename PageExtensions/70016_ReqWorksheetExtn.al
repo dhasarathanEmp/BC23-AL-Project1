@@ -103,7 +103,7 @@ pageextension 70016 ReqWorksheetExtn extends "Req. Worksheet"
                     LinkedDemand.Reset();
                     LinkedDemand.SetRange("Req Line No.", Rec."Line No.");
                     IF LinkedDemand.FindSet() then;
-                    Page.RunModal(0, LinkedDemand);
+                    Page.RunModal(Page::"Linked Demand", LinkedDemand);
                 end;
             }
             action("Change Vend No")
@@ -317,14 +317,17 @@ pageextension 70016 ReqWorksheetExtn extends "Req. Worksheet"
         IF ReqLinkMaintainance.FINDSET THEN
             REPEAT
                 PurchaseLine.RESET;
+                PurchaseLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
                 PurchaseLine.SETRANGE("Req Line No.", ReqLinkMaintainance."Req Line No.");
                 SalesLine.RESET;
+                SalesLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
                 SalesLine.SETRANGE("Document No.", ReqLinkMaintainance."Demand Source No.");
                 SalesLine.SETRANGE("Line No.", ReqLinkMaintainance."Demand Source Ref No.");
                 TransferLine.RESET;
                 TransferLine.SETRANGE("Document No.", ReqLinkMaintainance."Demand Source No.");
                 TransferLine.SETRANGE("Line No.", ReqLinkMaintainance."Demand Source Ref No.");
                 AssemblyLine.RESET;
+                AssemblyLine.SetRange("Document Type", AssemblyLine."Document Type"::Order);
                 AssemblyLine.SETRANGE("Document No.", ReqLinkMaintainance."Demand Source No.");
                 AssemblyLine.SETRANGE("Line No.", ReqLinkMaintainance."Demand Source Ref No.");
                 IF PurchaseLine.FINDLAST THEN BEGIN
