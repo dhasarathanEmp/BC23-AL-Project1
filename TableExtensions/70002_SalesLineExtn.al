@@ -14,6 +14,10 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
         {
 
         }
+        field(50027; "PO Number"; Code[20])
+        {
+
+        }
         field(50032; "BOM Item No"; Code[20])//Cu009
         {
 

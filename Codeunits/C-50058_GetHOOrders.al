@@ -58,12 +58,14 @@ codeunit 50058 GetHOOrders
 
                     IF TransferLine.FINDSET THEN
                         REPEAT
+                            //Reserving Trans Lines from stock before pulling remaining qty to req.
                             TransferLine.CALCFIELDS("Reserved Quantity Outbnd.", "Reserved Qty. Outbnd. (Base)");
                             RemQtytoRes := TransferLine."Outstanding Quantity" - TransferLine."Reserved Quantity Outbnd.";
                             RemQtytoResBase := TransferLine."Outstanding Qty. (Base)" - TransferLine."Reserved Qty. Outbnd. (Base)";
                             CLEAR(ReservMgt);
                             ReservMgt.SetReservSource(TransferLine, Enum::"Transfer Direction"::Outbound);
                             ReservMgt.AutoReserveOneLine(1, RemQtytoRes, RemQtytoResBase, '', TransferLine."Shipment Date");
+                            //Reserving Trans Lines from stock before pulling remaining qty to req.
                             TransferLine.CALCFIELDS("Reserved Quantity Outbnd.");
                             IF TransferLine."Outstanding Quantity" > TransferLine."Reserved Quantity Outbnd." THEN BEGIN
                                 RequisitionLine.RESET;
@@ -71,7 +73,7 @@ codeunit 50058 GetHOOrders
                                 RequisitionLine.SETRANGE("Worksheet Template Name", 'REQ.');
                                 RequisitionLine.SETRANGE("Journal Batch Name", 'DEFAULT');
                                 RequisitionLine.SETRANGE("Unit of Measure Code", TransferLine."Unit of Measure Code");
-                                IF RequisitionLine.FINDFIRST THEN BEGIN
+                                IF RequisitionLine.FINDFIRST THEN BEGIN//Increase Qty, change due date if item exists in req
                                     RequisitionLine.Quantity += (TransferLine."Outstanding Quantity" - TransferLine."Reserved Quantity Outbnd.");
                                     IF RequisitionLine."Due Date" > TransferLine."Shipment Date" THEN
                                         RequisitionLine."Due Date" := TransferLine."Shipment Date";
@@ -97,6 +99,7 @@ codeunit 50058 GetHOOrders
                                     RequisitionLine."Due Date" := TransferLine."Shipment Date";
                                     RequisitionLine.INSERT;
                                 END;
+                                //Update Link with demand will be used later for reservation
                                 SNo1 += 1;
                                 ReqLinkMaintainance."S.No" := SNo1;
                                 ReqLinkMaintainance."Req Line No." := RequisitionLine."Line No.";

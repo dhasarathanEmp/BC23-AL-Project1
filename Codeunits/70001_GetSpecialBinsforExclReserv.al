@@ -1,3 +1,5 @@
+//Functionality to restrict reserving stock from special bins such as Counter Sales,TD,Discrepancy etc..
+//For all special customized bins keep the custom field blocks as true.
 codeunit 70001 GetSpecialBinsforExclReserv
 {
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Warehouse Availability Mgt.", 'OnAfterGetSpecialBins', '', true, true)]

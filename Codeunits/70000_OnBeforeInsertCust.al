@@ -1,3 +1,4 @@
+// Code for Responcibility wise No. Series for Customers.
 codeunit 70000 OnBeforeInsertCust
 {
     [EventSubscriber(ObjectType::Table, Database::Customer, 'OnBeforeInsert', '', true, true)]

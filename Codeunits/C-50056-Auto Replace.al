@@ -45,12 +45,13 @@ codeunit 50056 "Auto Replace"
                     IF ReservationEntry2."Source Type" = 37 THEN BEGIN
 
                         SalesLine.GET(ReservationEntry2."Source Subtype", ReservationEntry2."Source ID", ReservationEntry2."Source Ref. No.");
-                        IF SalesLine.Quantity <> -ReservationEntry2.Quantity THEN BEGIN
+                        IF SalesLine.Quantity <> -ReservationEntry2.Quantity THEN BEGIN //SO Qty greater than TO Qty, SO should be split 
                             Flag := 1;
                             SalesLine2.RESET;
                             SalesLine2.SETRANGE("Document Type", SalesLine2."Document Type"::Order);
                             SalesLine2.SETRANGE("Document No.", ReservationEntry2."Source ID");
                             IF SalesLine2.FINDLAST THEN;
+                            //Code to create new line starts
                             SalesLine3.INIT;
                             SalesLine3.SuspendStatusCheck(TRUE);
                             //SalesLine3.TRANSFERFIELDS(SalesLine);
@@ -68,8 +69,9 @@ codeunit 50056 "Auto Replace"
                             //SalesLine3."BOM Quantity Per" := SalesLine3.Quantity/SalesLine.Quantity * SalesLine."BOM Quantity Per";
                             SalesLine3.SuspendStatusCheck(FALSE);
                             SalesLine3.INSERT;
+                            //Code to create new line ends
 
-
+                            //Code to check if Whse Exists, if exists then Whse should be deleted and recreated.
                             WarehouseShipmentLine.RESET;
                             WarehouseShipmentLine.SETRANGE("Source No.", SalesLine."Document No.");
                             WarehouseShipmentLine.SETRANGE("Source Line No.", SalesLine."Line No.");
@@ -80,7 +82,7 @@ codeunit 50056 "Auto Replace"
                                 SalesLine.SuspendStatusCheck(TRUE);
                                 ReservationEngineMgt.CancelReservation(ReservationEntry2);
                                 //SalesLine."BOM Quantity Per" := (SalesLine.Quantity+ReservationEntry2.Quantity)/SalesLine.Quantity * SalesLine."BOM Quantity Per";
-                                SalesLine.VALIDATE(Quantity, SalesLine.Quantity + ReservationEntry2.Quantity);
+                                SalesLine.VALIDATE(Quantity, SalesLine.Quantity + ReservationEntry2.Quantity);//Changing original Sale Line Qty
                                 SalesLine.SuspendStatusCheck(FALSE);
                                 SalesLine.MODIFY;
 
@@ -91,14 +93,15 @@ codeunit 50056 "Auto Replace"
                                 SalesLine.SuspendStatusCheck(TRUE);
                                 ReservationEngineMgt.CancelReservation(ReservationEntry2);
                                 //SalesLine."BOM Quantity Per" := (SalesLine.Quantity+ReservationEntry2.Quantity)/SalesLine.Quantity * SalesLine."BOM Quantity Per";
-                                SalesLine.VALIDATE(Quantity, SalesLine.Quantity + ReservationEntry2.Quantity);
+                                SalesLine.VALIDATE(Quantity, SalesLine.Quantity + ReservationEntry2.Quantity);//Changing original Sale Line Qty
                                 SalesLine.SuspendStatusCheck(FALSE);
                                 SalesLine.MODIFY;
                             END;
                             /*SalesLine2.INIT;
                             SalesLine2.TRANSFERFIELDS(SalesLine);
                             SalesLine2.INSERT;*/
-                        END ELSE BEGIN
+                        END ELSE BEGIN  /*Here SO Qty is equal to qty reserved from transfer, when item
+                            is replaced in TO it should be replaced in SO*/
                             Flag := 2;
                             WarehouseShipmentLine.RESET;
                             WarehouseShipmentLine.SETRANGE("Source No.", SalesLine."Document No.");
@@ -143,7 +146,7 @@ codeunit 50056 "Auto Replace"
                                 SalesLine.SuspendStatusCheck(FALSE);
                             END;
                         END;
-                    END ELSE IF ReservationEntry2."Source Type" = 901 THEN BEGIN
+                    END ELSE IF ReservationEntry2."Source Type" = 901 THEN BEGIN//For Assembly same as Sales
 
                         AssemblyLine.GET(ReservationEntry2."Source Subtype", ReservationEntry2."Source ID", ReservationEntry2."Source Ref. No.");
                         IF AssemblyLine.Quantity <> -ReservationEntry2.Quantity THEN BEGIN

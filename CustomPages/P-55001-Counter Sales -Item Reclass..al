@@ -2309,7 +2309,7 @@ page 55001 "Counter Sales -Item Reclass."
 
     procedure GenJournalLineExist()
     begin
-        GenJournalLine.SetRange(Cs_Document_No, Rec."Document No.");
+        GenJournalLine.SetRange("Cs.Document No.", Rec."Document No.");
         IF GenJournalLine.FINDFIRST THEN
             ERROR('Cash Receipt Journal Lines Exist,Please Delete');
     end;

@@ -9,20 +9,20 @@ page 55007 "Log Function in Antares"
         {
             repeater(Group)
             {
-                field("Purchase Order No.";Rec."Purchase Order No.")
+                field("Purchase Order No."; Rec."Purchase Order No.")
                 {
                 }
-                field(Description;Rec.Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Conversion Date &Time";Rec."Conversion Date &Time")
+                field("Conversion Date &Time"; Rec."Conversion Date &Time")
                 {
                     Caption = 'Date';
                 }
-                field("User Id";Rec."User Id")
+                field("User Id"; Rec."User Id")
                 {
                 }
-                field(Status;Rec.Status)
+                field(Status; Rec.Status)
                 {
                 }
             }

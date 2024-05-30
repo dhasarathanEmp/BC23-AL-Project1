@@ -4,7 +4,7 @@ page 55093 "Linked Demand"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Req Link Maintainance";
-    DeleteAllowed = false;
+    //DeleteAllowed = false;
     InsertAllowed = false;
     ModifyAllowed = false;
 

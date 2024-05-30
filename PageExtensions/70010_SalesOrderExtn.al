@@ -2,7 +2,11 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
 {
     layout
     {
-        // Add changes to page layout here
+        modify("External Document No.")
+        {
+            Caption = 'Purchase Order No';
+        }
+
     }
 
     actions
@@ -14,6 +18,24 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
             var
                 onetoone: Codeunit "One to One TO Against SO";
             begin
+                ItemCategory.RESET;
+                ItemCategory.SETRANGE("Is mandatory Customer PO No", TRUE);
+                IF ItemCategory.FINDSET THEN
+                    REPEAT
+                        SalesLineBuf.RESET;
+                        SalesLineBuf.SETRANGE("Document No.", Rec."No.");
+                        SalesLineBuf.SETRANGE("Document Type", SalesLineBuf."Document Type"::Order);
+                        SalesLineBuf.SETRANGE("Posting Group", ItemCategory.Code);
+                        IF SalesLineBuf.FINDSET THEN
+                            REPEAT
+                                IF SalesLineBuf."PO Number" = '' THEN
+                                    ERROR('Please Fill the Purchase Order No in all sales Line');
+                                IF SalesLineBuf."Customer Serial No" = '' THEN
+                                    ERROR('Please Fill the PO Serial No in all sales Line')
+                            UNTIL SalesLineBuf.NEXT = 0;
+                    UNTIL ItemCategory.NEXT = 0;
+                //AFZ001
+
                 onetoone."Create TO Against SO"(Rec."No.");
             end;
         }
@@ -57,4 +79,6 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
         RemQtytoRes: Decimal;
         RemQtytoResBase: Decimal;
         Item: Record Item;
+        ItemCategory: Record "Item Category";
+        SalesLineBuf: Record "Sales Line";
 }

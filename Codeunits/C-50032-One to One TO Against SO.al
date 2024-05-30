@@ -200,7 +200,7 @@ codeunit 50032 "One to One TO Against SO"
         TransferLineReserv.RESET;
         TransferLineReserv.SETRANGE("Document No.", TransferOrderNumber);
         TransferLineReserv.SETRANGE("Transfer-from Code", TransferHeader."Transfer-from Code");
-        //TransferLineReserv.SETFILTER("Sales Order Number", 'SO*');
+        TransferLineReserv.SETFILTER("Sales Order Number", 'SO*');
         IF TransferLineReserv.FINDSET THEN
             REPEAT
                 SalesLineforRes.GET(SalesLineforRes."Document Type"::Order, TransferLineReserv."Sales Order Number", TransferLineReserv."Sales Line No");
