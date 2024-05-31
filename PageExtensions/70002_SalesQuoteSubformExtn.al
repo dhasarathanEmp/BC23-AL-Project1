@@ -18,6 +18,23 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 end;
             end;
         }
+        modify("Invoice Disc. Pct.")
+        {
+            trigger OnBeforeValidate()
+            var
+                SalesHeader: Record "Sales Header";
+            begin
+                SalesHeader.Get(Rec."Document Type", Rec."Document No.");
+                SalesHeader."Invoice Discount%" := InvoiceDiscountPct;
+                SalesHeader.Modify();
+            end;
+
+            trigger OnAfterValidate()
+            var
+            begin
+                DiscountAmountUpdate();
+            end;
+        }
         addafter("No.")
         {
             field("Ordered Part No"; Rec.Ordered_Part_No)
@@ -87,7 +104,8 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         SalesCalcDiscByType: Codeunit "Sales - Calc Discount By Type";
         DocumentTotals: Codeunit "Document Totals";
     begin
-
+        SalesHeader.Get(Rec."Document Type", Rec."Document No.");
+        InvoiceDiscountPct := SalesHeader."Invoice Discount%";
         if InvoiceDiscountPct <> 0 then begin
             CompanyInformation.Reset();
             CompanyInformation.SetRange(AFZ, true);
@@ -97,7 +115,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 SalesLine.SetRange("Allow Invoice Disc.", true);
                 if SalesLine.FindSet() then
                     repeat
-                        CoreCharge := SalesLine.Quantity * SalesLine.CoreCharge;
+                        CoreCharge += SalesLine.Quantity * SalesLine.CoreCharge;
                         LineAmount += SalesLine.Quantity * SalesLine."Line Amount";
                     until SalesLine.Next = 0;
             end
@@ -107,7 +125,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 SalesLine.SetRange("Allow Invoice Disc.", true);
                 if SalesLine.FindSet() then
                     repeat
-                        CoreCharge := (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
+                        CoreCharge += (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
                         LineAmount += SalesLine.Quantity * SalesLine."Unit Price";
                     until SalesLine.Next = 0;
             end;
@@ -118,7 +136,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             end;
             InvoiceDiscountAmount := Round(LineAmount * InvoiceDiscountPct / 100, 0.00001);
         end;
-        SalesHeader.Get(Rec."Document Type", Rec."Document No.");
+
         SalesCalcDiscByType.ApplyInvDiscBasedOnAmt(InvoiceDiscountAmount, SalesHeader);
         DocumentTotals.SalesDocTotalsNotUpToDate();
         CurrPage.Update(true);

@@ -1,8 +1,8 @@
-pageextension 70027 SalesInvoiceHeaderExtn extends "Sales Invoice"
+pageextension 70028 PostedSalesShipmentExtn extends "Posted Sales Shipment"
 {
     layout
     {
-        addafter("Ship-to Contact")
+        addafter("Shortcut Dimension 2 Code")
         {
             field("Price Validate"; Rec."Price Validate")
             {

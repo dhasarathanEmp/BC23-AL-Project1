@@ -2,6 +2,10 @@ tableextension 70011 SalesHeader extends "Sales Header"
 {
     fields
     {
+        field(50002; Template; code[10])//CS13
+        {
+
+        }
         field(50010; "Invoice Discount%"; Decimal)
         {
 
@@ -60,4 +64,5 @@ tableextension 70011 SalesHeader extends "Sales Header"
 
     var
         myInt: Integer;
+
 }

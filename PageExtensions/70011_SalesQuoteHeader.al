@@ -4,6 +4,10 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
     {
         addafter(Status)
         {
+            field(Template; Rec.Template)
+            {
+                TableRelation = "Quote Template";
+            }
             field(Special_Price_Factor; Rec.Special_Price_Factor)
             {
                 trigger OnValidate()
@@ -47,6 +51,14 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
         modify(Print)
         {
             Enabled = Printenabled;
+
+            trigger OnBeforeAction()
+            var
+                myInt: Integer;
+            begin
+                IF Rec.Template = '' THEN
+                    ERROR('Report template is blank in %1', Rec."No.");
+            end;
         }
         modify(Reopen)
         {

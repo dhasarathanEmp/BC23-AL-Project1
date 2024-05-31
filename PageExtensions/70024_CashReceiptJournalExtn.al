@@ -139,8 +139,15 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
         TaxableAmount: Decimal;
 
     trigger OnOpenPage()
+    var
+        UserSetup: Record "User Setup";
     begin
-        SelectedBatchName := ExtnCashReciptJournal."Selected CR Batch Name"();
+        UserSetup.Reset();
+        UserSetup.SetRange("User ID", UserId);
+        UserSetup.SetFilter("Cash Receipt Batch", '<>%1', '');
+        if UserSetup.FindFirst() then begin
+            SelectedBatchName := UserSetup."Cash Receipt Batch";
+        end;
         GenJournalBatch.RESET;
         GenJournalBatch.SETRANGE(Name, SelectedBatchName);
         GenJournalBatch.SetRange("Cash Receipt Batch", TRUE);
@@ -155,7 +162,6 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
 
     trigger OnAfterGetRecord()
     begin
-        SelectedBatchName := ExtnCashReciptJournal."Selected CR Batch Name"();
         GenJournalBatch.RESET;
         GenJournalBatch.SETRANGE(Name, SelectedBatchName);
         GenJournalBatch.SetRange("Cash Receipt Batch", TRUE);
@@ -170,7 +176,6 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        SelectedBatchName := ExtnCashReciptJournal."Selected CR Batch Name"();
         GenJournalBatch.RESET;
         GenJournalBatch.SETRANGE(Name, SelectedBatchName);
         GenJournalBatch.SetRange("Cash Receipt Batch", TRUE);
@@ -185,7 +190,6 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
 
     trigger OnModifyRecord(): Boolean
     begin
-        SelectedBatchName := ExtnCashReciptJournal."Selected CR Batch Name"();
         GenJournalBatch.RESET;
         GenJournalBatch.SETRANGE(Name, SelectedBatchName);
         GenJournalBatch.SetRange("Cash Receipt Batch", TRUE);

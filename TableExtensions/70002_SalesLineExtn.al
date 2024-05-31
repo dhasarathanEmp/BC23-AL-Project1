@@ -68,7 +68,9 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
 
             trigger OnAfterValidate()
             var
-                myInt: Integer;
+                SalesH: Record "Sales Header";
+                Item: Record Item;
+                SalesSetup: Record "Sales & Receivables Setup";
             begin
                 if (Quantity <> OldQty) then begin
                     if (OldQty <> 0) then begin
@@ -77,8 +79,12 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
                         UpdateAmounts();
                     end
                     else begin
-                        if TotalLineAmt <> 0 then begin
-                            "Inv. Discount Amount" := "Line Amount" * TotalDiscAmt / TotalLineAmt;
+                        SalesSetup.GetRecordOnce();
+                        if SalesSetup.Inc_CoreCharge = true then begin
+                            "Inv. Discount Amount" := ("Line Amount" - CoreCharge * Quantity * Item."Inventory Factor") * SalesH."Invoice Discount%" / 100;
+                            UpdateAmounts();
+                        end else begin
+                            "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
                             UpdateAmounts();
                         end;
                     end;
@@ -89,10 +95,14 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
         {
             trigger OnBeforeValidate()
             var
-                myInt: Integer;
+                Item: Record Item;
             begin
-                OldUP := xRec."Unit Price";
-                if OldUP <> 0 then begin
+                if Rec.Type = Rec.Type::Item then begin
+                    Item.Get(Rec."No.");
+                    OldUP := xRec."Unit Price" - xRec.CoreCharge * Item."Inventory Factor";
+                end else
+                    OldUP := xRec."Unit Price";
+                if OldUP > 0 then begin
                     InvDiscAmt := "Inv. Discount Amount";
                     InvDiscAmttoInv := "Inv. Disc. Amount to Invoice";
                 end
@@ -110,17 +120,32 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
 
             trigger OnAfterValidate()
             var
-                myInt: Integer;
+                SalesH: Record "Sales Header";
+                Item: Record Item;
+                SalesSetup: Record "Sales & Receivables Setup";
+                NewUP: Decimal;
+                LineCore: Decimal;
             begin
-                if ("Unit Price" <> OldUP) then begin
+                if Rec.Type = Rec.Type::Item then begin
+                    Item.Get(Rec."No.");
+                    NewUP := ("Unit Price" - CoreCharge * Item."Inventory Factor");
+                    LineCore := Quantity * CoreCharge * Item."Inventory Factor";
+                END Else
+                    NewUP := "Unit Price";
+                LineCore := 0;
+                if (NewUP <> OldUP) then begin
                     if (OldUP <> 0) then begin
-                        "Inv. Discount Amount" := "Unit Price" / OldUP * InvDiscAmt;
-                        "Inv. Disc. Amount to Invoice" := "Unit Price" / OldUP * InvDiscAmttoInv;
+                        "Inv. Discount Amount" := NewUP / OldUP * InvDiscAmt;
+                        "Inv. Disc. Amount to Invoice" := NewUP / OldUP * InvDiscAmttoInv;
                         UpdateAmounts();
                     end
                     else begin
-                        if TotalLineAmt <> 0 then begin
-                            "Inv. Discount Amount" := "Line Amount" * TotalDiscAmt / TotalLineAmt;
+                        SalesSetup.GetRecordOnce();
+                        if SalesSetup.Inc_CoreCharge = true then begin
+                            "Inv. Discount Amount" := ("Line Amount" - LineCore) * SalesH."Invoice Discount%" / 100;
+                            UpdateAmounts();
+                        end else begin
+                            "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
                             UpdateAmounts();
                         end;
                     end;
