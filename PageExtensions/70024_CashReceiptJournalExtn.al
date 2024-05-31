@@ -9,6 +9,41 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
             {
                 ApplicationArea = all;
                 Editable = ContactVisible;
+                trigger OnLookup(var Text: Text): Boolean
+                var
+                    ItemJournalLine: Record "Item Journal Line";
+                    VATPostingSetup: Record "VAT Posting Setup";
+                begin
+                    CLEAR("Cs.Amount");
+                    CLEAR(Tax);
+                    CLEAR(DiscountAmount);
+                    CLEAR(TaxableAmount);
+                    ItemJournalLine.RESET;
+                    ItemJournalLine.SETRANGE(Contact, Rec."Contact No.");
+                    ItemJournalLine.SETRANGE(Cash, FALSE);
+                    ItemJournalLine.SETFILTER(Status, '=%1', ItemJournalLine.Status::" ");
+                    IF PAGE.RUNMODAL(55001, ItemJournalLine) = ACTION::LookupOK THEN
+                        Rec."Cs.Document No." := ItemJournalLine."Document No.";
+                    ItemJournalLine.SETRANGE("Document No.", Rec."Cs.Document No.");
+                    IF ItemJournalLine.FINDSET THEN
+                        REPEAT
+                            IF ItemJournalLine."Bin Code" = '' THEN
+                                ERROR('Some Counter Sales Lines doesnt have Bin Code,Please fill before Payment');
+                            "Cs.Amount" += ROUND(ItemJournalLine."Line AmountUP");
+                            Rec.VALIDATE("Currency Code", ItemJournalLine."Currency Code");
+                        UNTIL ItemJournalLine.NEXT = 0;
+                    TaxableAmount := "Cs.Amount";
+                    ItemJournalLine.SETRANGE("Document No.", Rec."Cs.Document No.");
+                    IF ItemJournalLine.FINDFIRST THEN BEGIN
+                        VATPostingSetup.RESET;
+                        VATPostingSetup.SETRANGE("VAT Bus. Posting Group", ItemJournalLine."VAT Bus");
+                        IF VATPostingSetup.FINDFIRST THEN
+                            Tax := ROUND(TaxableAmount * VATPostingSetup."VAT %" / 100);
+                    END;
+                    MESSAGE('Total Value Of Counter Sales Line Amount %1', FORMAT(TaxableAmount + Tax));
+                    Rec.VALIDATE(Amount, -(TaxableAmount + Tax));
+                    Rec."CS Vat" := VATPostingSetup."VAT %";
+                end;
             }
             field("Contact No."; Rec."Contact No.")
             {
@@ -98,6 +133,10 @@ pageextension 70024 CashReceiptJournalExtn extends "Cash Receipt Journal"
         ContactVisible1: Boolean;
         ExtnCashReciptJournal: Codeunit CashReceiptJournal;
         SelectedBatchName: Code[30];
+        "Cs.Amount": Decimal;
+        Tax: Decimal;
+        DiscountAmount: Decimal;
+        TaxableAmount: Decimal;
 
     trigger OnOpenPage()
     begin
