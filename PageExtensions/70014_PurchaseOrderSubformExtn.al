@@ -4,6 +4,11 @@ pageextension 70014 PurchaseOrderSubformExtn extends "Purchase Order Subform"
     {
         addafter("No.")
         {
+            field("Ordered Part No"; Rec.LastPartNumber)
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
             field("Serial No"; Rec."Serial No")
             {
 

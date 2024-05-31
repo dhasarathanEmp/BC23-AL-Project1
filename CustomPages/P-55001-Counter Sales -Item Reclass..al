@@ -39,11 +39,7 @@ page 55001 "Counter Sales -Item Reclass."
                     CurrPage.SAVERECORD;
                     //  >>  CS02
                     IF UserSetupMgmt.GetSalesFilter <> '' THEN
-                        // ItemJnlMgt.LookupName1(CurrentJnlBatchName, Rec, UserSetupMgmt.GetSalesFilter)
-                        LookupName3()
-                    ELSE
                         LookupName3();
-                    // ItemJnlMgt.LookupName3(CurrentJnlBatchName, Rec);
                     CurrPage.UPDATE(FALSE);
                 end;
 

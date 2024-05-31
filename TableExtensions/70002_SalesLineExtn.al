@@ -30,6 +30,19 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
         {
 
         }
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                IF (Rec.Type = Rec.Type::Item) AND ("No." <> xRec."No.") AND ((Rec."Document Type" = Rec."Document Type"::Quote) OR (Rec."Document Type" = Rec."Document Type"::Order)) THEN BEGIN
+                    ItemBuf.GET("No.");
+                    IF ItemBuf."Hose Main item" = TRUE THEN
+                        Rec."Unit Price" := 0.0;
+                END;
+
+            end;
+        }
+
         modify(Quantity)
         {
             trigger OnBeforeValidate()
@@ -138,4 +151,5 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
         TotalLineAmt: Decimal;
         TotalDiscAmt: Decimal;
         TotalDiscAmttoInv: Decimal;
+        ItemBuf: Record Item;
 }

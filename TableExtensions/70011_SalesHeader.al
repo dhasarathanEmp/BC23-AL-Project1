@@ -2,6 +2,10 @@ tableextension 70011 SalesHeader extends "Sales Header"
 {
     fields
     {
+        field(50010; "Invoice Discount%"; Decimal)
+        {
+
+        }
         field(50011; "Price Validate"; Text[30])//CUS023
         {
 
@@ -23,6 +27,10 @@ tableextension 70011 SalesHeader extends "Sales Header"
 
         }
         field(50024; "SO Revision Date"; Date)
+        {
+
+        }
+        field(50026; AFZDiscount; Decimal)
         {
 
         }

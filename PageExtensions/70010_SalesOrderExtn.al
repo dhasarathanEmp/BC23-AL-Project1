@@ -13,6 +13,27 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
             {
 
             }
+            field(AFZDiscount; Rec.AFZDiscount)
+            {
+                ApplicationArea = All;
+                Editable = IsAFZ;
+                trigger OnValidate()
+                var
+                    AFZSalesLine: Record "Sales Line";
+                begin
+                    IF Rec.Status <> Rec.Status::Open THEN
+                        ERROR('The Order is not Open');
+                    AFZSalesLine.RESET;
+                    AFZSalesLine.SETRANGE("Document No.", Rec."No.");
+                    AFZSalesLine.SETFILTER("No.", '<>%1', '');
+                    IF AFZSalesLine.FINDSET THEN
+                        REPEAT
+                            AFZSalesLine."Unit Price" := ROUND((AFZSalesLine."Unit Price" - AFZSalesLine.CoreCharge) * (100 - Rec.AFZDiscount) / (100 - xRec.AFZDiscount) + AFZSalesLine.CoreCharge, 0.01);
+                            AFZSalesLine.VALIDATE("Unit Price");
+                            AFZSalesLine.MODIFY;
+                        UNTIL AFZSalesLine.NEXT = 0;
+                end;
+            }
         }
 
         modify("External Document No.")
@@ -86,6 +107,15 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
 
         }
     }
+    trigger OnOpenPage()
+    var
+
+    begin
+        IF (CompanyInfo.GET) AND CompanyInfo.AFZ then
+            IsAFZ := true
+        else
+            IsAFZ := false;
+    end;
 
     var
         myInt: Integer;
@@ -97,4 +127,6 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
         Item: Record Item;
         ItemCategory: Record "Item Category";
         SalesLineBuf: Record "Sales Line";
+        IsAFZ: Boolean;
+        CompanyInfo: Record "Company Information";
 }

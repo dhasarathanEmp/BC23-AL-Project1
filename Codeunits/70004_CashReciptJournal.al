@@ -11,6 +11,15 @@ codeunit 70004 CashReceiptJournal
         if UserSetup.FindFirst() then begin
             CurrentJnlBatchName := UserSetup."Cash Receipt Batch";
             JnlSelected := true;
+            CRBatchName := CurrentJnlBatchName;
         end;
     end;
+
+    procedure "Selected CR Batch Name"() CRBatchName: Code[30]
+    begin
+        CRBatchName := CRBatchName;
+    end;
+
+    var
+        CRBatchName: Code[30];
 }

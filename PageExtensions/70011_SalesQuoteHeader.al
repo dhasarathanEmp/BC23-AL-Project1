@@ -162,4 +162,12 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
         ConfirmationMess: Text;
         CurrencyConvertedPrice: Decimal;
         Printenabled: Boolean;
+
+    trigger OnAfterGetRecord()
+    begin
+        IF Rec.Status = Rec.Status::Released THEN
+            Printenabled := TRUE
+        ELSE
+            Printenabled := FALSE;
+    end;
 }
