@@ -81,9 +81,11 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
                     else begin
                         SalesSetup.GetRecordOnce();
                         if SalesSetup.Inc_CoreCharge = true then begin
+                            SalesH.GET(Rec."Document Type", Rec."Document No.");
                             "Inv. Discount Amount" := ("Line Amount" - CoreCharge * Quantity * Item."Inventory Factor") * SalesH."Invoice Discount%" / 100;
                             UpdateAmounts();
                         end else begin
+                            SalesH.GET(Rec."Document Type", Rec."Document No.");
                             "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
                             UpdateAmounts();
                         end;
@@ -142,9 +144,11 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
                     else begin
                         SalesSetup.GetRecordOnce();
                         if SalesSetup.Inc_CoreCharge = true then begin
+                            SalesH.GET(Rec."Document Type", Rec."Document No.");
                             "Inv. Discount Amount" := ("Line Amount" - LineCore) * SalesH."Invoice Discount%" / 100;
                             UpdateAmounts();
                         end else begin
+                            SalesH.GET(Rec."Document Type", Rec."Document No.");
                             "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
                             UpdateAmounts();
                         end;

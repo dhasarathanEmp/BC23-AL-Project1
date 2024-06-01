@@ -32,7 +32,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             trigger OnAfterValidate()
             var
             begin
-                DiscountAmountUpdate();
+                //DiscountAmountUpdate();
             end;
         }
         addafter("No.")
@@ -125,7 +125,8 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 SalesLine.SetRange("Allow Invoice Disc.", true);
                 if SalesLine.FindSet() then
                     repeat
-                        CoreCharge += (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
+                        IF (Rec.Type = Rec.Type::Item) and (Item.get(Rec."No.")) then
+                            CoreCharge += (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
                         LineAmount += SalesLine.Quantity * SalesLine."Unit Price";
                     until SalesLine.Next = 0;
             end;
@@ -139,6 +140,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
 
         SalesCalcDiscByType.ApplyInvDiscBasedOnAmt(InvoiceDiscountAmount, SalesHeader);
         DocumentTotals.SalesDocTotalsNotUpToDate();
+        InvoiceDiscountPct := SalesHeader."Invoice Discount%";
         CurrPage.Update(true);
     end;
 

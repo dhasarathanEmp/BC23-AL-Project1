@@ -148,7 +148,7 @@ codeunit 50010 Antaress
         AntaresForm.RESET;
         IF AntaresForm.FINDFIRST THEN
             FileName := AntaresForm."Data Stored Path" + Format((PurchaseHeader."No.") + '.txt'); //'Antares Form';
-        TempBlob.CreateOutStream(Outstr, TextEncoding::Windows);
+        TempBlob.CreateOutStream(OutStreamObj, TextEncoding::Windows);
         CreatePurchaseHeader1(PurchaseHeader);
         CreatePurchaseHeader(PurchaseHeader);
         CreatePurchaseLine(PurchaseHeader);

@@ -1041,6 +1041,7 @@ page 55001 "Counter Sales -Item Reclass."
                             MESSAGE('Only Approved Entries will be posted');
                             //
                             SingleCU.Setitemjournal1(Rec);
+                            Rec.ModifyAll("Discount Amount", 0);
                             //
                             CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post", Rec);
                             CurrentJnlBatchName := Rec.GETRANGEMAX(Rec."Journal Batch Name");

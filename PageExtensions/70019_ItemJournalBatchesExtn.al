@@ -20,6 +20,10 @@ pageextension 70019 ItemJournalBatchedExtn extends "Item Journal Batches"
             {
                 ApplicationArea = all;
             }
+            field("Journal Template Name"; Rec."Journal Template Name")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 

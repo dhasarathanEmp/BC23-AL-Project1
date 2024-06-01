@@ -1,4 +1,4 @@
-pageextension 70011 SalesQuoteHeader extends "Sales Quote"
+pageextension 70011 SalesQuoteExtn extends "Sales Quote"
 {
     layout
     {
@@ -58,6 +58,18 @@ pageextension 70011 SalesQuoteHeader extends "Sales Quote"
             begin
                 IF Rec.Template = '' THEN
                     ERROR('Report template is blank in %1', Rec."No.");
+            end;
+        }
+        modify(Release)
+        {
+            trigger OnAfterAction()
+            var
+                myInt: Integer;
+            begin
+                IF Rec.Status = Rec.Status::Released THEN
+                    Printenabled := TRUE
+                ELSE
+                    Printenabled := FALSE;
             end;
         }
         modify(Reopen)
