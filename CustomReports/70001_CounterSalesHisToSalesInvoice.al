@@ -52,6 +52,7 @@ report 70001 CounterSalesHisToSalesInvoice
                             if CSHistory.FindSet() then begin
                                 if Page.RunModal(55002, CSHistory) = Action::LookupOK then begin
                                     CSHDocNo := CSHistory."Document No.";
+                                    "Counter Document No." := CSHDocNo;
                                 end;
                             end else
                                 Error('There is no Counter Sales document were posted for this customer');
@@ -98,7 +99,7 @@ report 70001 CounterSalesHisToSalesInvoice
         CSHistory1.RESET;
         CSHistory1.SETRANGE("Document No.", CSHDocNo);
         CSHistory1.SETRANGE(Status, CSHistory1.Status::Approved);
-        CSHistory1.SETRANGE(Contact, SIH."Sell-to Contact");
+        CSHistory1.SETRANGE(Contact, CSHistory1."CustomerNo.");
         IF CSHistory1.FINDFIRST THEN BEGIN
             SalesHeader1.RESET;
             SalesHeader1.SETRANGE("No.", SIH."No.");
@@ -135,7 +136,7 @@ report 70001 CounterSalesHisToSalesInvoice
         CSHistory1.RESET;
         CSHistory1.SETRANGE("Document No.", CSHDocNo);
         CSHistory1.SETRANGE(Status, CSHistory1.Status::Approved);
-        CSHistory1.SETRANGE(Contact, SIH."Sell-to Contact");
+        CSHistory1.SETRANGE("CustomerNo.", "Customer No.");
         IF CSHistory1.FINDFIRST THEN
             repeat
                 SalesLine1.RESET;
@@ -170,7 +171,7 @@ report 70001 CounterSalesHisToSalesInvoice
                 SalesLine2.INSERT;
 
             UNTIL CSHistory1.NEXT = 0;
-        CLEAR(InvoiceDiscount);
+        /*CLEAR(InvoiceDiscount);
         CSHistory2.RESET;
         CSHistory2.SETRANGE("Document No.", CSHDocNo);
         CSHistory2.SETRANGE(Status, CSHistory2.Status::Approved);
@@ -185,6 +186,6 @@ report 70001 CounterSalesHisToSalesInvoice
         CSHistory2.SETRANGE(Contact, SIH."Sell-to Contact No.");
         IF CSHistory2.FINDFIRST THEN BEGIN
             // SalesSubform.ValidateInvoiceDiscountAmount1(SH, InvoiceDiscount);
-        END;
+        END;*/
     end;
 }

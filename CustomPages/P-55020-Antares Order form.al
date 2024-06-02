@@ -15,6 +15,14 @@ page 55020 "Antares Order form"
                 field("Record Type Header"; Rec."Record Type Header")
                 {
                 }
+                field(Filler; Rec.Filler)
+                {
+                    Visible = false;
+                }
+                field(Filler1; Rec.Filler1)
+                {
+                    Visible = false;
+                }
                 field(Filler2; Rec.Filler2)
                 {
                     Caption = 'End Filler';

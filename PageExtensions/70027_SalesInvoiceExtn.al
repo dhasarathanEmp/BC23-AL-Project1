@@ -26,7 +26,7 @@ pageextension 70027 SalesInvoiceExtn extends "Sales Invoice"
                 trigger OnAction()
                 var
                     Options: Text[30];
-                    OptionText: Label 'Counter_Invoice,Sales_Invoice';
+                    OptionText: Label ' ,Counter_Sales_Doc,Temporary_Delivery_Doc';
                     SelectedOption: Integer;
                     CSHtoINV: Report CounterSalesHisToSalesInvoice;
                     SalesHeader: Record "Sales Header";

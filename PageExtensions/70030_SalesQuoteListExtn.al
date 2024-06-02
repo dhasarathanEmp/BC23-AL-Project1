@@ -15,7 +15,7 @@ pageextension 70030 SalesQuoteListExtn extends "Sales Quotes"
 
         modify(Reopen)
         {
-            Enabled = ReleaseEnabled;
+            Enabled = Printenabled;
 
             trigger OnAfterAction()
             var
@@ -32,8 +32,8 @@ pageextension 70030 SalesQuoteListExtn extends "Sales Quotes"
                     Rec."Version No." := INCSTR(Rec."Version No.");
                     Rec."Latest Version Date" := WORKDATE;
                     Rec.Modify();
-                END
-            END
+                end;
+            end;
         }
     }
 
