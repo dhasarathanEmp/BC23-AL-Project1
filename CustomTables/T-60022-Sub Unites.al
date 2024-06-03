@@ -3,14 +3,14 @@ table 60022 "Sub Unites"
 
     fields
     {
-        field(1;"Currency Code";Code[10])
+        field(1; "Currency Code"; Code[10])
         {
             TableRelation = Currency.Code;
         }
-        field(2;"Sub Units";Text[30])
+        field(2; "Sub Units"; Text[30])
         {
         }
-        field(3;No;Integer)
+        field(3; No; Integer)
         {
             DataClassification = ToBeClassified;
         }
@@ -18,7 +18,7 @@ table 60022 "Sub Unites"
 
     keys
     {
-        key(Key1;No,"Sub Units","Currency Code")
+        key(Key1; No, "Sub Units", "Currency Code")
         {
         }
     }

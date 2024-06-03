@@ -1,57 +1,61 @@
-table 60012 "Daily Price Log Header"
+table 60019 "Hose Assembly Header"
 {
 
     fields
     {
-        field(1; UserName; Text[50])
+        field(1; No; Code[20])
         {
+            DataClassification = ToBeClassified;
+            Editable = false;
         }
         field(2; "CreationDate&Time"; DateTime)
         {
+            Editable = false;
         }
         field(3; Description; Text[100])
         {
+            Editable = false;
         }
         field(4; Status; Option)
         {
+            Editable = false;
             OptionMembers = ,Success,Error,Processing;
         }
-        field(5; "Total No. of Items Updated"; Integer)
+        field(5; RecordInserted; Integer)
         {
+            Editable = false;
         }
         field(6; "User Id"; Code[20])
         {
+            Editable = false;
         }
         field(7; "Total No of Errors"; Integer)
         {
+            Editable = false;
         }
-        field(8; "No."; Code[20])
+        field(8; UserName; Text[50])
         {
+            Editable = false;
         }
-        field(9; "Log Status"; Option)
+        field(13; "Deleted Count"; Integer)
         {
-            OptionMembers = " ",Daily,Semiannual,Peugeot,"Fg wilson";
+            Editable = false;
         }
-        field(10; "New Items Found"; Integer)
+        field(14; TotalItems; Integer)
         {
+            DataClassification = ToBeClassified;
+            Editable = false;
         }
-        field(11; "Record Inserted"; Integer)
+        field(15; SkippedCount; Integer)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        field(16; EndTime; Time)
         {
             DataClassification = ToBeClassified;
         }
-        field(12; "Skipped Records"; Integer)
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(13; "Total No. Of Records"; Integer)
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(14; "Start Time"; Time)
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(15; "End Time"; Time)
+        field(17; "File Name"; Text[30])
         {
             DataClassification = ToBeClassified;
         }
@@ -59,10 +63,7 @@ table 60012 "Daily Price Log Header"
 
     keys
     {
-        key(Key1; "No.")
-        {
-        }
-        key(Key2; "User Id")
+        key(Key1; No)
         {
         }
     }

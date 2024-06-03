@@ -1,9 +1,10 @@
-table 60012 "Daily Price Log Header"
+table 60010 "NPR Log Header"
 {
+    LookupPageID = "NPR List";
 
     fields
     {
-        field(1; UserName; Text[50])
+        field(1; No; Code[20])
         {
         }
         field(2; "CreationDate&Time"; DateTime)
@@ -16,7 +17,7 @@ table 60012 "Daily Price Log Header"
         {
             OptionMembers = ,Success,Error,Processing;
         }
-        field(5; "Total No. of Items Updated"; Integer)
+        field(5; RecordInserted; Integer)
         {
         }
         field(6; "User Id"; Code[20])
@@ -25,33 +26,25 @@ table 60012 "Daily Price Log Header"
         field(7; "Total No of Errors"; Integer)
         {
         }
-        field(8; "No."; Code[20])
+        field(8; UserName; Text[50])
         {
         }
-        field(9; "Log Status"; Option)
-        {
-            OptionMembers = " ",Daily,Semiannual,Peugeot,"Fg wilson";
-        }
-        field(10; "New Items Found"; Integer)
+        field(13; "Deleted Count"; Integer)
         {
         }
-        field(11; "Record Inserted"; Integer)
+        field(14; RecordModified; Integer)
         {
             DataClassification = ToBeClassified;
         }
-        field(12; "Skipped Records"; Integer)
+        field(15; Skipped; Integer)
         {
             DataClassification = ToBeClassified;
         }
-        field(13; "Total No. Of Records"; Integer)
+        field(16; EndTime; Time)
         {
             DataClassification = ToBeClassified;
         }
-        field(14; "Start Time"; Time)
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(15; "End Time"; Time)
+        field(17; FileName; Text[30])
         {
             DataClassification = ToBeClassified;
         }
@@ -59,10 +52,7 @@ table 60012 "Daily Price Log Header"
 
     keys
     {
-        key(Key1; "No.")
-        {
-        }
-        key(Key2; "User Id")
+        key(Key1; No)
         {
         }
     }
