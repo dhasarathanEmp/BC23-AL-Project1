@@ -122,11 +122,10 @@ codeunit 50010 Antaress
         Positionlen: Integer;
         Positionlen1: Integer;
         Instr: InStream;
-        Outstr: OutStream;
         TempBlob: Codeunit "Temp Blob";
         FileName: text;
-        Content_M: Text;
         Rec_CompanyInformation: Record "Company Information";
+        TargetFolder: Text;
 
     local procedure FileWrit(PurchaseHeader: Record "Purchase Header")
     begin
@@ -141,7 +140,7 @@ codeunit 50010 Antaress
         OutStreamObj.WriteText(Text001);
         OutStreamObj.WriteText();
         TempBlob.CreateInStream(Instr, TextEncoding::Windows);
-        DownloadFromStream(Instr, '', '', '', FileName);
+        DownloadFromStream(Instr, 'Export', AntaresForm."Data Stored Path", '', FileName);
 
     end;
 
@@ -163,7 +162,6 @@ codeunit 50010 Antaress
             END;
             OutStreamObj.WRITETEXT();
             Text002 := RecordType1 + SubHeaderType + FillerSubheading + FillerSubheading1;
-            //OutStreamObj.WRITE( Text002);
             Positionlen := STRLEN(Text002);
             Positionlen1 := Positionlen + 1;
             AntaresForm.RESET;
