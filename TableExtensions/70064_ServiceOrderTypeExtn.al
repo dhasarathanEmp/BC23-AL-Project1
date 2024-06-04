@@ -1,4 +1,4 @@
-tableextension 70107 ServiceOrderTypeExtn extends "Service Order Type"
+tableextension 70064 ServiceOrderTypeExtn extends "Service Order Type"
 {
     fields
     {

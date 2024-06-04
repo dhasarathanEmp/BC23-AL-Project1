@@ -1,4 +1,4 @@
-tableextension 70105 ServiceItemLineExtn extends "Service Item Line"
+tableextension 70063 ServiceItemLineExtn extends "Service Item Line"
 {
     fields
     {
