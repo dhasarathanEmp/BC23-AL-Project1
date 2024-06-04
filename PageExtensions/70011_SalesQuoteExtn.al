@@ -8,7 +8,7 @@ pageextension 70011 SalesQuoteExtn extends "Sales Quote"
             {
                 TableRelation = "Quote Template";
             }
-            field(Special_Price_Factor; Rec.Special_Price_Factor)
+            field(Special_Price_Factor; Rec."Special Price Factor")
             {
                 trigger OnValidate()
                 begin
@@ -112,7 +112,7 @@ pageextension 70011 SalesQuoteExtn extends "Sales Quote"
     begin
         GeneralLedgerSetup.FindFirst();
         if Rec.Status = Rec.Status::Open then begin
-            if Rec.Special_Price_Factor <> 0 then begin // If special factory field have in sales header value the below code will execute
+            if Rec."Special Price Factor" <> 0 then begin // If special factory field have in sales header value the below code will execute
                 SalesLine.RESET;
                 SalesLine.SETRANGE("Document Type", Rec."Document Type");
                 SalesLine.SETRANGE("Document No.", Rec."No.");
@@ -123,7 +123,7 @@ pageextension 70011 SalesQuoteExtn extends "Sales Quote"
                         Item.Reset();
                         Item.SetRange("No.", SalesLine."No.");
                         if Item.FindFirst() then begin
-                            SpecialPriceFactorSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * Rec.Special_Price_Factor)
+                            SpecialPriceFactorSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * Rec."Special Price Factor")
                                                         + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesLine."Qty. per Unit of Measure";
                         end;
                         if (Rec."Currency Code" <> '') AND (Rec."Currency Code" <> GeneralLedgerSetup."LCY Code") then begin // If sales header have Currency Code, the Amount Convertion and Rounding Precision calculation below code will work 

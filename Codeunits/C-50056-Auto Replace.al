@@ -60,7 +60,7 @@ codeunit 50056 "Auto Replace"
                             SalesLine3."Line No." := SalesLine2."Line No." + 1000;
                             SalesLine3.Type := SalesLine3.Type::Item;
                             SalesLine3.VALIDATE("No.", NewPartNo);
-                            SalesLine3.Ordered_Part_No := OldPartNo;
+                            SalesLine3.LastPartNumber := OldPartNo;
                             SalesLine3.VALIDATE(Quantity, -ReservationEntry2.Quantity);
                             SalesLine3.VALIDATE("Unit Price", SalesLine."Unit Price");
                             SalesLine3."Customer Serial No" := SalesLine."Customer Serial No";
@@ -117,7 +117,7 @@ codeunit 50056 "Auto Replace"
                                 "BOM Line NO" := SalesLine."BOM Main Line No.";
                                 "BOM Quantity per" := SalesLine."BOM Quantity Per";
                                 SalesLine.VALIDATE("No.", NewPartNo);
-                                SalesLine.Ordered_Part_No := OldPartNo;
+                                SalesLine.LastPartNumber := OldPartNo;
                                 SalesLine.VALIDATE("Unit Price", UnitPrice);
                                 SalesLine."Customer Serial No" := CustomerSerialNo;
                                 SalesLine."BOM Item No" := "BOM Item No";
@@ -136,7 +136,7 @@ codeunit 50056 "Auto Replace"
                                 "BOM Line NO" := SalesLine."BOM Main Line No.";
                                 "BOM Quantity per" := SalesLine."BOM Quantity Per";
                                 SalesLine.VALIDATE("No.", NewPartNo);
-                                SalesLine.Ordered_Part_No := OldPartNo;
+                                SalesLine.LastPartNumber := OldPartNo;
                                 SalesLine.VALIDATE("Unit Price", UnitPrice);
                                 SalesLine."Customer Serial No" := CustomerSerialNo;
                                 SalesLine."BOM Item No" := "BOM Item No";

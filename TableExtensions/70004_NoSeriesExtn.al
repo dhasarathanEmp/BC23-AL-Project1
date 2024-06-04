@@ -20,6 +20,7 @@ tableextension 70004 NoSeriesExtn extends "No. Series"
         {
             DataClassification = ToBeClassified;
             OptionMembers = None,Invoice,CreditMemo;
+            OptionCaption = 'None ,Invoice,Credit Memo';
         }
     }
 

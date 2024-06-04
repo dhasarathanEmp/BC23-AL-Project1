@@ -37,14 +37,14 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         }
         addafter("No.")
         {
-            field("Ordered Part No"; Rec.Ordered_Part_No)
+            field("Ordered Part No"; Rec.LastPartNumber)
             {
 
             }
         }
         addafter("Unit Price")
         {
-            field(CoreCharge; Rec.CoreCharge)
+            field(CoreCharge; Rec."Core Charges")
             {
 
             }
@@ -81,7 +81,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                             if Page.RunModal(Page::ReplacementItem, ItemReplacementHist) = Action::LookupOK then begin
                                 Rec."No." := ItemReplacementHist.ItemNo;
                                 Rec.Validate("No.");
-                                Rec.Ordered_Part_No := OrderedPartNo;
+                                Rec.LastPartNumber := OrderedPartNo;
                                 Rec.Quantity := xRec.Quantity;
                                 Rec.Validate(Quantity);
                             end;
@@ -115,7 +115,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 SalesLine.SetRange("Allow Invoice Disc.", true);
                 if SalesLine.FindSet() then
                     repeat
-                        CoreCharge += SalesLine.Quantity * SalesLine.CoreCharge;
+                        CoreCharge += SalesLine.Quantity * SalesLine."Core Charges";
                         LineAmount += SalesLine.Quantity * SalesLine."Line Amount";
                     until SalesLine.Next = 0;
             end
@@ -126,7 +126,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
                 if SalesLine.FindSet() then
                     repeat
                         IF (Rec.Type = Rec.Type::Item) and (Item.get(Rec."No.")) then
-                            CoreCharge += (SalesLine.Quantity * SalesLine.CoreCharge) * Item."Inventory Factor";
+                            CoreCharge += (SalesLine.Quantity * SalesLine."Core Charges") * Item."Inventory Factor";
                         LineAmount += SalesLine.Quantity * SalesLine."Unit Price";
                     until SalesLine.Next = 0;
             end;

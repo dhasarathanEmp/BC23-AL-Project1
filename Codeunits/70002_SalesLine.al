@@ -7,11 +7,11 @@ codeunit 70002 SalesLine
         Item: Record Item;
         DefaultSalesPrice: Decimal;
     begin
-        if SalesHeader.Special_Price_Factor <> 0 then begin
+        if SalesHeader."Special Price Factor" <> 0 then begin
             Item.Reset();
             Item.SetRange("No.", SalesLine."No.");
             if Item.FindFirst() then begin
-                DefaultSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesHeader.Special_Price_Factor)
+                DefaultSalesPrice := (((Item."Unit Price" - (Item."Dealer Net - Core Deposit" * Item."Inventory Factor")) * SalesHeader."Special Price Factor")
                                                 + (Item."Dealer Net - Core Deposit" * Item."Inventory Factor"));
                 SalesLine."Unit Price" := DefaultSalesPrice;
             end;

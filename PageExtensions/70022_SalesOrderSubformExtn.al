@@ -5,7 +5,7 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
     {
         addafter("No.")
         {
-            field(Ordered_Part_No; Rec.Ordered_Part_No)
+            field(Ordered_Part_No; Rec.LastPartNumber)
             {
 
             }
@@ -29,9 +29,9 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
                         MESSAGE('Replacement Remarks: %1', ItemR."Replacement Remarks");
                     //Fx05
                     IF Rec.Quantity = 0 THEN
-                        Rec.CoreCharge := 0
+                        Rec."Core Charges" := 0
                     ELSE
-                        Rec.CoreCharge := ItemR."Dealer Net - Core Deposit";
+                        Rec."Core Charges" := ItemR."Dealer Net - Core Deposit";
                     //Fx05
                 END;
 
@@ -97,7 +97,7 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
                             if Page.RunModal(Page::ReplacementItem, ItemReplacementHist) = Action::LookupOK then begin
                                 Rec."No." := ItemReplacementHist.ItemNo;
                                 Rec.Validate("No.");
-                                Rec.Ordered_Part_No := OrderedPartNo;
+                                Rec.LastPartNumber := OrderedPartNo;
                                 Rec.Quantity := xRec.Quantity;
                                 Rec.Validate(Quantity);
                             end;

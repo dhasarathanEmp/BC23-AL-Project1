@@ -64,8 +64,8 @@ codeunit 70004 CashReceiptJournal
                         Customer.RESET;
                         Customer.SETRANGE("No.", GenJournalLine."Account No.");
                         IF Customer.FINDFIRST THEN BEGIN
-                            ItemJournalLine."VIN No." := Customer.Vin_No;
-                            ItemJournalLine."Vehicle Model No." := Customer.Vehicle_Model_No;
+                            ItemJournalLine."VIN No." := Customer."Vin No.";
+                            ItemJournalLine."Vehicle Model No." := Customer."Vehicle Model  No.";
                         END;
                         ItemJournalLine.MODIFY;
                     END ELSE

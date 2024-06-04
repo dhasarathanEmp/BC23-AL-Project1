@@ -10,7 +10,7 @@ tableextension 70026 GeneralJournalBatchExtn extends "Gen. Journal Batch"
         field(50001; "Responsibility Center"; Code[30])
         {
             DataClassification = ToBeClassified;
-            TableRelation = Location.Code;
+            TableRelation = "Responsibility Center".Code;
         }
     }
 

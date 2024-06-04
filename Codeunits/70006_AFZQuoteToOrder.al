@@ -21,7 +21,7 @@ codeunit 70006 AFZQuoteToOrder
         //Cu015
         CompanyInfo.Get;
         IF CompanyInfo.AFZ THEN BEGIN
-            SalesOrderLine."Unit Price" := (SalesOrderLine."Unit Price" - SalesOrderLine.CoreCharge) * (100 - SalesOrderHeader.AFZDiscount) / 100 + SalesOrderLine.CoreCharge;
+            SalesOrderLine."Unit Price" := (SalesOrderLine."Unit Price" - SalesOrderLine."Core Charges") * (100 - SalesOrderHeader.AFZDiscount) / 100 + SalesOrderLine."Core Charges";
             SalesOrderLine."Unit Price" := ROUND(SalesOrderLine."Unit Price", 0.01, '=');
             SalesOrderLine."Inv. Discount Amount" := 0;
         END;

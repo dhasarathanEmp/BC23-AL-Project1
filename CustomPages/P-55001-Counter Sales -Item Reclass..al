@@ -1961,8 +1961,8 @@ page 55001 "Counter Sales -Item Reclass."
                     IF CusRec.GET(ContBus."No.") THEN BEGIN
                         Rec."Customer Name1" := CusRec.Name;
                         //
-                        Rec."VIN No." := CusRec.Vin_No;
-                        Rec."Vehicle Model No." := CusRec.Vehicle_Model_No;
+                        Rec."VIN No." := CusRec."Vin No.";
+                        Rec."Vehicle Model No." := CusRec."Vehicle Model  No.";
                         //
                         Rec."Currency Code" := ContRec."Currency Code";
                         Rec."VAT Bus" := CusRec."VAT Bus. Posting Group";
@@ -1977,8 +1977,8 @@ page 55001 "Counter Sales -Item Reclass."
                     IF CusRec.GET(ContBus."No.") THEN BEGIN
                         Rec."Customer Name1" := CusRec.Name;
                         //
-                        Rec."VIN No." := CusRec.Vin_No;
-                        Rec."Vehicle Model No." := CusRec.Vehicle_Model_No;
+                        Rec."VIN No." := CusRec."Vin No.";
+                        Rec."Vehicle Model No." := CusRec."Vehicle Model  No.";
                         //
                         Rec."Currency Code" := ContRec."Currency Code";
                         Rec."VAT Bus" := CusRec."VAT Bus. Posting Group";

@@ -6,6 +6,6 @@ codeunit 70008 AssignCoreChargetoSaleLine
         Currency: Record Currency;
     begin
         IF Currency.GET(SalesLine."Currency Code") then;
-        SalesLine.CoreCharge := Item."Dealer Net - Core Deposit";
+        SalesLine."Core Charges" := Item."Dealer Net - Core Deposit";
     end;
 }

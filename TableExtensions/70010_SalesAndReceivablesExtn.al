@@ -1,4 +1,4 @@
-tableextension 70005 SalesAndReceivables extends "Sales & Receivables Setup"
+tableextension 70010 SalesAndReceivables extends "Sales & Receivables Setup"
 {
     fields
     {

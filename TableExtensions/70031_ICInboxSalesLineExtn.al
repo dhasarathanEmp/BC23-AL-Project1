@@ -2,10 +2,10 @@ tableextension 70031 ICInboxSalesLineExtn extends "IC Inbox Sales Line"
 {
     fields
     {
-        // Add changes to table fields here
         field(50014; "Customer Serial No"; Code[20])//EP9609
         {
-
+            DataClassification = ToBeClassified;
+            Description = 'CUS022';
         }
     }
 

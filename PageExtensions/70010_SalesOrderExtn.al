@@ -28,7 +28,7 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                     AFZSalesLine.SETFILTER("No.", '<>%1', '');
                     IF AFZSalesLine.FINDSET THEN
                         REPEAT
-                            AFZSalesLine."Unit Price" := ROUND((AFZSalesLine."Unit Price" - AFZSalesLine.CoreCharge) * (100 - Rec.AFZDiscount) / (100 - xRec.AFZDiscount) + AFZSalesLine.CoreCharge, 0.01);
+                            AFZSalesLine."Unit Price" := ROUND((AFZSalesLine."Unit Price" - AFZSalesLine."Core Charges") * (100 - Rec.AFZDiscount) / (100 - xRec.AFZDiscount) + AFZSalesLine."Core Charges", 0.01);
                             AFZSalesLine.VALIDATE("Unit Price");
                             AFZSalesLine.MODIFY;
                         UNTIL AFZSalesLine.NEXT = 0;
@@ -52,7 +52,7 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                 myInt: Integer;
             begin
                 ItemCategory.RESET;
-                ItemCategory.SETRANGE("Is mandatory Customer PO No", TRUE);
+                ItemCategory.SETRANGE("Is mandatory Customer PO No", true);
                 IF ItemCategory.FINDSET THEN
                     REPEAT
                         SalesLineBuf.RESET;
