@@ -1,4 +1,4 @@
-tableextension 70110 WarehouseEntryExtn extends "Warehouse Entry"
+tableextension 70065 WarehouseEntryExtn extends "Warehouse Entry"
 {
     fields
     {

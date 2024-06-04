@@ -1,4 +1,4 @@
-tableextension 70085 CustomerTemplateExtn extends "Customer Template"
+tableextension 70077 CustomerTemplateExtn extends "Customer Template"
 {
     fields
     {

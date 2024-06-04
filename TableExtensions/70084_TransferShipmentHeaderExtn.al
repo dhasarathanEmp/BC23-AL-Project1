@@ -1,4 +1,4 @@
-tableextension 70097 TransferShipmentHeaderExtn extends "Transfer Shipment Header"
+tableextension 70084 TransferShipmentHeaderExtn extends "Transfer Shipment Header"
 {
     fields
     {

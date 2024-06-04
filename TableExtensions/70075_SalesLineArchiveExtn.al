@@ -1,4 +1,4 @@
-tableextension 70087 SalesLineArchiveExtn extends "Sales Line Archive"
+tableextension 70075 SalesLineArchiveExtn extends "Sales Line Archive"
 {
     fields
     {

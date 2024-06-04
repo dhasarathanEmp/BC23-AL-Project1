@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="JobOrderNo_TemporaryJobOrders">
+          <DataField>JobOrderNo_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="JobDescription_TemporaryJobOrders">
+          <DataField>JobDescription_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="JobCreationDate_TemporaryJobOrders">
+          <DataField>JobCreationDate_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="JobStatus_TemporaryJobOrders">
+          <DataField>JobStatus_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="Location_TemporaryJobOrders">
+          <DataField>Location_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="CustomerName_TemporaryJobOrders">
+          <DataField>CustomerName_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="VehiclePlateNo_TemporaryJobOrders">
+          <DataField>VehiclePlateNo_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="ModelNo_TemporaryJobOrders">
+          <DataField>ModelNo_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="JobCradNo_TemporaryJobOrders">
+          <DataField>JobCradNo_TemporaryJobOrders</DataField>
+        </Field>
+        <Field Name="UserName">
+          <DataField>UserName</DataField>
+        </Field>
+        <Field Name="ItemNo_TemporaryDeliveryHistory">
+          <DataField>ItemNo_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="DateofEnquiry_TemporaryDeliveryHistory">
+          <DataField>DateofEnquiry_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="DocumentNo_TemporaryDeliveryHistory">
+          <DataField>DocumentNo_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="Description_TemporaryDeliveryHistory">
+          <DataField>Description_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="LocationCode_TemporaryDeliveryHistory">
+          <DataField>LocationCode_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="Quantity_TemporaryDeliveryHistory">
+          <DataField>Quantity_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="Quantity_TemporaryDeliveryHistoryFormat">
+          <DataField>Quantity_TemporaryDeliveryHistoryFormat</DataField>
+        </Field>
+        <Field Name="DiscountAmount1_TemporaryDeliveryHistory">
+          <DataField>DiscountAmount1_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="DiscountAmount1_TemporaryDeliveryHistoryFormat">
+          <DataField>DiscountAmount1_TemporaryDeliveryHistoryFormat</DataField>
+        </Field>
+        <Field Name="LineAmount_TemporaryDeliveryHistory">
+          <DataField>LineAmount_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="LineAmount_TemporaryDeliveryHistoryFormat">
+          <DataField>LineAmount_TemporaryDeliveryHistoryFormat</DataField>
+        </Field>
+        <Field Name="UnitPrice_TemporaryDeliveryHistory">
+          <DataField>UnitPrice_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="UnitPrice_TemporaryDeliveryHistoryFormat">
+          <DataField>UnitPrice_TemporaryDeliveryHistoryFormat</DataField>
+        </Field>
+        <Field Name="Discount_TemporaryDeliveryHistory">
+          <DataField>Discount_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="Discount_TemporaryDeliveryHistoryFormat">
+          <DataField>Discount_TemporaryDeliveryHistoryFormat</DataField>
+        </Field>
+        <Field Name="JobOrderNo_TemporaryDeliveryHistory">
+          <DataField>JobOrderNo_TemporaryDeliveryHistory</DataField>
+        </Field>
+        <Field Name="JobcardNo_TemporaryDeliveryHistory">
+          <DataField>JobcardNo_TemporaryDeliveryHistory</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

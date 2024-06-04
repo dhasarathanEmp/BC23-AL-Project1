@@ -1,4 +1,4 @@
-tableextension 70102 WarehouseActivityLineExtn extends "Warehouse Activity Line"
+tableextension 70067 WarehouseActivityLineExtn extends "Warehouse Activity Line"
 {
     fields
     {

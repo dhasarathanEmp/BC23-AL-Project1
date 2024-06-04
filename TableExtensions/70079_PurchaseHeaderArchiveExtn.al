@@ -1,4 +1,4 @@
-tableextension 70088 PurchaseHeaderArchiveExtn extends "Purchase Header Archive" 
+tableextension 70079 PurchaseHeaderArchiveExtn extends "Purchase Header Archive"
 {
     fields
     {

@@ -1,4 +1,4 @@
-tableextension 70095 StockkeepingUnitExtn extends "Stockkeeping Unit"
+tableextension 70072 StockkeepingUnitExtn extends "Stockkeeping Unit"
 {
     fields
     {

@@ -1,4 +1,4 @@
-tableextension 70099 TransferReceiptHeaderExtn extends "Transfer Receipt Header"
+tableextension 70086 TransferReceiptHeaderExtn extends "Transfer Receipt Header"
 {
     fields
     {

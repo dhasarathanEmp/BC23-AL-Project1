@@ -1,4 +1,4 @@
-tableextension 70101 WarehouseRequestExtn extends "Warehouse Request"
+tableextension 70071 WarehouseRequestExtn extends "Warehouse Request"
 {
     fields
     {

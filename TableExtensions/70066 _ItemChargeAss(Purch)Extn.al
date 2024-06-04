@@ -1,4 +1,4 @@
-tableextension 70103 "ItemChargeAss(Purch)Extn" extends "Item Charge Assignment (Purch)"
+tableextension 70066 "ItemChargeAss(Purch)Extn" extends "Item Charge Assignment (Purch)"
 {
     fields
     {

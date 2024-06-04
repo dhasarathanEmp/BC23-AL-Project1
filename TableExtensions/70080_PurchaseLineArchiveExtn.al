@@ -1,4 +1,4 @@
-tableextension 70089 PurchaseLineArchiveExtn extends "Purchase Line Archive"
+tableextension 70080 PurchaseLineArchiveExtn extends "Purchase Line Archive"
 {
     fields
     {
