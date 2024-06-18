@@ -63,7 +63,24 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
         {
             Editable = PriceEditable;
         }
+        modify("Invoice Disc. Pct.")
+        {
+            Editable = NOT IsAFZ;
+            trigger OnBeforeValidate()
+            var
+                SalesHeader: Record "Sales Header";
+            begin
+                SalesHeader.Get(Rec."Document Type", Rec."Document No.");
+                SalesHeader."Invoice Discount%" := InvoiceDiscountPct;
+                SalesHeader.Modify();
+            end;
 
+            trigger OnAfterValidate()
+            var
+            begin
+                //DiscountAmountUpdate();
+            end;
+        }
     }
 
     actions
@@ -107,7 +124,15 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
             }
         }
     }
-
+    trigger OnOpenPage()
+    var
+        myInt: Integer;
+    begin
+        IF (CompanyInfo.Get) AND (CompanyInfo.AFZ = TRUE) then
+            IsAFZ := TRUE
+        Else
+            IsAFZ := false;
+    end;
 
     var
         Item: Record Item;
@@ -124,6 +149,8 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
         DisPercent: Decimal;
         ItemR: Record Item;
         BOM: Record "BOM Component";
+        CompanyInfo: Record "Company Information";
+        IsAFZ: Boolean;
 
     procedure Initial_Parent_ChildRelation(ParentItm: Code[30]; ChildItm: Code[30])
     begin

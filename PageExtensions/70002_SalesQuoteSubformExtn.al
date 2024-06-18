@@ -20,6 +20,7 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         }
         modify("Invoice Disc. Pct.")
         {
+            Editable = NOT IsAFZ;
             trigger OnBeforeValidate()
             var
                 SalesHeader: Record "Sales Header";
@@ -91,6 +92,15 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        myInt: Integer;
+    begin
+        IF (CompanyInfo.Get) AND (CompanyInfo.AFZ = TRUE) then
+            IsAFZ := TRUE
+        Else
+            IsAFZ := false;
+    end;
 
     procedure DiscountAmountUpdate()
     var
@@ -254,4 +264,6 @@ pageextension 70002 SalesQuoteSubformExtn extends "Sales Quote Subform"
         UploadFile: Codeunit Nissan;
         SalesLine: Record "Sales Line";
         DisPercent: Decimal;
+        CompanyInfo: Record "Company Information";
+        IsAFZ: Boolean;
 }

@@ -358,15 +358,9 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
                     end
                     else begin
                         SalesSetup.GetRecordOnce();
-                        if SalesSetup.Inc_CoreCharge = true then begin
-                            SalesH.GET(Rec."Document Type", Rec."Document No.");
-                            "Inv. Discount Amount" := ("Line Amount" - "Core Charges" * Quantity * Item."Inventory Factor") * SalesH."Invoice Discount%" / 100;
-                            UpdateAmounts();
-                        end else begin
-                            SalesH.GET(Rec."Document Type", Rec."Document No.");
-                            "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
-                            UpdateAmounts();
-                        end;
+                        SalesH.GET(Rec."Document Type", Rec."Document No.");
+                        "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
+                        UpdateAmounts();
                     end;
                 end;
             end;
@@ -377,11 +371,7 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
             var
                 Item: Record Item;
             begin
-                if Rec.Type = Rec.Type::Item then begin
-                    Item.Get(Rec."No.");
-                    OldUP := xRec."Unit Price" - xRec."Core Charges" * Item."Inventory Factor";
-                end else
-                    OldUP := xRec."Unit Price";
+                OldUP := xRec."Unit Price";
                 if OldUP > 0 then begin
                     InvDiscAmt := "Inv. Discount Amount";
                     InvDiscAmttoInv := "Inv. Disc. Amount to Invoice";
@@ -406,13 +396,7 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
                 NewUP: Decimal;
                 LineCore: Decimal;
             begin
-                if Rec.Type = Rec.Type::Item then begin
-                    Item.Get(Rec."No.");
-                    NewUP := ("Unit Price" - "Core Charges" * Item."Inventory Factor");
-                    LineCore := Quantity * "Core Charges" * Item."Inventory Factor";
-                END Else
-                    NewUP := "Unit Price";
-                LineCore := 0;
+                NewUP := "Unit Price";
                 if (NewUP <> OldUP) then begin
                     if (OldUP <> 0) then begin
                         "Inv. Discount Amount" := NewUP / OldUP * InvDiscAmt;
@@ -420,16 +404,10 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
                         UpdateAmounts();
                     end
                     else begin
-                        SalesSetup.GetRecordOnce();
-                        if SalesSetup.Inc_CoreCharge = true then begin
-                            SalesH.GET(Rec."Document Type", Rec."Document No.");
-                            "Inv. Discount Amount" := ("Line Amount" - LineCore) * SalesH."Invoice Discount%" / 100;
-                            UpdateAmounts();
-                        end else begin
-                            SalesH.GET(Rec."Document Type", Rec."Document No.");
-                            "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
-                            UpdateAmounts();
-                        end;
+                        SalesH.GET(Rec."Document Type", Rec."Document No.");
+                        "Inv. Discount Amount" := "Line Amount" * SalesH."Invoice Discount%" / 100;
+                        UpdateAmounts();
+
                     end;
                 end;
             end;
@@ -564,6 +542,10 @@ tableextension 70002 SalesLineExtn extends "Sales Line"
             end;
         }
         field(50038; "Cancelled Quantity"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50039; OrgUnitPriceAFZ; Decimal)
         {
             DataClassification = ToBeClassified;
         }

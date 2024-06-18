@@ -19,6 +19,28 @@ pageextension 70011 SalesQuoteExtn extends "Sales Quote"
 
                 end;
             }
+            field(AFZDiscount; Rec.AFZDiscount)
+            {
+                ApplicationArea = All;
+                Editable = IsAFZ;
+                trigger OnValidate()
+                var
+                    AFZSalesLine: Record "Sales Line";
+                begin
+                    IF Rec.Status <> Rec.Status::Open THEN
+                        ERROR('The Order is not Open');
+                    AFZSalesLine.RESET;
+                    AFZSalesLine.SETRANGE("Document No.", Rec."No.");
+                    AFZSalesLine.SETFILTER("No.", '<>%1', '');
+                    IF AFZSalesLine.FINDSET THEN
+                        REPEAT
+                            AFZSalesLine.OrgUnitPriceAFZ := ROUND((AFZSalesLine."Unit Price" - AFZSalesLine."Core Charges") * 100 / (100 - xRec.AFZDiscount) + AFZSalesLine."Core Charges", 0.01);
+                            AFZSalesLine."Unit Price" := ROUND((AFZSalesLine."Unit Price" - AFZSalesLine."Core Charges") * (100 - Rec.AFZDiscount) / (100 - xRec.AFZDiscount) + AFZSalesLine."Core Charges", 0.01);
+                            AFZSalesLine.VALIDATE("Unit Price");
+                            AFZSalesLine.MODIFY;
+                        UNTIL AFZSalesLine.NEXT = 0;
+                end;
+            }
 
         }
         addafter("Your Reference")
@@ -98,7 +120,12 @@ pageextension 70011 SalesQuoteExtn extends "Sales Quote"
             Printenabled := TRUE
         ELSE
             Printenabled := FALSE;
+        IF (CompanyInfo.GET) AND CompanyInfo.AFZ then
+            IsAFZ := true
+        else
+            IsAFZ := false;
     end;
+
 
     procedure UpdateSpecialPriceFactortoLines()
     var
@@ -186,6 +213,8 @@ pageextension 70011 SalesQuoteExtn extends "Sales Quote"
         ConfirmationMess: Text;
         CurrencyConvertedPrice: Decimal;
         Printenabled: Boolean;
+        IsAFZ: Boolean;
+        CompanyInfo: Record "Company Information";
 
     trigger OnAfterGetRecord()
     begin

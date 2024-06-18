@@ -7,7 +7,39 @@ codeunit 70001 GetSpecialBinsforExclReserv
     begin
         bin.Reset();
         bin.SetRange("Location Code", Location.Code);
+        bin.SetRange("Counter sale", true);
+        IF bin.FindSet() then
+            repeat
+                if (bin.Code <> '') and not SpecialBins.Contains(bin.Code) then
+                    SpecialBins.Add(bin.Code);
+            until bin.Next() = 0;
+        bin.Reset();
+        bin.SetRange("Location Code", Location.Code);
+        bin.SetRange("Temporary Delivery", true);
+        IF bin.FindSet() then
+            repeat
+                if (bin.Code <> '') and not SpecialBins.Contains(bin.Code) then
+                    SpecialBins.Add(bin.Code);
+            until bin.Next() = 0;
+        bin.Reset();
+        bin.SetRange("Location Code", Location.Code);
+        bin.SetRange(Discrepancy, true);
+        IF bin.FindSet() then
+            repeat
+                if (bin.Code <> '') and not SpecialBins.Contains(bin.Code) then
+                    SpecialBins.Add(bin.Code);
+            until bin.Next() = 0;
+        bin.Reset();
+        bin.SetRange("Location Code", Location.Code);
         bin.SetRange(Blocks, true);
+        IF bin.FindSet() then
+            repeat
+                if (bin.Code <> '') and not SpecialBins.Contains(bin.Code) then
+                    SpecialBins.Add(bin.Code);
+            until bin.Next() = 0;
+        bin.Reset();
+        bin.SetRange("Location Code", Location.Code);
+        bin.SetRange(DeadStocks, true);
         IF bin.FindSet() then
             repeat
                 if (bin.Code <> '') and not SpecialBins.Contains(bin.Code) then
