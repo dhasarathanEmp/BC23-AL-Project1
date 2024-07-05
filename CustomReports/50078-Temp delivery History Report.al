@@ -1,7 +1,7 @@
 report 50078 "Temp delivery History Report"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Temp delivery History Report.rdlc';
+    RDLCLayout = 'Temp delivery History Report.rdl';
     Caption = 'Temporary Delivery Confirmation Report';
 
     dataset
