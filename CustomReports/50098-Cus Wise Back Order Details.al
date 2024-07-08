@@ -205,7 +205,7 @@ report 50098 "Cus Wise Back Order Details"
                         IF QtyToReserveBase > 0 THEN BEGIN
                             ReservEntry.RESET;
                             ReservEngineMgt.InitFilterAndSortingLookupFor(ReservEntry, TRUE);
-                            ReserveSalesLine.FilterReservFor(ReservEntry, "Sales Line");
+                            //ReserveSalesLine.FilterReservFor(ReservEntry, "Sales Line");
                             IF ReservEntry.FINDSET THEN
                                 REPEAT
                                     ReservEntryFrom.RESET;

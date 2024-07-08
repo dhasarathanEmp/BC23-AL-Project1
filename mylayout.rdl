@@ -285,6 +285,18 @@ End Function
         <Field Name="LineDimensionsCaption">
           <DataField>LineDimensionsCaption</DataField>
         </Field>
+        <Field Name="TransferfromCode_TransferHeader">
+          <DataField>TransferfromCode_TransferHeader</DataField>
+        </Field>
+        <Field Name="TransfertoCode_TransferHeader">
+          <DataField>TransfertoCode_TransferHeader</DataField>
+        </Field>
+        <Field Name="TransferfromCode_TransferLine">
+          <DataField>TransferfromCode_TransferLine</DataField>
+        </Field>
+        <Field Name="TransfertoCode_TransferLine">
+          <DataField>TransfertoCode_TransferLine</DataField>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>DataSource</DataSourceName>

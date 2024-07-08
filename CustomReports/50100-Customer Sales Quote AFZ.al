@@ -1,9 +1,9 @@
-report 50032 "Order Acknowledgement"
+report 50100 "Customer Sales Quote AFZ"
 {
     // Fx01 Hiding Row Containing Sales Tax if Sales Tax is 0
     // IF01 Postfix Removal
     DefaultLayout = RDLC;
-    RDLCLayout = './Order Acknowledgement.rdlc';
+    RDLCLayout = 'Customer Sales Quote AFZ.rdl';
 
 
     dataset
@@ -11,7 +11,7 @@ report 50032 "Order Acknowledgement"
         dataitem(DataItem1; "Sales Header")
         {
             DataItemTableView = SORTING("Document Type", "No.")
-                                WHERE("Document Type" = CONST(Order));
+                                WHERE("Document Type" = CONST(Quote));
             RequestFilterFields = "No.";
             column(OrderDate_SalesHeader; "Order Date")
             {
@@ -61,9 +61,6 @@ report 50032 "Order Acknowledgement"
             column(CustomerOrderNo; "External Document No.")
             {
             }
-            column(CPOD; "Customer PO date")
-            {
-            }
             column(Location; "Location Code")
             {
             }
@@ -100,13 +97,13 @@ report 50032 "Order Acknowledgement"
             column(CustomerName; "Sell-to Customer Name")
             {
             }
-            column(SOVersionNo_SalesHeader; "SO Version No.")
+            column(Version_No_; "Version No.")
             {
             }
             column(InvDiscountPer; "Invoice Discount%")
             {
             }
-            column(SORevisionDate_SalesHeader; "SO Revision Date")
+            column(Latest_Version_Date; "Latest Version Date")
             {
             }
             column(Discount; "Invoice Discount Value")
@@ -211,9 +208,6 @@ report 50032 "Order Acknowledgement"
                 column(LineDisPer; "Sales Line"."Line Discount %")
                 {
                 }
-                column(WarehouseNo; WhseNo)
-                {
-                }
                 column(ToQuantity; ToQuantity)
                 {
                 }
@@ -242,9 +236,6 @@ report 50032 "Order Acknowledgement"
                 {
                 }
                 column(SapNo_SalesLine; "Sales Line"."Sap No")
-                {
-                }
-                column(PONumber_SalesLine; "Sales Line"."PO Number")
                 {
                 }
                 column(GrossWeightkG_SalesLine; "Sales Line"."Gross Weight kG")
@@ -409,10 +400,10 @@ report 50032 "Order Acknowledgement"
                     LocName := Location.Name;
                     TRNo := Location."Name 2";
                 END;
-                IF "Sales Header"."SO Revision Date" = 0D THEN
+                IF "Sales Header"."Latest Version Date" = 0D THEN
                     VerDate := "Sales Header"."Order Date"
                 ELSE
-                    VerDate := "Sales Header"."SO Revision Date";
+                    VerDate := "Sales Header"."Latest Version Date";
             end;
 
             trigger OnPreDataItem()
@@ -435,9 +426,7 @@ report 50032 "Order Acknowledgement"
         {
             area(content)
             {
-                field("Exclude Protective Bin"; Exclude)
-                {
-                }
+
             }
         }
 
