@@ -6,7 +6,7 @@ report 50024 "Customer sales Quote"
     // Fx02 Different total format EPS and AFZ
     // EP9615 All the quote template conten will appear in quotation report
     DefaultLayout = RDLC;
-    RDLCLayout = './Customer sales Quote.rdlc';
+    RDLCLayout = './Customer sales Quote.rdl';
 
 
     dataset

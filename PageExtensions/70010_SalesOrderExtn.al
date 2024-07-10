@@ -76,6 +76,7 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                 onetoone."Create TO Against SO"(Rec."No.");
             end;
         }
+
         addafter(History)
         {
             action("Auto Reserve")
@@ -105,6 +106,56 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                 end;
             }
 
+            group("Report")
+            {
+                action("Order Acknowledgement")
+                {
+                    Image = PrintAcknowledgement;
+
+                    trigger OnAction()
+                    begin
+                        DocPrint.PrintSalesOrder(Rec, Usage::"Order Confirmation");
+                    end;
+                }
+
+                action("New Order Checklist")
+                {
+                    Image = Report;
+
+                    trigger OnAction()
+                    begin
+                        Saleshdr.RESET;
+                        Saleshdr.SETRANGE("Document Type", Rec."Document Type");
+                        Saleshdr.SETRANGE("No.", Rec."No.");
+                        REPORT.RUNMODAL(50037, TRUE, TRUE, Saleshdr);
+                    end;
+                }
+
+                action("Stock Request")
+                {
+                    Image = Report;
+
+                    trigger OnAction()
+                    begin
+                        Saleshdr.RESET;
+                        Saleshdr.SETRANGE("No.", Rec."No.");
+                        REPORT.RUNMODAL(REPORT::"Sales Order Stock Request", TRUE, TRUE, Saleshdr);
+                    end;
+                }
+
+                action("Picking Slip")
+                {
+                    Image = Report;
+
+                    trigger OnAction()
+                    begin
+                        Saleshdr.RESET;
+                        Saleshdr.SETRANGE("No.", Rec."No.");
+                        REPORT.RUNMODAL(REPORT::"Picking Slip", TRUE, TRUE, Saleshdr);
+                    end;
+                }
+            }
+
         }
     }
     trigger OnOpenPage()
@@ -129,4 +180,8 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
         SalesLineBuf: Record "Sales Line";
         IsAFZ: Boolean;
         CompanyInfo: Record "Company Information";
+        DocPrint: Codeunit "Document-Print";
+        Usage: Option "Order Confirmation","Work Order","Pick Instruction","Sales Order Stock1";
+        Saleshdr: Record "Sales Header";
+
 }

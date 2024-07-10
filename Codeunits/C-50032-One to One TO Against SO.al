@@ -46,7 +46,7 @@ codeunit 50032 "One to One TO Against SO"
     begin
         TransferOrderNumber := '';
         CLEAR(NoSeriesMgt);
-        TransferOrderNumber := NoSeriesMgt.GetNextNo('T-ORD', 0D, TRUE);
+        TransferOrderNumber := NoSeriesMgt.GetNextNo('T-TO', 0D, TRUE);
         HeaderControll := 1;
         SalesLine.RESET;
         SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
@@ -147,7 +147,7 @@ codeunit 50032 "One to One TO Against SO"
             Location.SETRANGE(Code, 'HOD-HO');
             IF Location.FINDFIRST THEN BEGIN
                 TransferHeader."Transfer-from Name" := Location.Name;
-                //TransferHeader."Transfer-from Name 2" := Location."T.R.No";
+                TransferHeader."Transfer-from Name 2" := Location."Name 2";
                 TransferHeader."Transfer-from Address" := Location.Address;
                 TransferHeader."Transfer-from Address 2" := Location."Address 2";
                 TransferHeader."Transfer-from Post Code" := Location."Post Code";
@@ -160,7 +160,7 @@ codeunit 50032 "One to One TO Against SO"
             Location1.SETRANGE(Code, SalesHeader1."Location Code");
             IF Location1.FINDFIRST THEN BEGIN
                 TransferHeader."Transfer-to Name" := Location1.Name;
-                //TransferHeader."Transfer-to Name 2" := Location1."T.R.No";
+                TransferHeader."Transfer-to Name 2" := Location1."Name 2";
                 TransferHeader."Transfer-to Address" := Location1.Address;
                 TransferHeader."Transfer-to Address 2" := Location1."Address 2";
                 TransferHeader."Transfer-to Post Code" := Location1."Post Code";
