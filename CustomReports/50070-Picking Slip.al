@@ -180,9 +180,9 @@ report 50070 "Picking Slip"
                 column(SerialNo; "Sl.No")
                 {
                 }
-                /*column(CustomerPartNo; "Cross-Reference No.")
+                column(CustomerPartNo; "Item Reference No.")
                 {
-                }*/
+                }
                 column(AmountIncVat; "Amount Including VAT")
                 {
                 }

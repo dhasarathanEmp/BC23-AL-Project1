@@ -178,9 +178,9 @@ report 50037 "New Order CheckList"
                 column(SerialNo; "Sl.No")
                 {
                 }
-                /*column(CustomerPartNo; "Cross-Reference No.")
+                column(CustomerPartNo; "Item Reference No.")
                 {
-                }*/
+                }
                 column(AmountIncVat; "Amount Including VAT")
                 {
                 }

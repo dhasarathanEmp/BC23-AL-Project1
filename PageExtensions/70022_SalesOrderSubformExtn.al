@@ -13,6 +13,7 @@ pageextension 70022 SalesOrderSubformExtn extends "Sales Order Subform"
             {
                 Caption = 'Purchase Order Serial No';
             }
+            
         }
 
         modify("No.")
