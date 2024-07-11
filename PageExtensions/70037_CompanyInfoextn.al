@@ -2,9 +2,20 @@ pageextension 70037 CompanyInfoExtn extends "Company Information"
 {
     layout
     {
-        // Add changes to page layout here
         addafter(Name)
         {
+            field(Auto; Rec.Auto)
+            {
+
+            }
+            field(EPS; Rec.EPS)
+            {
+
+            }
+            field(Division; Rec.Division)
+            {
+
+            }
             field(AFZ; Rec.AFZ)
             {
                 ApplicationArea = All;

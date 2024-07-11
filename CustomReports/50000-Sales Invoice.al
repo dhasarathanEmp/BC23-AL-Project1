@@ -305,7 +305,7 @@ report 50000 "Sales Invoice"
         Text: Text[250];
         "Vat Amount": Decimal;
         Subtotal: Decimal;
-        CompanyRec: Record Company;
+        CompanyRec: Record "Company Information";
         Division: Text;
         Contact: Record Contact;
         ContAddress: Text[50];
