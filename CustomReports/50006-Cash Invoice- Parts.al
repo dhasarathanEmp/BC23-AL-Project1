@@ -1,14 +1,16 @@
-report 50002 "Cash Invoice"
+report 50006 "Cash Invoice- Parts"
 {
-    // IF01 Removing Postfix from Part No
     DefaultLayout = RDLC;
-    RDLCLayout = './Cash Invoice.rdlc';
-
+    RDLCLayout = './Cash Invoice- Parts.rdlc';
 
     dataset
     {
         dataitem(DataItem1; "Sales Invoice Header")
         {
+            RequestFilterFields = "No.";
+            column(CompanyInformation_Picture; CompanyInformation.Picture)
+            {
+            }
             column(CSPrepaymentNo_SalesInvoiceHeader; "CS Prepayment No.")
             {
             }
@@ -210,11 +212,15 @@ report 50002 "Cash Invoice"
             column(CountryRegion; CountryRegion1)
             {
             }
-
-            column(VATRegistrationNo_CompanyInformation; "VAT Registration No.")
+            column(Name_CompanyInformation; CompanyInformation.Name)
             {
             }
-
+            column(VATRegistrationNo_CompanyInformation; CompanyInformation."VAT Registration No.")
+            {
+            }
+            column(CompanyInformation_Name; CompanyInformation.Name)
+            {
+            }
             column(Curr1; Curr1)
             {
             }
@@ -227,14 +233,15 @@ report 50002 "Cash Invoice"
             column(CRDocumentNo_SalesInvoiceHeader; "CR  Document No.")
             {
             }
+            column(NissanVisible; NissanVisible)
+            {
+            }
             column(CRExternalReferenceNo_SalesInvoiceHeader; "CR External Reference No.")
             {
             }
             dataitem(DataItem23; "Sales Invoice Line")
             {
                 DataItemLink = "Document No." = FIELD("No.");
-                DataItemTableView = SORTING("No.")
-                                    WHERE("No." = FILTER(<> ''));
                 column(VATBaseAmount_SalesInvoiceLine; "VAT Base Amount")
                 {
                 }
@@ -253,7 +260,7 @@ report 50002 "Cash Invoice"
                 column(ItemCategoryCode_SalesInvoiceLine; "Item Category Code")
                 {
                 }
-                column(Item_Reference_No_; "Item Reference No.")
+                column(CrossReferenceNo_SalesInvoiceLine; "Item Reference No.")
                 {
                 }
                 column(DocumentNo1_SalesInvoiceLine; "Document No.1")
@@ -352,26 +359,9 @@ report 50002 "Cash Invoice"
                 column(Netamount; Netamount)
                 {
                 }
-                column(PartNo; PartNo)
-                {
-                }
 
                 trigger OnAfterGetRecord()
                 begin
-                    //IF01
-                    PartNo := "Sales Invoice Line"."No.";
-                    IF "Sales Invoice Line"."Gen. Prod. Posting Group" <> 'CD' THEN BEGIN
-                        CompareChr1 := COPYSTR(PartNo, 1, 2);
-                        CompareChr2 := COPYSTR("Sales Invoice Line"."Gen. Prod. Posting Group", 1, 1) + '#';
-                        IF CompareChr1 = CompareChr2 THEN
-                            PartNo := COPYSTR(PartNo, 3, STRLEN(PartNo));
-                    END;
-                    //IF01
-                    IF "Sales Invoice Line"."No." <> ItemNo THEN BEGIN
-                        "S.no" += 1;
-                        ItemNo := "Sales Invoice Line"."No.";
-                    END;
-
                     IF "Sales Invoice Line".Type = "Sales Invoice Line".Type::"G/L Account" THEN BEGIN
                         IF Cash = FALSE THEN BEGIN
                             SumAmount := ROUND(TotalAmountinTaxable);
@@ -391,6 +381,7 @@ report 50002 "Cash Invoice"
                                 TotalAmount1 := ROUND((Netamount + TotalTax), 0.01);
                             END
                     END ELSE BEGIN
+                        "S.no" += 1;
                         TotalAmountinTaxable += "Sales Invoice Line"."Line Amount";
                         SumAmount := ROUND(TotalAmountinTaxable);
                         //Discount1 :=ROUND((SumAmount*"Sales Invoice Header"."Invoice Discount%")/100);
@@ -401,8 +392,8 @@ report 50002 "Cash Invoice"
                     InitTextVariables;
                     AmountInWordes := NumberInWords1("Sales Invoice Header"."Amount Including VAT", '', Currcode);
 
-                    /*//CUST004
-                    IF Curr = 'USD' THEN BEGIN
+                    //CUST004
+                    /*IF Curr = 'USD' THEN BEGIN
                       Curr1 := 'YER';
                       CurrencyConvertion("Sales Invoice Header"."Amount Including VAT",Curr1);
                       AmountinYEM := ConvertAmount;
@@ -415,8 +406,8 @@ report 50002 "Cash Invoice"
                       AmountinYEM := ConvertAmount1;
                       NumberInWords2(AmountinYEM,'',Curr1);
                       AmountInWordes1 :=AmountInWordes2;
-                    END;
-                    //CUST004*/
+                    END;*/
+                    //CUST004
 
                     //
                     Location.RESET;
@@ -479,7 +470,7 @@ report 50002 "Cash Invoice"
                     CompanyRec.RESET;
                     CompanyRec.SETRANGE(Name, CompanyInformation.Name);
                     IF CompanyRec.FINDFIRST THEN BEGIN
-                        Division := FORMAT(CompanyRec.Division);
+                        Division := FORMAT(CompanyInformation.Division);
                     END;
                 END;
 
@@ -526,18 +517,6 @@ report 50002 "Cash Invoice"
                     CountryRegion1 := CountryRegion.Name;
             end;
         }
-        dataitem(DataItem3; "Company Information")
-        {
-            column(Name_CompanyInformation; Name)
-            {
-            }
-            column(CompanyInformation_Name; Name)
-            {
-            }
-            column(CompanyInformation_Picture; Picture)
-            {
-            }
-        }
     }
 
     requestpage
@@ -547,12 +526,10 @@ report 50002 "Cash Invoice"
         {
             area(content)
             {
-                group("Payment Detials")
+                group("Nissan Report")
                 {
-                    Visible = false;
-                    field("Advance Payment Detials"; Cash)
+                    field(Nissan; NissanVisible)
                     {
-                        Visible = false;
                     }
                 }
             }
@@ -598,7 +575,7 @@ report 50002 "Cash Invoice"
         Text: Text[250];
         "Vat Amount": Decimal;
         Subtotal: Decimal;
-        CompanyRec: Record "Company Information";
+        CompanyRec: Record Company;
         Division: Text;
         Contact: Record Contact;
         ContAddress: Text[50];
@@ -651,10 +628,7 @@ report 50002 "Cash Invoice"
         ContName: Text;
         AmountInWordes1: Text;
         Customer: Record Customer;
-        ItemNo: Code[20];
-        PartNo: Code[20];
-        CompareChr1: Text;
-        CompareChr2: Text;
+        NissanVisible: Boolean;
         "Sales Invoice Line": Record "Sales Invoice Line";
         "Sales Invoice Header": Record "Sales Invoice Header";
 
