@@ -421,9 +421,10 @@ report 50005 "Sales Quote"
 
     trigger OnPreReport()
     begin
-        IF ChosenOption = 1 THEN
-            IF CurrReport.PREVIEW THEN
+        if ChosenOption = 1 then
+            if CurrReport.Preview then;
     end;
+
 
     var
         Location: Record Location;
