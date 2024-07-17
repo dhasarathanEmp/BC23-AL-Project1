@@ -93,7 +93,7 @@ page 55068 "Job Order Card Page"
     trigger OnDeleteRecord(): Boolean
     begin
         IF (Rec."Job Status" = Rec."Job Status"::Completed) OR (Rec."Job Status" = Rec."Job Status"::"On Job") THEN
-            ERROR('Deletion allowed only for the job status "Open"');
+            ERROR('Deletion allowed only if the job status is "Open"');
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)

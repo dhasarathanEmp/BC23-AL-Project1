@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="PostingDate_SalesInvoiceHeader">
+          <DataField>PostingDate_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="BilltoName_SalesInvoiceHeader">
+          <DataField>BilltoName_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="PreAssignedNo_SalesInvoiceHeader">
+          <DataField>PreAssignedNo_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="No_SalesInvoiceHeader">
+          <DataField>No_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="ModalNo">
+          <DataField>ModalNo</DataField>
+        </Field>
+        <Field Name="LocationCode_SalesInvoiceHeader">
+          <DataField>LocationCode_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="AppliestoDocNo_SalesInvoiceHeader">
+          <DataField>AppliestoDocNo_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="Pakages">
+          <DataField>Pakages</DataField>
+        </Field>
+        <Field Name="CustomerRepresentative">
+          <DataField>CustomerRepresentative</DataField>
+        </Field>
+        <Field Name="ContactName">
+          <DataField>ContactName</DataField>
+        </Field>
+        <Field Name="CrjNo">
+          <DataField>CrjNo</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="GatePass">
+          <DataField>GatePass</DataField>
+        </Field>
+        <Field Name="Address2">
+          <DataField>Address2</DataField>
+        </Field>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+        </Field>
+        <Field Name="PhoneNo">
+          <DataField>PhoneNo</DataField>
+        </Field>
+        <Field Name="FaxNo">
+          <DataField>FaxNo</DataField>
+        </Field>
+        <Field Name="County">
+          <DataField>County</DataField>
+        </Field>
+        <Field Name="TRNo">
+          <DataField>TRNo</DataField>
+        </Field>
+        <Field Name="CountryRegion">
+          <DataField>CountryRegion</DataField>
+        </Field>
+        <Field Name="LocationCode_SalesInvoiceLine">
+          <DataField>LocationCode_SalesInvoiceLine</DataField>
+        </Field>
+        <Field Name="PostingDate_SalesInvoiceLine">
+          <DataField>PostingDate_SalesInvoiceLine</DataField>
+        </Field>
+        <Field Name="DocumentNo_SalesInvoiceLine">
+          <DataField>DocumentNo_SalesInvoiceLine</DataField>
+        </Field>
+        <Field Name="DocumentNo1_SalesInvoiceLine">
+          <DataField>DocumentNo1_SalesInvoiceLine</DataField>
+        </Field>
+        <Field Name="Lable">
+          <DataField>Lable</DataField>
+        </Field>
+        <Field Name="OrderNo">
+          <DataField>OrderNo</DataField>
+        </Field>
+        <Field Name="OrderNo1">
+          <DataField>OrderNo1</DataField>
+        </Field>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+        <Field Name="Date">
+          <DataField>Date</DataField>
+        </Field>
+        <Field Name="Name_CompanyInformation">
+          <DataField>Name_CompanyInformation</DataField>
+        </Field>
+        <Field Name="VATRegistrationNo_CompanyInformation">
+          <DataField>VATRegistrationNo_CompanyInformation</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

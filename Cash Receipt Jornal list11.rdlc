@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="PostingDate_GLEntry">
+          <DataField>PostingDate_GLEntry</DataField>
+        </Field>
+        <Field Name="DocumentType_GLEntry">
+          <DataField>DocumentType_GLEntry</DataField>
+        </Field>
+        <Field Name="DocumentNo_GLEntry">
+          <DataField>DocumentNo_GLEntry</DataField>
+        </Field>
+        <Field Name="Description_GLEntry">
+          <DataField>Description_GLEntry</DataField>
+        </Field>
+        <Field Name="Amount_GLEntry">
+          <DataField>Amount_GLEntry</DataField>
+        </Field>
+        <Field Name="Amount_GLEntryFormat">
+          <DataField>Amount_GLEntryFormat</DataField>
+        </Field>
+        <Field Name="FromDate">
+          <DataField>FromDate</DataField>
+        </Field>
+        <Field Name="ToDate">
+          <DataField>ToDate</DataField>
+        </Field>
+        <Field Name="Doc">
+          <DataField>Doc</DataField>
+        </Field>
+        <Field Name="CNAme">
+          <DataField>CNAme</DataField>
+        </Field>
+        <Field Name="CUCode">
+          <DataField>CUCode</DataField>
+        </Field>
+        <Field Name="AmountinUSD">
+          <DataField>AmountinUSD</DataField>
+        </Field>
+        <Field Name="AmountinUSDFormat">
+          <DataField>AmountinUSDFormat</DataField>
+        </Field>
+        <Field Name="TaxinUSD">
+          <DataField>TaxinUSD</DataField>
+        </Field>
+        <Field Name="TaxinUSDFormat">
+          <DataField>TaxinUSDFormat</DataField>
+        </Field>
+        <Field Name="AmountinvatUSD">
+          <DataField>AmountinvatUSD</DataField>
+        </Field>
+        <Field Name="AmountinvatUSDFormat">
+          <DataField>AmountinvatUSDFormat</DataField>
+        </Field>
+        <Field Name="Curr">
+          <DataField>Curr</DataField>
+        </Field>
+        <Field Name="VATAmount_GLEntry">
+          <DataField>VATAmount_GLEntry</DataField>
+        </Field>
+        <Field Name="VATAmount_GLEntryFormat">
+          <DataField>VATAmount_GLEntryFormat</DataField>
+        </Field>
+        <Field Name="SumAmount">
+          <DataField>SumAmount</DataField>
+        </Field>
+        <Field Name="SumAmountFormat">
+          <DataField>SumAmountFormat</DataField>
+        </Field>
+        <Field Name="Sumtax">
+          <DataField>Sumtax</DataField>
+        </Field>
+        <Field Name="SumtaxFormat">
+          <DataField>SumtaxFormat</DataField>
+        </Field>
+        <Field Name="SumofAmount">
+          <DataField>SumofAmount</DataField>
+        </Field>
+        <Field Name="SumofAmountFormat">
+          <DataField>SumofAmountFormat</DataField>
+        </Field>
+        <Field Name="Amountcal">
+          <DataField>Amountcal</DataField>
+        </Field>
+        <Field Name="AmountcalFormat">
+          <DataField>AmountcalFormat</DataField>
+        </Field>
+        <Field Name="Amountcal1">
+          <DataField>Amountcal1</DataField>
+        </Field>
+        <Field Name="Amountcal1Format">
+          <DataField>Amountcal1Format</DataField>
+        </Field>
+        <Field Name="Amountcal2">
+          <DataField>Amountcal2</DataField>
+        </Field>
+        <Field Name="Amountcal2Format">
+          <DataField>Amountcal2Format</DataField>
+        </Field>
+        <Field Name="UserName">
+          <DataField>UserName</DataField>
+        </Field>
+        <Field Name="AppliestoDocNo_SalesInvoiceHeader">
+          <DataField>AppliestoDocNo_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="PostingDate_SalesInvoiceHeader">
+          <DataField>PostingDate_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="Amount_SalesInvoiceHeader">
+          <DataField>Amount_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="Amount_SalesInvoiceHeaderFormat">
+          <DataField>Amount_SalesInvoiceHeaderFormat</DataField>
+        </Field>
+        <Field Name="CurrencyCode_SalesInvoiceHeader">
+          <DataField>CurrencyCode_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="AmountIncludingVAT_SalesInvoiceHeader">
+          <DataField>AmountIncludingVAT_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="AmountIncludingVAT_SalesInvoiceHeaderFormat">
+          <DataField>AmountIncludingVAT_SalesInvoiceHeaderFormat</DataField>
+        </Field>
+        <Field Name="No_SalesInvoiceHeader">
+          <DataField>No_SalesInvoiceHeader</DataField>
+        </Field>
+        <Field Name="Tax">
+          <DataField>Tax</DataField>
+        </Field>
+        <Field Name="TaxFormat">
+          <DataField>TaxFormat</DataField>
+        </Field>
+        <Field Name="Name_CompanyInformation">
+          <DataField>Name_CompanyInformation</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

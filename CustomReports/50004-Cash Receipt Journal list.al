@@ -164,7 +164,7 @@ report 50004 "Cash Receipt Journal list"
                 {
                     field("From Date"; FromDate)
                     {
-                        DateFormula = false;
+                        //DateFormula = false;
 
                         trigger OnValidate()
                         begin

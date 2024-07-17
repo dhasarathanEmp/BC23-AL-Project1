@@ -28,7 +28,7 @@ pageextension 70029 PostedSalesInvoiceExtn extends "Posted Sales Invoice"
                     trigger OnAction()
                     begin
                         CompanyInfo.RESET;
-                        CompanyInfo.SETRANGE(Name, CURRENTCOMPANY);
+                        CompanyInfo.SETRANGE(Name, Rec.CurrentCompany);
                         CompanyInfo.SETRANGE(AFZ, TRUE);
                         IF CompanyInfo.FINDFIRST THEN BEGIN
                             SalesInvoiceHeader.RESET;
@@ -58,6 +58,62 @@ pageextension 70029 PostedSalesInvoiceExtn extends "Posted Sales Invoice"
 
                     end;
                 }
+                action("Gate Pass")
+                {
+                    Image = Report;
+
+                    trigger OnAction()
+                    begin
+                        SalesShipmentHeader.RESET;
+                        SalesShipmentHeader.SETRANGE("Order No.", Rec."Order No.");
+                        IF SalesShipmentHeader.FINDFIRST THEN BEGIN
+                            IF (SalesShipmentHeader."Vehicle Plate No." = '') OR (SalesShipmentHeader."No. Of Packages" = 0) OR (SalesShipmentHeader."Customer Representative" = '') THEN BEGIN
+                                SalesInvoiceHeader.RESET;
+                                SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
+                                REPORT.RUNMODAL(REPORT::"Gate Pass", TRUE, TRUE, SalesInvoiceHeader);
+                            END ELSE BEGIN
+                                SalesInvoiceHeader.RESET;
+                                SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
+                                REPORT.RUNMODAL(REPORT::"Gate Pass", TRUE, TRUE, SalesInvoiceHeader);
+                            END;
+                        END;
+                    end;
+                }
+                action("Temporary Delivery Invoice")
+                {
+                    Image = Report;
+
+                    trigger OnAction()
+                    begin
+                        SalesInvoiceHeader.RESET;
+                        SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
+                        REPORT.RUNMODAL(REPORT::"Temporary Delivery Invoice", TRUE, TRUE, SalesInvoiceHeader);
+                    end;
+                }
+                action("Label")
+                {
+                    Image = Report;
+
+                    trigger OnAction()
+                    begin
+                        SalesInvoiceHeader.RESET;
+                        SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
+                        REPORT.RUNMODAL(REPORT::"Label Print", TRUE, TRUE, SalesInvoiceHeader);
+                    end;
+                }
+                action("Customer Invoice")
+                {
+                    Image = Report;
+
+                    trigger OnAction()
+                    begin
+                        //EP96 Sending Current posted sales invoice document to print parts invoice report
+                        SalesInvoiceHeader.RESET;
+                        SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
+                        REPORT.RUNMODAL(Report::"Customer Invoice", TRUE, true, SalesInvoiceHeader);
+                        //EP96
+                    end;
+                }
             }
         }
     }
@@ -68,5 +124,6 @@ pageextension 70029 PostedSalesInvoiceExtn extends "Posted Sales Invoice"
         PartsInvoice: Report "Parts Invoice";
         Temp: Text;
         PrinterName: Text;
+        SalesShipmentHeader: Record "Sales Shipment Header";
 
 }

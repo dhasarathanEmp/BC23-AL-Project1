@@ -191,7 +191,7 @@ report 50012 "Cash Receipt Jornal list"
                 {
                     field("From Date"; FromDate)
                     {
-                        DateFormula = false;
+                        //DateFormula = false;
 
                         trigger OnValidate()
                         begin

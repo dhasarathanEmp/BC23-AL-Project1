@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="OrderNumber_BackOrdersTracking">
+          <DataField>OrderNumber_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="CusVenNumber_BackOrdersTracking">
+          <DataField>CusVenNumber_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="CustomerName_BackOrdersTracking">
+          <DataField>CustomerName_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="PartNumber_BackOrdersTracking">
+          <DataField>PartNumber_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="AgencyCode_BackOrdersTracking">
+          <DataField>AgencyCode_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="LocationCode_BackOrdersTracking">
+          <DataField>LocationCode_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="SOLineNo_BackOrdersTracking">
+          <DataField>SOLineNo_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="PurchaseOutstnQty_BackOrdersTracking">
+          <DataField>PurchaseOutstnQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="PurchaseOutstnQty_BackOrdersTrackingFormat">
+          <DataField>PurchaseOutstnQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="TransferOutstnQty_BackOrdersTracking">
+          <DataField>TransferOutstnQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="TransferOutstnQty_BackOrdersTrackingFormat">
+          <DataField>TransferOutstnQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="AssemblyOutstnQty_BackOrdersTracking">
+          <DataField>AssemblyOutstnQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="AssemblyOutstnQty_BackOrdersTrackingFormat">
+          <DataField>AssemblyOutstnQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="Comments_BackOrdersTracking">
+          <DataField>Comments_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="SubOrderNumber_BackOrdersTracking">
+          <DataField>SubOrderNumber_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="UOM_BackOrdersTracking">
+          <DataField>UOM_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="OrderPrice_BackOrdersTracking">
+          <DataField>OrderPrice_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="OrderPrice_BackOrdersTrackingFormat">
+          <DataField>OrderPrice_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="UnreservedQty_BackOrdersTracking">
+          <DataField>UnreservedQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="UnreservedQty_BackOrdersTrackingFormat">
+          <DataField>UnreservedQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="ReservedBranchFreeStock_BackOrdersTracking">
+          <DataField>ReservedBranchFreeStock_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="ReservedBranchFreeStock_BackOrdersTrackingFormat">
+          <DataField>ReservedBranchFreeStock_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="ReservedQty_BackOrdersTracking">
+          <DataField>ReservedQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="ReservedQty_BackOrdersTrackingFormat">
+          <DataField>ReservedQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="OutstandingQt_BackOrdersTracking">
+          <DataField>OutstandingQt_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="OutstandingQt_BackOrdersTrackingFormat">
+          <DataField>OutstandingQt_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="ShippedReceivedQty_BackOrdersTracking">
+          <DataField>ShippedReceivedQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="ShippedReceivedQty_BackOrdersTrackingFormat">
+          <DataField>ShippedReceivedQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="OrderQty_BackOrdersTracking">
+          <DataField>OrderQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="OrderQty_BackOrdersTrackingFormat">
+          <DataField>OrderQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="ReservationType_BackOrdersTracking">
+          <DataField>ReservationType_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="PartDescription_BackOrdersTracking">
+          <DataField>PartDescription_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="SOAOResAgainstTOQty_BackOrdersTracking">
+          <DataField>SOAOResAgainstTOQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="SOAOResAgainstTOQty_BackOrdersTrackingFormat">
+          <DataField>SOAOResAgainstTOQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="ReservedHOFreeStock_BackOrdersTracking">
+          <DataField>ReservedHOFreeStock_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="ReservedHOFreeStock_BackOrdersTrackingFormat">
+          <DataField>ReservedHOFreeStock_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="ReservedAgainstPO_BackOrdersTracking">
+          <DataField>ReservedAgainstPO_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="ReservedAgainstPO_BackOrdersTrackingFormat">
+          <DataField>ReservedAgainstPO_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="TransferUnReservedQty_BackOrdersTracking">
+          <DataField>TransferUnReservedQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="TransferUnReservedQty_BackOrdersTrackingFormat">
+          <DataField>TransferUnReservedQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="SOResAgainstPOQty_BackOrdersTracking">
+          <DataField>SOResAgainstPOQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="SOResAgainstPOQty_BackOrdersTrackingFormat">
+          <DataField>SOResAgainstPOQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="AssemblyResAgainstQty_BackOrdersTracking">
+          <DataField>AssemblyResAgainstQty_BackOrdersTracking</DataField>
+        </Field>
+        <Field Name="AssemblyResAgainstQty_BackOrdersTrackingFormat">
+          <DataField>AssemblyResAgainstQty_BackOrdersTrackingFormat</DataField>
+        </Field>
+        <Field Name="Print_as_Detailed_Report">
+          <DataField>Print_as_Detailed_Report</DataField>
+        </Field>
+        <Field Name="Print_CustomerWise">
+          <DataField>Print_CustomerWise</DataField>
+        </Field>
+        <Field Name="Print_OrderWise">
+          <DataField>Print_OrderWise</DataField>
+        </Field>
+        <Field Name="Print_Sales_ItemWise_Summary">
+          <DataField>Print_Sales_ItemWise_Summary</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

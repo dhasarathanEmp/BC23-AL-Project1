@@ -81,7 +81,7 @@ report 50013 "Cash Receipt Jornal list11"
             dataitem(DataItem9; "Sales Invoice Header")
             {
                 CalcFields = Amount, "Amount Including VAT";
-                DataItemLink = "Applies-to Doc. No."=FIELD("Document No.");
+                DataItemLink = "Applies-to Doc. No." = FIELD("Document No.");
                 DataItemTableView = SORTING("No.");
                 column(AppliestoDocNo_SalesInvoiceHeader; "Applies-to Doc. No.")
                 {
@@ -252,7 +252,7 @@ report 50013 "Cash Receipt Jornal list11"
                 {
                     field("From Date"; FromDate)
                     {
-                        DateFormula = false;
+                        //DateFormula = false;
 
                         trigger OnValidate()
                         begin

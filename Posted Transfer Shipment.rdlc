@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="TransfertoContact_TransferShipmentHeader">
+          <DataField>TransfertoContact_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromContact_TransferShipmentHeader">
+          <DataField>TransferfromContact_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferOrderNo_TransferShipmentHeader">
+          <DataField>TransferOrderNo_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="No_TransferShipmentHeader">
+          <DataField>No_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoFaxNo_TransferShipmentHeader">
+          <DataField>TransfertoFaxNo_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferFromFaxNo_TransferShipmentHeader">
+          <DataField>TransferFromFaxNo_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromCode_TransferShipmentHeader">
+          <DataField>TransferfromCode_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromName_TransferShipmentHeader">
+          <DataField>TransferfromName_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromName2_TransferShipmentHeader">
+          <DataField>TransferfromName2_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="DeliveryOrderNo_TransferShipmentHeader">
+          <DataField>DeliveryOrderNo_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromAddress_TransferShipmentHeader">
+          <DataField>TransferfromAddress_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromAddress2_TransferShipmentHeader">
+          <DataField>TransferfromAddress2_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromPostCode_TransferShipmentHeader">
+          <DataField>TransferfromPostCode_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromCity_TransferShipmentHeader">
+          <DataField>TransferfromCity_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferfromCounty_TransferShipmentHeader">
+          <DataField>TransferfromCounty_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TrsffromCountryRegionCode_TransferShipmentHeader">
+          <DataField>TrsffromCountryRegionCode_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoCode_TransferShipmentHeader">
+          <DataField>TransfertoCode_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoName_TransferShipmentHeader">
+          <DataField>TransfertoName_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoName2_TransferShipmentHeader">
+          <DataField>TransfertoName2_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoAddress_TransferShipmentHeader">
+          <DataField>TransfertoAddress_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoAddress2_TransferShipmentHeader">
+          <DataField>TransfertoAddress2_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoPostCode_TransferShipmentHeader">
+          <DataField>TransfertoPostCode_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoCity_TransferShipmentHeader">
+          <DataField>TransfertoCity_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransfertoCounty_TransferShipmentHeader">
+          <DataField>TransfertoCounty_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TrsftoCountryRegionCode_TransferShipmentHeader">
+          <DataField>TrsftoCountryRegionCode_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="TransferOrderDate_TransferShipmentHeader">
+          <DataField>TransferOrderDate_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="PostingDate_TransferShipmentHeader">
+          <DataField>PostingDate_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="ShortcutDimension1Code_TransferShipmentHeaders">
+          <DataField>ShortcutDimension1Code_TransferShipmentHeaders</DataField>
+        </Field>
+        <Field Name="ShortcutDimension2Code_TransferShipmentHeader">
+          <DataField>ShortcutDimension2Code_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="ShipmentDate_TransferShipmentHeader">
+          <DataField>ShipmentDate_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="ReceiptDate_TransferShipmentHeader">
+          <DataField>ReceiptDate_TransferShipmentHeader</DataField>
+        </Field>
+        <Field Name="Curr">
+          <DataField>Curr</DataField>
+        </Field>
+        <Field Name="FromPhoneNo">
+          <DataField>FromPhoneNo</DataField>
+        </Field>
+        <Field Name="FromFaxNo">
+          <DataField>FromFaxNo</DataField>
+        </Field>
+        <Field Name="ToPhoneNo">
+          <DataField>ToPhoneNo</DataField>
+        </Field>
+        <Field Name="ToFaxNo">
+          <DataField>ToFaxNo</DataField>
+        </Field>
+        <Field Name="FromCounty">
+          <DataField>FromCounty</DataField>
+        </Field>
+        <Field Name="ToCounty">
+          <DataField>ToCounty</DataField>
+        </Field>
+        <Field Name="userName">
+          <DataField>userName</DataField>
+        </Field>
+        <Field Name="FromTRNO">
+          <DataField>FromTRNO</DataField>
+        </Field>
+        <Field Name="ToTRNO">
+          <DataField>ToTRNO</DataField>
+        </Field>
+        <Field Name="CompanyInformationPicture">
+          <DataField>CompanyInformationPicture</DataField>
+        </Field>
+        <Field Name="TransferOrderNo_TransferShipmentLine">
+          <DataField>TransferOrderNo_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="SalesOrderNo1_TransferShipmentLine">
+          <DataField>SalesOrderNo1_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="ItemCategoryCode_TransferShipmentLine">
+          <DataField>ItemCategoryCode_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="GrossWeight_TransferShipmentLine">
+          <DataField>GrossWeight_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="GrossWeight_TransferShipmentLineFormat">
+          <DataField>GrossWeight_TransferShipmentLineFormat</DataField>
+        </Field>
+        <Field Name="NetWeight_TransferShipmentLine">
+          <DataField>NetWeight_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="NetWeight_TransferShipmentLineFormat">
+          <DataField>NetWeight_TransferShipmentLineFormat</DataField>
+        </Field>
+        <Field Name="UnitVolume_TransferShipmentLine">
+          <DataField>UnitVolume_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="UnitVolume_TransferShipmentLineFormat">
+          <DataField>UnitVolume_TransferShipmentLineFormat</DataField>
+        </Field>
+        <Field Name="VariantCode_TransferShipmentLine">
+          <DataField>VariantCode_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="UnitsperParcel_TransferShipmentLine">
+          <DataField>UnitsperParcel_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="UnitsperParcel_TransferShipmentLineFormat">
+          <DataField>UnitsperParcel_TransferShipmentLineFormat</DataField>
+        </Field>
+        <Field Name="Description2_TransferShipmentLine">
+          <DataField>Description2_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="SalesOrder_TransferShipmentLine">
+          <DataField>SalesOrder_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="InTransitCode_TransferShipmentLine">
+          <DataField>InTransitCode_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="TransferfromCode_TransferShipmentLine">
+          <DataField>TransferfromCode_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="TransfertoCode_TransferShipmentLine">
+          <DataField>TransfertoCode_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="ItemShptEntryNo_TransferShipmentLine">
+          <DataField>ItemShptEntryNo_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="ShippingTime_TransferShipmentLine">
+          <DataField>ShippingTime_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="DimensionSetID_TransferShipmentLine">
+          <DataField>DimensionSetID_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="TransferfromBinCode_TransferShipmentLine">
+          <DataField>TransferfromBinCode_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="DocumentNo_TransferShipmentLine">
+          <DataField>DocumentNo_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="LineNo_TransferShipmentLine">
+          <DataField>LineNo_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="ItemNo_TransferShipmentLine">
+          <DataField>ItemNo_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="Quantity_TransferShipmentLine">
+          <DataField>Quantity_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="Quantity_TransferShipmentLineFormat">
+          <DataField>Quantity_TransferShipmentLineFormat</DataField>
+        </Field>
+        <Field Name="UnitofMeasure_TransferShipmentLine">
+          <DataField>UnitofMeasure_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="Description_TransferShipmentLine">
+          <DataField>Description_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="OrderedPartNo_TransferShipmentLine">
+          <DataField>OrderedPartNo_TransferShipmentLine</DataField>
+        </Field>
+        <Field Name="SerialNo">
+          <DataField>SerialNo</DataField>
+        </Field>
+        <Field Name="UnitCost">
+          <DataField>UnitCost</DataField>
+        </Field>
+        <Field Name="UnitCostFormat">
+          <DataField>UnitCostFormat</DataField>
+        </Field>
+        <Field Name="TotalValuerec">
+          <DataField>TotalValuerec</DataField>
+        </Field>
+        <Field Name="TotalValuerecFormat">
+          <DataField>TotalValuerecFormat</DataField>
+        </Field>
+        <Field Name="DeliveryOrder">
+          <DataField>DeliveryOrder</DataField>
+        </Field>
+        <Field Name="ProdCopName">
+          <DataField>ProdCopName</DataField>
+        </Field>
+        <Field Name="VATRegistrationNo_CompanyInformation">
+          <DataField>VATRegistrationNo_CompanyInformation</DataField>
+        </Field>
+        <Field Name="Name_CompanyInformation">
+          <DataField>Name_CompanyInformation</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>
