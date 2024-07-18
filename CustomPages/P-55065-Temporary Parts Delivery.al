@@ -25,11 +25,8 @@ page 55065 "Temporary Parts Delivery"
                 trigger OnLookup(var Text: Text): Boolean
                 begin
                     CurrPage.SaveRecord;
-                    //  >>  CS02
-                    if UserSetupMgmt.GetSalesFilter <> '' then
-                        ItemJnlMgt.LookupName2(CurrentJnlBatchName, Rec, UserSetupMgmt.GetSalesFilter)
-                    else
-                        ItemJnlMgt.LookupName4(CurrentJnlBatchName, Rec);
+                    IF UserSetupMgmt.GetSalesFilter <> '' THEN
+                        LookupName3();
 
                     CurrPage.Update(false);
                 end;
@@ -612,11 +609,7 @@ page 55065 "Temporary Parts Delivery"
         ItemJnlMgt.TemplateSelection(PAGE::"Item Reclass. Journal", 1, false, Rec, JnlSelected);
         if not JnlSelected then
             Error('');
-
-        //  >>  CS02
         CurrentJnlBatchName := CheckUserRC;
-        //  <<  CS02
-
         ItemJnlMgt.OpenJnl(CurrentJnlBatchName, Rec);
     end;
 
@@ -911,7 +904,7 @@ page 55065 "Temporary Parts Delivery"
         Clear(UserSetupMgmt);
         if UserSetupMgmt.GetSalesFilter <> '' then begin
             IJBatch.Reset;
-            IJBatch.SetRange(Rec."Responsibility Center", UserSetupMgmt.GetSalesFilter);
+            IJBatch.SetRange(Responsibility_Center, UserSetupMgmt.GetSalesFilter);
             IJBatch.SetRange("Temporary Delivery", true);
             if IJBatch.FindFirst then
                 exit(IJBatch.Name);
@@ -954,7 +947,7 @@ page 55065 "Temporary Parts Delivery"
         Clear(TotalQty);
         IJL.Reset;
         IJL.SetRange("Source Code", 'RECLASSJNL');
-        IJL.SetRange("Item No.", "Item No.");
+        IJL.SetRange("Item No.", Rec."Item No.");
         IJL.SetRange("Location Code", LocationCode);
         IJL.SetRange("Bin Code", Bincode);
         IJL.SetFilter(Status, '<>%1', IJL.Status::Cancelled);
@@ -968,7 +961,7 @@ page 55065 "Temporary Parts Delivery"
 
     local procedure MapCounterBin()
     begin
-        if CheckBatchName("Journal Batch Name") then begin
+        if CheckBatchName(Rec."Journal Batch Name") then begin
             LocationRec.Reset;
             LocationRec.SetRange(Code, Rec."Location Code");
             if LocationRec.FindFirst then begin
@@ -979,7 +972,7 @@ page 55065 "Temporary Parts Delivery"
                     Bin1.SetRange(Blocks, false);
                     Bin1.SetRange("Temporary Delivery", true);
                     if Bin1.FindFirst then
-                        "New Bin Code" := Bin1.Code
+                        Rec."New Bin Code" := Bin1.Code
                     else
                         Error('Temporary Bin does not exist in the location %1.', Rec."Location Code");
                 end;
@@ -991,7 +984,7 @@ page 55065 "Temporary Parts Delivery"
     begin
         ItemJnlLineCU.Reset;
         ItemJnlLineCU.SetRange("Source Code", 'RECLASSJNL');
-        ItemJnlLineCU.SetRange("Journal Batch Name", "Journal Batch Name");
+        ItemJnlLineCU.SetRange("Journal Batch Name", Rec."Journal Batch Name");
         ItemJnlLineCU.SetRange("Document No.", Rec."Document No.");
         ItemJnlLineCU.SetFilter("Line No.", '<>%1', Rec."Line No.");
         if ItemJnlLineCU.FindFirst then begin
@@ -1012,7 +1005,7 @@ page 55065 "Temporary Parts Delivery"
     begin
         ItemJnlLineCU.Reset;
         ItemJnlLineCU.SetRange("Source Code", 'RECLASSJNL');
-        ItemJnlLineCU.SetRange("Journal Batch Name", "Journal Batch Name");
+        ItemJnlLineCU.SetRange("Journal Batch Name", Rec."Journal Batch Name");
         ItemJnlLineCU.SetRange("Document No.", Rec."Document No.");
         ItemJnlLineCU.SetFilter("Line No.", '<>%1', Rec."Line No.");
         if ItemJnlLineCU.FindSet then
@@ -1048,6 +1041,39 @@ page 55065 "Temporary Parts Delivery"
             end;
         end
         //EP9612
+    end;
+
+    procedure LookupName3()
+    var
+        usersetup: Record "User Setup";
+        Responsibility_Center: Code[30];
+        ItemJnlLine: Record "Item Journal Line";
+        ItemJnlBatch: Record "Item Journal Batch";
+    begin
+        usersetup.Reset();
+        usersetup.SetRange("User ID", UserId);
+        usersetup.SetFilter("Sales Resp. Ctr. Filter", '<>%1', '');
+        if usersetup.FindFirst() then
+            Responsibility_Center := usersetup."Sales Resp. Ctr. Filter";
+
+        ItemJnlBatch.Reset();
+        ItemJnlBatch.FILTERGROUP(2);
+        ItemJnlBatch.SETRANGE("Temporary Delivery", TRUE);
+        ItemJnlBatch.SETRANGE("Journal Template Name", 'RECLASS');
+        ItemJnlBatch.SETRANGE(Responsibility_Center, Responsibility_Center);
+        ItemJnlBatch.FILTERGROUP(0);
+        IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
+            CurrentJnlBatchName := ItemJnlBatch.Name;
+        END else begin
+            ItemJnlBatch.Reset();
+            ItemJnlBatch.FILTERGROUP(2);
+            ItemJnlBatch.SETRANGE("Temporary Delivery", TRUE);
+            ItemJnlBatch.SETRANGE("Journal Template Name", 'RECLASS');
+            ItemJnlBatch.FILTERGROUP(0);
+            IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
+                CurrentJnlBatchName := ItemJnlBatch.Name;
+            end;
+        end;
     end;
 }
 

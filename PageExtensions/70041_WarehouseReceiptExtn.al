@@ -152,7 +152,7 @@ pageextension 70041 WarehouseReceiptExtn extends "Warehouse Receipt"
         }
         addafter("&Print")
         {
-            action(Export)
+            action("Data Export")
             {
                 ApplicationArea = All;
 
@@ -168,6 +168,15 @@ pageextension 70041 WarehouseReceiptExtn extends "Warehouse Receipt"
                     TempExcelBuf.CloseBook();
                     TempExcelBuf.SetFriendlyFilename(ExFileName);
                     TempExcelBuf.OpenExcel();
+                end;
+            }
+            action("Data Import")
+            {
+                ApplicationArea = All;
+
+                trigger OnAction()
+                begin
+
                 end;
             }
             action(Validate)
@@ -212,6 +221,13 @@ pageextension 70041 WarehouseReceiptExtn extends "Warehouse Receipt"
                     Rec.MODIFY;
                     MESSAGE('Validate Successfully');
                     //Cu012
+                    Commit();
+                    Message('Unreceiveld lines will be deleted');
+                    WarehouseReceiptLine.RESET;
+                    WarehouseReceiptLine.SetRange("No.", Rec."No.");
+                    WarehouseReceiptLine.SetRange(Received, false);
+                    if WarehouseReceiptLine.FindSet() then
+                        WarehouseReceiptLine.DeleteAll();
                 end;
             }
         }

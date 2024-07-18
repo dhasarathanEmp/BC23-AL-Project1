@@ -3,7 +3,6 @@ page 55066 "Temporary Delivery History"
     // CUS016 09/06/18 addind Fields Vpn no(50006),Vehicle Plate No.(50007), Service item no(50008), Service item name(50009) using for report.
 
     Caption = 'Temporary Delivery History';
-    DataCaptionFields = Field50005;
     DeleteAllowed = false;
     InsertAllowed = false;
     ModifyAllowed = false;
@@ -18,60 +17,60 @@ page 55066 "Temporary Delivery History"
         {
             repeater(Group)
             {
-                field("Job Order No.";"Job Order No.")
+                field("Job Order No."; Rec."Job Order No.")
                 {
                 }
-                field("Document No.";"Document No.")
+                field("Document No."; Rec."Document No.")
                 {
                 }
-                field("Line No.";"Line No.")
+                field("Line No."; Rec."Line No.")
                 {
                 }
-                field("Date of Enquiry";"Date of Enquiry")
+                field("Date of Enquiry"; Rec."Date of Enquiry")
                 {
                 }
-                field("Item No.";"Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                 }
-                field(Description;Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Location Code";"Location Code")
+                field("Location Code"; Rec."Location Code")
                 {
                 }
-                field("Bin Code";"Bin Code")
+                field("Bin Code"; Rec."Bin Code")
                 {
                 }
-                field("New Bin Code";"New Bin Code")
+                field("New Bin Code"; Rec."New Bin Code")
                 {
                 }
-                field(Quantity;Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                 }
-                field("Unit of Measure Code";"Unit of Measure Code")
+                field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
                 }
-                field("Unit Price";"Unit Price")
+                field("Unit Price"; Rec."Unit Price")
                 {
                 }
-                field("Line Amount";"Line Amount")
+                field("Line Amount"; Rec."Line Amount")
                 {
                 }
-                field("Discount%";"Discount%")
+                field("Discount%"; Rec."Discount%")
                 {
                 }
-                field(DiscountAmount1;DiscountAmount1)
+                field(DiscountAmount1; Rec.DiscountAmount1)
                 {
                     Caption = 'Discount Amount';
                 }
-                field("Entry No.";"Entry No.")
+                field("Entry No."; Rec."Entry No.")
                 {
                 }
-                field("Job card No.";"Job card No.")
+                field("Job card No."; Rec."Job card No.")
                 {
                     Caption = 'Job card No';
                 }
-                field("Job Order Description";"Job Order Description")
+                field("Job Order Description"; Rec."Job Order Description")
                 {
                 }
             }
@@ -96,9 +95,9 @@ page 55066 "Temporary Delivery History"
     trigger OnOpenPage()
     begin
         if UserMgt.GetSalesFilter <> '' then begin
-          FilterGroup(2);
-          SetRange("Location Code" ,UserMgt.GetSalesFilter);
-          FilterGroup(0);
+            Rec.FilterGroup(2);
+            Rec.SetRange("Location Code", UserMgt.GetSalesFilter);
+            Rec.FilterGroup(0);
         end;
     end;
 

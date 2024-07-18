@@ -37,7 +37,6 @@ page 55001 "Counter Sales -Item Reclass."
                     ItemJnlMgt: Codeunit ItemJnlManagement;
                 begin
                     CurrPage.SAVERECORD;
-                    //  >>  CS02
                     IF UserSetupMgmt.GetSalesFilter <> '' THEN
                         LookupName3();
                     CurrPage.UPDATE(FALSE);
@@ -1478,24 +1477,20 @@ page 55001 "Counter Sales -Item Reclass."
         IF NOT JnlSelected THEN
             ERROR('');
 
-        //  >>  CS02
         CLEAR(CurrentJnlBatchName);
         Usersetup.RESET;
         Usersetup.SETRANGE("User ID", USERID);
         IF Usersetup.FINDFIRST THEN
             CurrentJnlBatchName := Usersetup.Counter_Batch;
         IF CurrentJnlBatchName = '' THEN
-            CurrentJnlBatchName := CheckUserRC;
-        //  <<  CS02
+            CurrentJnlBatchName := CheckUserRC
+        else
+            CurrentJnlBatchName := 'Default';
 
         ItemJnlMgt.OpenJnl(CurrentJnlBatchName, Rec);
-
-        //  >>  CS02
         IsCounter := FALSE;
         IsCounterNew := FALSE;
-        //  >>  CS02
 
-        //   >>  K08
         IsVisible := FALSE;
         CompanyInformation.RESET;
         CompanyInformation.SetRange(AFZ, false);
@@ -1503,7 +1498,7 @@ page 55001 "Counter Sales -Item Reclass."
             IsVisible := TRUE
         else
             IsVisible := FALSE;
-        //   >>  K08
+
         Usersetup.RESET;
         Usersetup.SETRANGE("User ID", USERID);
         IF Usersetup.FINDFIRST THEN BEGIN
@@ -2336,9 +2331,7 @@ page 55001 "Counter Sales -Item Reclass."
         usersetup.SetRange("User ID", UserId);
         usersetup.SetFilter("Sales Resp. Ctr. Filter", '<>%1', '');
         if usersetup.FindFirst() then
-            Responsibility_Center := usersetup."Sales Resp. Ctr. Filter"
-        else
-            Error('Sales Responsibility Should be empty in User Setup');
+            Responsibility_Center := usersetup."Sales Resp. Ctr. Filter";
 
         ItemJnlBatch.Reset();
         ItemJnlBatch.FILTERGROUP(2);
@@ -2348,8 +2341,16 @@ page 55001 "Counter Sales -Item Reclass."
         ItemJnlBatch.FILTERGROUP(0);
         IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
             CurrentJnlBatchName := ItemJnlBatch.Name;
-        END;
+        END else begin
+            ItemJnlBatch.Reset();
+            ItemJnlBatch.FILTERGROUP(2);
+            ItemJnlBatch.SETRANGE(Counter_Batch, TRUE);
+            ItemJnlBatch.SETRANGE("Journal Template Name", 'RECLASS');
+            ItemJnlBatch.FILTERGROUP(0);
+            IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
+                CurrentJnlBatchName := ItemJnlBatch.Name;
+            end;
+        end;
     end;
-
 }
 

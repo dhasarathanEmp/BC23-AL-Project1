@@ -70,11 +70,11 @@ pageextension 70029 PostedSalesInvoiceExtn extends "Posted Sales Invoice"
                             IF (SalesShipmentHeader."Vehicle Plate No." = '') OR (SalesShipmentHeader."No. Of Packages" = 0) OR (SalesShipmentHeader."Customer Representative" = '') THEN BEGIN
                                 SalesInvoiceHeader.RESET;
                                 SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
-                                REPORT.RUNMODAL(REPORT::"Gate Pass", TRUE, TRUE, SalesInvoiceHeader);
+                                REPORT.RUNMODAL(REPORT::"Gate Pass1", TRUE, TRUE, SalesInvoiceHeader);
                             END ELSE BEGIN
                                 SalesInvoiceHeader.RESET;
                                 SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
-                                REPORT.RUNMODAL(REPORT::"Gate Pass", TRUE, TRUE, SalesInvoiceHeader);
+                                REPORT.RUNMODAL(REPORT::"Gate Pass1", TRUE, TRUE, SalesInvoiceHeader);
                             END;
                         END;
                     end;
