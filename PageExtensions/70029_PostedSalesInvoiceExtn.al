@@ -17,7 +17,7 @@ pageextension 70029 PostedSalesInvoiceExtn extends "Posted Sales Invoice"
 
     actions
     {
-        addafter(CreateCreditMemo)
+        addafter(Correct)
         {
             group("Report")
             {

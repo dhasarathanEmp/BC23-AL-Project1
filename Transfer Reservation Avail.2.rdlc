@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="ItemNo_TransferLineCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ItemNo_TransferLineCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ItemNo_TransferLineCaption</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="DocumentNo_TransferLine">
+          <DataField>DocumentNo_TransferLine</DataField>
+        </Field>
+        <Field Name="ShowSalesLineGrHeader2">
+          <DataField>ShowSalesLineGrHeader2</DataField>
+        </Field>
+        <Field Name="ItemNo_TransferLine">
+          <DataField>ItemNo_TransferLine</DataField>
+        </Field>
+        <Field Name="Description_TransferLine">
+          <DataField>Description_TransferLine</DataField>
+        </Field>
+        <Field Name="ShpmtDt__TransferLine">
+          <DataField>ShpmtDt__TransferLine</DataField>
+        </Field>
+        <Field Name="OutstandingQtyBase_TransferLine">
+          <DataField>OutstandingQtyBase_TransferLine</DataField>
+        </Field>
+        <Field Name="OutstandingQtyBase_TransferLineFormat">
+          <DataField>OutstandingQtyBase_TransferLineFormat</DataField>
+        </Field>
+        <Field Name="ReservedQtyOutbndBase_TransferLine">
+          <DataField>ReservedQtyOutbndBase_TransferLine</DataField>
+        </Field>
+        <Field Name="ReservedQtyOutbndBase_TransferLineFormat">
+          <DataField>ReservedQtyOutbndBase_TransferLineFormat</DataField>
+        </Field>
+        <Field Name="TransferfromCode_TransferLine">
+          <DataField>TransferfromCode_TransferLine</DataField>
+        </Field>
+        <Field Name="LineStatus">
+          <DataField>LineStatus</DataField>
+        </Field>
+        <Field Name="LineReceiptDate">
+          <DataField>LineReceiptDate</DataField>
+        </Field>
+        <Field Name="LineQuantityOnHand">
+          <DataField>LineQuantityOnHand</DataField>
+        </Field>
+        <Field Name="LineQuantityOnHandFormat">
+          <DataField>LineQuantityOnHandFormat</DataField>
+        </Field>
+        <Field Name="ShowSalesLineBody">
+          <DataField>ShowSalesLineBody</DataField>
+        </Field>
+        <Field Name="DocumentReceiptDate">
+          <DataField>DocumentReceiptDate</DataField>
+        </Field>
+        <Field Name="DocumentStatus">
+          <DataField>DocumentStatus</DataField>
+        </Field>
+        <Field Name="DoctNo_SalesLine">
+          <DataField>DoctNo_SalesLine</DataField>
+        </Field>
+        <Field Name="LineNo_TransferLine">
+          <DataField>LineNo_TransferLine</DataField>
+        </Field>
+        <Field Name="SalesResrvtnAvalbtyCaption">
+          <DataField>SalesResrvtnAvalbtyCaption</DataField>
+        </Field>
+        <Field Name="CurrRepPageNoCaption">
+          <DataField>CurrRepPageNoCaption</DataField>
+        </Field>
+        <Field Name="SalesLineShpmtDtCaption">
+          <DataField>SalesLineShpmtDtCaption</DataField>
+        </Field>
+        <Field Name="LineReceiptDateCaption">
+          <DataField>LineReceiptDateCaption</DataField>
+        </Field>
+        <Field Name="LineStatusCaption">
+          <DataField>LineStatusCaption</DataField>
+        </Field>
+        <Field Name="LineQuantityOnHandCaption">
+          <DataField>LineQuantityOnHandCaption</DataField>
+        </Field>
+        <Field Name="UnReservedFreeStock">
+          <DataField>UnReservedFreeStock</DataField>
+        </Field>
+        <Field Name="UnReservedFreeStockFormat">
+          <DataField>UnReservedFreeStockFormat</DataField>
+        </Field>
+        <Field Name="ReservText">
+          <DataField>ReservText</DataField>
+        </Field>
+        <Field Name="ShowReservDate">
+          <DataField>ShowReservDate</DataField>
+        </Field>
+        <Field Name="Qty_ReservationEntry">
+          <DataField>Qty_ReservationEntry</DataField>
+        </Field>
+        <Field Name="Qty_ReservationEntryFormat">
+          <DataField>Qty_ReservationEntryFormat</DataField>
+        </Field>
+        <Field Name="EntryQuantityOnHand">
+          <DataField>EntryQuantityOnHand</DataField>
+        </Field>
+        <Field Name="EntryQuantityOnHandFormat">
+          <DataField>EntryQuantityOnHandFormat</DataField>
+        </Field>
+        <Field Name="ShowResEntryBody">
+          <DataField>ShowResEntryBody</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

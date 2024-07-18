@@ -1,3 +1,4 @@
+//Codes for  Whse. Purch Export, Import, Validate, Discrepancy Report
 pageextension 70041 WarehouseReceiptExtn extends "Warehouse Receipt"
 {
     layout
@@ -175,8 +176,10 @@ pageextension 70041 WarehouseReceiptExtn extends "Warehouse Receipt"
                 ApplicationArea = All;
 
                 trigger OnAction()
+                var
+                    WhseImport: Codeunit "Whse Purch Receipt Import";
                 begin
-
+                    WhseImport.WhsePurchReceiptImport(Rec);
                 end;
             }
             action(Validate)
@@ -228,6 +231,20 @@ pageextension 70041 WarehouseReceiptExtn extends "Warehouse Receipt"
                     WarehouseReceiptLine.SetRange(Received, false);
                     if WarehouseReceiptLine.FindSet() then
                         WarehouseReceiptLine.DeleteAll();
+                end;
+            }
+            action("Purch. GRN & Discrepancy Report")
+            {
+                ApplicationArea = All;
+
+                trigger OnAction()
+                var
+                    WhseRecHeader: Record "Warehouse Receipt Header";
+                begin
+                    WhseRecHeader.Reset();
+                    WhseRecHeader.SetRange("No.", Rec."No.");
+                    IF WhseRecHeader.FindFirst() then
+                        Report.RunModal(Report::"GRN Report Whse Receipt", true, True, WhseRecHeader);
                 end;
             }
         }

@@ -108,15 +108,15 @@ report 70001 CounterSalesHisToSalesInvoice
                 SalesHeader1.VALIDATE("Currency Code", CSHistory1."Currency Code");
                 SalesHeader1.VALIDATE("Applies-to Doc. Type", SalesHeader1."Applies-to Doc. Type"::Payment);
                 SalesHeader1.VALIDATE("Applies-to Doc. No.", CSHistory1."CashDocument No.");
-                // SalesHeader1.VALIDATE("VIN No.", CSHistory1."VIN No.");
-                //SalesHeader1.VALIDATE("Vehicle Model No.", CSHistory1."Vehicle Model No.");
-                //SalesHeader1.VALIDATE("Vehicle Plate No.", CSHistory1."Vehicle Plate No.");
-                //SalesHeader1.VALIDATE("Service Item No.", CSHistory1."Service Item No.");
-                //SalesHeader1.VALIDATE("Service Item Name", CSHistory1."Service Item Name");
+                SalesHeader1.VALIDATE("VIN No.", CSHistory1."VIN No.");
+                SalesHeader1.VALIDATE("Vehicle Model No.", CSHistory1."Vehicle Model No.");
+                SalesHeader1.VALIDATE("Vehicle Plate No.", CSHistory1."Vehicle Plate No.");
+                SalesHeader1.VALIDATE("Service Item No.", CSHistory1."Service Item No.");
+                SalesHeader1.VALIDATE("Service Item Name", CSHistory1."Service Item Name");
                 SalesHeader1.VALIDATE("VAT Bus. Posting Group", CSHistory1."VAT Bus");
-                //SalesHeader1.VALIDATE("CR Document No.", CSHistory1."CashDocument No.");
-                // SalesHeader1.VALIDATE("CR External Reference No.", CSHistory1."CR External Reference No.");
-                //SalesHeader1."Document Type." := SalesHeader1."Document Type."::"Counter Sales";
+                SalesHeader1.VALIDATE("CR Document No.", CSHistory1."CashDocument No.");
+                SalesHeader1.VALIDATE("CR External Reference No.", CSHistory1."CR External Reference No.");
+                SalesHeader1."Document Type." := SalesHeader1."Document Type."::"Counter Sales";
                 SalesHeader1.MODIFY;
             END;
         END;
@@ -165,8 +165,8 @@ report 70001 CounterSalesHisToSalesInvoice
                 SalesLine2."Bin Code" := CSHistory1."Location Code";
                 //SalesLine2."Shortcut Dimension 1 Code" := GetAgencyCode(CSHistory1."Item No.");
                 SalesLine2.VALIDATE("Unit Price", CSHistory1."Unit Price");
-                //SalesLine2."Document No.1" := CSHistory1."Document No.";
-                //SalesLine2."Sales Type" := SalesLine2."Sales Type"::Sales;
+                SalesLine2."Document No.1" := CSHistory1."Document No.";
+                SalesLine2."Sales Type" := SalesLine2."Sales Type"::Sales;
                 //SalesLine2."Applied Doc. No." := SH."No.";
                 SalesLine2.INSERT;
 
@@ -187,5 +187,10 @@ report 70001 CounterSalesHisToSalesInvoice
         IF CSHistory2.FINDFIRST THEN BEGIN
             // SalesSubform.ValidateInvoiceDiscountAmount1(SH, InvoiceDiscount);
         END;*/
+    end;
+
+    procedure ModifyInvoiceHeasder_TempDelivery()
+    begin
+
     end;
 }

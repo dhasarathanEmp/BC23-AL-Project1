@@ -38,6 +38,13 @@ pageextension 70027 SalesInvoiceExtn extends "Sales Invoice"
                         SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Invoice);
                         SalesHeader.SetRange("No.", Rec."No.");
                         Report.RunModal(70001, true, false, SalesHeader);
+                    end else begin
+                        if SelectedOption = 2 then begin
+                            SalesHeader.Reset();
+                            SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Invoice);
+                            SalesHeader.SetRange("No.", Rec."No.");
+                            Report.RunModal(70001, true, false, SalesHeader);
+                        end;
                     end;
                 end;
             }

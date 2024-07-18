@@ -1,3 +1,4 @@
+// Added fields related Vendor Invoice Receipt validations
 pageextension 70040 WhseReceiptSubformExtn extends "Whse. Receipt Subform"
 {
     layout
