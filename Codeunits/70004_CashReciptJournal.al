@@ -12,7 +12,8 @@ codeunit 70004 CashReceiptJournal
             CurrentJnlBatchName := UserSetup."Cash Receipt Batch";
             JnlSelected := true;
             CRBatchNameTemp := CurrentJnlBatchName;
-        end;
+        end else
+            CurrentJnlBatchName := 'DEFAULT';
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", 'OnBeforeCustLedgEntryInsert', '', true, true)]

@@ -1064,16 +1064,8 @@ page 55065 "Temporary Parts Delivery"
         ItemJnlBatch.FILTERGROUP(0);
         IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
             CurrentJnlBatchName := ItemJnlBatch.Name;
-        END else begin
-            ItemJnlBatch.Reset();
-            ItemJnlBatch.FILTERGROUP(2);
-            ItemJnlBatch.SETRANGE("Temporary Delivery", TRUE);
-            ItemJnlBatch.SETRANGE("Journal Template Name", 'RECLASS');
-            ItemJnlBatch.FILTERGROUP(0);
-            IF PAGE.RUNMODAL(0, ItemJnlBatch) = ACTION::LookupOK THEN BEGIN
-                CurrentJnlBatchName := ItemJnlBatch.Name;
-            end;
-        end;
+        END else
+            CurrentJnlBatchName := 'DEFAULT';
     end;
 }
 

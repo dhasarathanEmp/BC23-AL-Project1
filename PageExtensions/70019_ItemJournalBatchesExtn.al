@@ -12,6 +12,10 @@ pageextension 70019 ItemJournalBatchedExtn extends "Item Journal Batches"
         }
         addafter(Counter_Batch)
         {
+            field("Temporary Delivery"; Rec."Temporary Delivery")
+            {
+                ApplicationArea = all;
+            }
             field(Responsibility_Center; Rec.Responsibility_Center)
             {
                 ApplicationArea = all;
