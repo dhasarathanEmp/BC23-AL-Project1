@@ -5633,6 +5633,9 @@ wooA/uP/AOI2v9hX/o0f9rP/AL//AAe/+eDR/wARtf7Cv/Ro/wC1n/3/APg9/wDPBr+HCigD+4//AIja
         <Field Name="SerialNo">
           <DataField>SerialNo</DataField>
         </Field>
+        <Field Name="CustomerPartNo">
+          <DataField>CustomerPartNo</DataField>
+        </Field>
         <Field Name="AmountIncVat">
           <DataField>AmountIncVat</DataField>
         </Field>

@@ -12,6 +12,7 @@ page 55086 "FOC Sales"
     PromotedActionCategories = 'New,Process,Report,Page';
     SaveValues = true;
     SourceTable = "Item Journal Line";
+    UsageCategory = Tasks;
 
     layout
     {

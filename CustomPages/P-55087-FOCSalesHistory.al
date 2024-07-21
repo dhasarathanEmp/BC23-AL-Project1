@@ -2,6 +2,7 @@ page 55087 "FOC Sales History"
 {
     PageType = List;
     SourceTable = "FOC Sales History";
+    UsageCategory = History;
 
     layout
     {
