@@ -3,13 +3,43 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
 
     layout
     {
-        addafter("Ship-to Contact")
+        addafter("Sell-to Customer No.")
         {
-            field("Price Validate"; Rec."Price Validate")
+            field("Agency Code"; Rec."Agency Code")
             {
 
             }
-            field("Delivery Terms"; Rec."Delivery Terms")
+        }
+        addafter("Promised Delivery Date")
+        {
+            field("Customer PO date"; Rec."Customer PO date")
+            {
+                Caption = 'Customer Date';
+            }
+        }
+        addafter("Your Reference")
+        {
+            field("Document Type."; Rec."Document Type.")
+            {
+
+            }
+            field("CR Document No."; Rec."CR Document No.")
+            {
+
+            }
+            field("CR External Reference No."; Rec."CR External Reference No.")
+            {
+
+            }
+            field("SO Version No."; Rec."SO Version No.")
+            {
+
+            }
+            field("SO Revision Date"; Rec."SO Revision Date")
+            {
+
+            }
+            field("Latest Released Date"; Rec."Latest Released Date")
             {
 
             }
@@ -33,6 +63,26 @@ pageextension 70010 SalesOrderExtn extends "Sales Order"
                             AFZSalesLine.MODIFY;
                         UNTIL AFZSalesLine.NEXT = 0;
                 end;
+            }
+            field("Customer PO Total"; Rec."Customer PO Total")
+            {
+
+            }
+            field("Special Price Factor"; Rec."Special Price Factor")
+            {
+
+            }
+        }
+
+        addafter("Ship-to Contact")
+        {
+            field("Price Validate"; Rec."Price Validate")
+            {
+
+            }
+            field("Delivery Terms"; Rec."Delivery Terms")
+            {
+
             }
         }
 

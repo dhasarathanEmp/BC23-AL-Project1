@@ -42,6 +42,7 @@ report 70001 CounterSalesHisToSalesInvoice
                         ApplicationArea = All;
                         TableRelation = "Cancelled CounterSales History"."CashDocument No.";
                         Importance = Promoted;
+                        Visible = Counter_Field_Visibility;
                         trigger OnLookup(var Text: Text): Boolean
                         var
                             CSHistory: Record "Cancelled CounterSales History";
@@ -51,11 +52,42 @@ report 70001 CounterSalesHisToSalesInvoice
                             CSHistory.SetRange(Cash, true);
                             if CSHistory.FindSet() then begin
                                 if Page.RunModal(55002, CSHistory) = Action::LookupOK then begin
-                                    CSHDocNo := CSHistory."Document No.";
-                                    "Counter Document No." := CSHDocNo;
+                                    Selected_Counter_SalesHistory_DocNo := CSHistory."Document No.";
+                                    "Counter Document No." := Selected_Counter_SalesHistory_DocNo;
                                 end;
                             end else
                                 Error('There is no Counter Sales document were posted for this customer');
+                        end;
+                    }
+                    field("Job Order No"; "Job_Order_No")
+                    {
+                        Visible = TD_Field_Visibility;
+                        Importance = Promoted;
+                        ApplicationArea = all;
+                        trigger OnLookup(var Text: Text): Boolean
+                        var
+                            TDHistory: Record "Temporary Delivery History";
+                            SalesInvoiceLines: Record "Sales Invoice Line";
+                            SalesLine: Record "Sales Line";
+                        begin
+                            TDHistory.CLEARMARKS;
+                            TDHistory.RESET;
+                            IF TDHistory.FINDSET THEN
+                                REPEAT
+                                    SalesInvoiceLines.RESET;
+                                    SalesInvoiceLines.SETRANGE("Location Code", TDHistory."Location Code");
+                                    SalesInvoiceLines.SETRANGE("Document No.1", TDHistory."Job Order No.");
+                                    SalesLine.RESET;
+                                    SalesLine.SETRANGE("Location Code", TDHistory."Location Code");
+                                    SalesLine.SETRANGE("Document No.1", TDHistory."Job Order No.");
+                                    IF (SalesInvoiceLines.ISEMPTY) AND (SalesLine.ISEMPTY) THEN
+                                        TDHistory.MARK(TRUE);
+                                UNTIL TDHistory.NEXT = 0;
+                            TDHistory.MARKEDONLY(TRUE);
+                            IF PAGE.RUNMODAL(55066, TDHistory) = ACTION::LookupOK THEN
+                                Selected_Job_Order_No := TDHistory."Job Order No.";
+                            Job_Order_No := Selected_Job_Order_No;
+                            //ModifyandInsertInvoiceLinesandHeader_TempDelivery(Selected_Job_Order_No);
                         end;
                     }
                 }
@@ -89,7 +121,12 @@ report 70001 CounterSalesHisToSalesInvoice
         UserSetup: Record "User Setup";
         "Customer No.": Code[30];
         "Counter Document No.": Code[30];
-        CSHDocNo: Code[30];
+        Selected_Counter_SalesHistory_DocNo: Code[30];
+        Job_Order_No: Code[30];
+        Chosen_DocumentType: Integer;
+        Counter_Field_Visibility: Boolean;
+        TD_Field_Visibility: Boolean;
+        Selected_Job_Order_No: Code[30];
 
     procedure ModifySalesInvoiceHeader(SIH: Record "Sales Header")
     var
@@ -97,7 +134,7 @@ report 70001 CounterSalesHisToSalesInvoice
         SalesHeader1: Record "Sales Header";
     begin
         CSHistory1.RESET;
-        CSHistory1.SETRANGE("Document No.", CSHDocNo);
+        CSHistory1.SETRANGE("Document No.", Selected_Counter_SalesHistory_DocNo);
         CSHistory1.SETRANGE(Status, CSHistory1.Status::Approved);
         CSHistory1.SETRANGE(Contact, CSHistory1."CustomerNo.");
         IF CSHistory1.FINDFIRST THEN BEGIN
@@ -134,7 +171,7 @@ report 70001 CounterSalesHisToSalesInvoice
         LineNo: Integer;
     begin
         CSHistory1.RESET;
-        CSHistory1.SETRANGE("Document No.", CSHDocNo);
+        CSHistory1.SETRANGE("Document No.", Selected_Counter_SalesHistory_DocNo);
         CSHistory1.SETRANGE(Status, CSHistory1.Status::Approved);
         CSHistory1.SETRANGE("CustomerNo.", "Customer No.");
         IF CSHistory1.FINDFIRST THEN
@@ -189,8 +226,106 @@ report 70001 CounterSalesHisToSalesInvoice
         END;*/
     end;
 
-    procedure ModifyInvoiceHeasder_TempDelivery()
+    procedure ModifyandInsertInvoiceLinesandHeader_TempDelivery(JobOrderNumber: code[30]; SalesHeader: Record "Sales Header")
+    var
+        TemporaryDeliveryHistory: Record "Temporary Delivery History";
+        SalesHeader1: Record "Sales Header";
     begin
+        // Sales Invoice Header Modify
+        TemporaryDeliveryHistory.RESET;
+        TemporaryDeliveryHistory.SETRANGE("Job Order No.", JobOrderNumber);
+        IF TemporaryDeliveryHistory.FINDFIRST THEN BEGIN
+            SalesHeader1.RESET;
+            SalesHeader1.SETRANGE("No.", SalesHeader."No.");
+            SalesHeader1.SETRANGE("Document Type", SalesHeader."Document Type");
+            IF SalesHeader1.FINDFIRST THEN BEGIN
+                SalesHeader1.VALIDATE("Applies-to Doc. Type", SalesHeader1."Applies-to Doc. Type"::Payment);
+                SalesHeader1.VALIDATE("Service Item No.", TemporaryDeliveryHistory."Service Item No.");
+                SalesHeader1.VALIDATE("Service Item Name", TemporaryDeliveryHistory."Service Item Name");
+                SalesHeader1."Document Type." := SalesHeader1."Document Type."::"Temporary Delivery";
+                SalesHeader1.MODIFY;
+            END;
+        END;
+        // Sales Invioce Header Modification End.
 
+        // Sales Invoice Line Insertion
+        /*TemporaryDeliveryHistory.RESET;
+        TemporaryDeliveryHistory.SETRANGE("Job Order No.", "DocNo.");
+        TemporaryDeliveryHistory.SETFILTER(Quantity, '>=%1', 0);
+        IF TemporaryDeliveryHistory.FINDSET THEN
+            REPEAT
+                SalesLine.RESET;
+                SalesLine.SETRANGE("Document Type", SH."Document Type");
+                SalesLine.SETRANGE("Document No.", SH."No.");
+                IF SalesLine.ISEMPTY THEN BEGIN
+                    SalesLineNew.INIT;
+                    SalesLineNew."Document Type" := SH."Document Type";
+                    SalesLineNew."Document No." := SH."No.";
+                    SalesLineNew."Line No." := 10000;
+                    SalesLineNew.Type := SalesLineNew.Type::Item;
+                    SalesLineNew.VALIDATE(Type, SalesLineNew.Type::Item);
+                    SalesLineNew.VALIDATE("No.", TemporaryDeliveryHistory."Item No.");
+                    SalesLineNew.Description := GetItemDescription(TemporaryDeliveryHistory."Item No.");
+                    SalesLineNew.Quantity := TemporaryDeliveryHistory.Quantity;
+                    SalesLineNew."Qty. to Ship" := TemporaryDeliveryHistory.Quantity;
+                    SalesLineNew."Qty. to Invoice" := TemporaryDeliveryHistory.Quantity;
+                    SalesLineNew."Unit of Measure Code" := TemporaryDeliveryHistory."Unit of Measure Code";
+                    SalesLineNew.VALIDATE("Unit of Measure Code");
+                    SalesLineNew.VALIDATE(Quantity, TemporaryDeliveryHistory.Quantity);
+                    SalesLineNew."Location Code" := TemporaryDeliveryHistory."Location Code";
+                    SalesLineNew."Bin Code" := TemporaryDeliveryHistory."New Bin Code";
+                    SalesLineNew."Shortcut Dimension 1 Code" := GetAgencyCode(TemporaryDeliveryHistory."Item No.");
+                    SalesLineNew.VALIDATE("Unit Price", TemporaryDeliveryHistory."Unit Price");
+                    SalesLineNew."Document No.1" := TemporaryDeliveryHistory."Job Order No.";
+                    SalesLineNew."Sales Type" := SalesLineNew."Sales Type"::Sales;
+                    SalesLineNew."Applied Doc. No." := SH."No.";
+                    SalesLineNew.INSERT;
+                END ELSE BEGIN
+                    SalesLine1.RESET;
+                    SalesLine1.SETRANGE("Document No.1", TemporaryDeliveryHistory."Job Order No.");
+                    SalesLine1.SETRANGE("No.", TemporaryDeliveryHistory."Item No.");
+                    SalesLine1.SETRANGE("Bin Code", TemporaryDeliveryHistory."New Bin Code");
+                    IF SalesLine1.FINDFIRST THEN BEGIN
+                        SalesLine1.Quantity := SalesLine1.Quantity + TemporaryDeliveryHistory.Quantity;
+                        SalesLine1.VALIDATE(Quantity);
+                        SalesLine1."Bin Code" := GetBinCodeTD(TemporaryDeliveryHistory."Location Code");
+                        SalesLine1.MODIFY;
+                    END ELSE
+                        IF SalesLine.FINDLAST THEN BEGIN
+                            SalesLineNew.INIT;
+                            SalesLineNew."Document Type" := SH."Document Type";
+                            SalesLineNew."Document No." := SH."No.";
+                            SalesLineNew."Line No." := SalesLine."Line No." + 10000;
+                            SalesLineNew.Type := SalesLineNew.Type::Item;
+                            SalesLineNew.VALIDATE("No.", TemporaryDeliveryHistory."Item No.");
+                            SalesLineNew.Description := GetItemDescription(TemporaryDeliveryHistory."Item No.");
+                            SalesLineNew.Quantity := TemporaryDeliveryHistory.Quantity;
+                            SalesLineNew."Unit of Measure Code" := TemporaryDeliveryHistory."Unit of Measure Code";
+                            SalesLineNew.VALIDATE("Unit of Measure Code");
+                            SalesLineNew.VALIDATE(Quantity, TemporaryDeliveryHistory.Quantity);
+                            SalesLineNew."Location Code" := TemporaryDeliveryHistory."Location Code";
+                            SalesLineNew."Bin Code" := TemporaryDeliveryHistory."New Bin Code";
+                            SalesLineNew."Shortcut Dimension 1 Code" := GetAgencyCode(TemporaryDeliveryHistory."Item No.");
+                            SalesLineNew.VALIDATE("Unit Price", TemporaryDeliveryHistory."Unit Price");
+                            SalesLineNew."Document No.1" := TemporaryDeliveryHistory."Job Order No.";
+                            SalesLineNew."Sales Type" := SalesLineNew."Sales Type"::Sales;
+                            SalesLineNew."Applied Doc. No." := SH."No.";
+                            SalesLineNew.INSERT;
+                        END;
+                END;
+            UNTIL TemporaryDeliveryHistory.NEXT = 0;*/
+        // Sales Invoice Line Insertion End.
+    end;
+
+    procedure StoreDocumentType(Chosen_DocuType: Integer)
+    begin
+        Chosen_DocumentType := Chosen_DocumentType;
+        if Chosen_DocumentType = 1 then begin
+            Counter_Field_Visibility := true;
+            TD_Field_Visibility := false;
+        end else begin
+            TD_Field_Visibility := true;
+            Counter_Field_Visibility := false;
+        end;
     end;
 }

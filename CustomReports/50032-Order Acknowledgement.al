@@ -193,9 +193,9 @@ report 50032 "Order Acknowledgement"
                 column(SerialNo; "Sl.No")
                 {
                 }
-                /*column(CustomerPartNo; "Sales Line"."Cross-Reference No.")
+                column(CustomerPartNo; "Item Reference No.")
                 {
-                }*/
+                }
                 column(AmountIncVat; "Sales Line"."Amount Including VAT")
                 {
                 }

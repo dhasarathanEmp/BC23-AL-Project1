@@ -101,7 +101,7 @@ pageextension 70029 PostedSalesInvoiceExtn extends "Posted Sales Invoice"
                         REPORT.RUNMODAL(REPORT::"Label Print", TRUE, TRUE, SalesInvoiceHeader);
                     end;
                 }
-                action("Customer Invoice")
+                action("Customer Invoice Copy")
                 {
                     Image = Report;
 
@@ -110,7 +110,7 @@ pageextension 70029 PostedSalesInvoiceExtn extends "Posted Sales Invoice"
                         //EP96 Sending Current posted sales invoice document to print parts invoice report
                         SalesInvoiceHeader.RESET;
                         SalesInvoiceHeader.SETRANGE("No.", Rec."No.");
-                        REPORT.RUNMODAL(Report::"Customer Invoice", TRUE, true, SalesInvoiceHeader);
+                        REPORT.RUNMODAL(Report::"Customer Invoice", TRUE, false, SalesInvoiceHeader);
                         //EP96
                     end;
                 }
